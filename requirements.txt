@@ -2,7 +2,11 @@ asgiref==3.2.10
 beautifulsoup4==4.9.1
 behave==1.2.6
 behave-django==1.4.0
+colorama==0.4.3
+coverage==5.3
 Django==3.0.8
+green==3.2.1
+lxml==4.5.2
 parse==1.16.0
 parse-type==0.5.2
 pytz==2020.1
@@ -10,4 +14,5 @@ selenium==3.141.0
 six==1.15.0
 soupsieve==2.0.1
 sqlparse==0.3.1
+Unidecode==1.1.1
 urllib3==1.25.10

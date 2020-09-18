@@ -11,7 +11,3 @@ Feature: Running tests
     Scenario: Test django_ready
         When I run "python manage.py behave"
         Then django_ready should be called
-
-    Scenario: Test visiting a page
-        When I visit the homepage
-        Then Something should be there

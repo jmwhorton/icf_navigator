@@ -1,3 +1,4 @@
 *.pyc
 icf_navigator/geckodriver.log
 icf_navigator/db.sqlite3
+/env
