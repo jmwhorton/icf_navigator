@@ -1,17 +1,18 @@
 from behave import given, when, then
+from django.contrib.auth import get_user_model
 
 @when(u'A user logs in with correct credentials')
-def send_login(context):
-    context.credentials = {'username': 'jrutecht@uams.edu',
-                           'password': 'ignore'}
-    context.response = context.test.client.post("/login/",
-                                                context.credentials,
-                                                follow=True)
+def login_and_forward(context):
+    User = get_user_model()
+    User.objects.create_user('testuser@uams.edu', 'testuser')
 
-@when(u'They reload the homepage')
-def reload_page(context):
-    context.response = context.test.client.get("/")
+    credentials = {'username': 'testuser@uams.edu',
+                   'password': 'testuser',
+                   'next': '/'}
+    context.response = context.test.client.post("/accounts/login/",
+                                                credentials,
+                                                follow=True)
 
 @then(u'Their username should appear on the page')
 def find_username(context):
-    context.test.assertContains(context.response, context.credentials['username'])
+    context.test.assertContains(context.response, 'testuser@uams.edu')

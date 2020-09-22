@@ -7,5 +7,5 @@ Feature: Login
 
   Scenario: A user should remain logged in
     When A user logs in with correct credentials
-      And They reload the homepage
+      And Vists the homepage
     Then Their username should appear on the page
