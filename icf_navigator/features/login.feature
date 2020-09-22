@@ -9,3 +9,8 @@ Feature: Login
     When A user logs in with correct credentials
       And Vists the homepage
     Then Their username should appear on the page
+
+  Scenario: A user logs out
+    When A user logs in with correct credentials
+      And Logs out
+    Then Their username should not appear on the page

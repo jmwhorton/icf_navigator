@@ -1,0 +1,6 @@
+[{
+  "fields": {
+      "email": "testuser@uams.edu"
+  },
+  "model": "users.ADUser"
+}]

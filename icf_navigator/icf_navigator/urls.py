@@ -22,8 +22,11 @@ from core import views
 
 urlpatterns = [
     url(r'^$', views.home_view, name='home'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/login/',
         auth_views.LoginView.as_view(template_name='registration/login.html'),
         name='login'),
+    path('form/new', views.new_form, name='new_form'),
+    path('form/<int:form_id>', views.form_main, name='form'),
     url(r'^admin/', admin.site.urls),
 ]

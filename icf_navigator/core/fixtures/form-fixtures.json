@@ -1,0 +1,6 @@
+[{
+  "fields": {
+      "study_name": "test_study_please_ignore"
+  },
+  "model": "core.ConsentForm"
+}]

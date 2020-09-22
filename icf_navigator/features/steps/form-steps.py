@@ -1,16 +1,29 @@
 from behave import given, when, then
 from django.contrib.auth import get_user_model
+import core.models
+from behave_django.decorators import fixtures
 
-@when(u'An authenticated user')
+@fixtures('question-fixtures.json', 'form-fixtures.json')
+@given(u'A configured app')
+def load_fixtures(context):
+    pass
+
+@fixtures('user-fixture.json')
+@given(u'An authenticated user')
 def skip_login(context):
-    User = get_user_model()
-    User.objects.create_user('testuser@uams.edu', 'testuser')
-    print(User.objects.all())
-    context.test.client.login(username='testuser@uams.edu', password="testuser")
+    testuser = get_user_model().objects.get(email='testuser@uams.edu')
+    context.test.client.force_login(testuser)
 
 @when(u'Vists the homepage')
 def visit_homepage(context):
     context.response = context.test.client.get("/")
+
+@when(u'Creates form "{form_name}"')
+def create_new_form(context, form_name):
+    form_details = {'study_name': form_name}
+    context.response = context.test.client.post("/form/new",
+                                                form_details,
+                                                follow=True)
 
 @then(u'They should see a form to create a new form')
 def see_new_form(context):
@@ -19,3 +32,12 @@ def see_new_form(context):
 @then(u'They should not be able to create a new form')
 def not_see_new_form(context):
     context.test.assertNotContains(context.response, 'Create a new')
+
+@then(u'Should see "{text}"')
+def find_text(context, text):
+    context.test.assertContains(context.response, text)
+
+@then(u'Should see multiple questions')
+def find_questions(context):
+    forms_found = str(context.response.content).count("<form")
+    context.test.assertGreater(forms_found, 2)

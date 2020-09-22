@@ -13,6 +13,14 @@ def login_and_forward(context):
                                                 credentials,
                                                 follow=True)
 
+@when(u'Logs out')
+def logout(context):
+    context.response = context.test.client.get("/accounts/logout/")
+
 @then(u'Their username should appear on the page')
 def find_username(context):
     context.test.assertContains(context.response, 'testuser@uams.edu')
+
+@then(u'Their username should not appear on the page')
+def find_no_username(context):
+    context.test.assertNotContains(context.response, 'testuser@uams.edu')

@@ -1,8 +1,14 @@
 {% if user.is_authenticated %}
 {{user.email}}
 <h4>Create a new form</h4>
-<form class="" action="index.html" method="post">
-  <input type="text" name="Study Name" value="name">
+<form class="" action="/form/new" method="post">
+  {% csrf_token %}
+  <input type="text" name="study_name" value="">
   <input type="submit" name="save" value="Save">
 </form>
 {% endif %}
+
+
+{% for cf in consent_forms %}
+<a href="{% url 'form' cf.pk %}">{{cf.study_name}}</a>
+{% endfor %}
