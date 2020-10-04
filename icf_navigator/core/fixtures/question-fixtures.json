@@ -1,19 +1,13 @@
 [{
   "fields": {
-      "id": "1A",
-      "order": 1.5
   },
   "model": "core.question"
 },{
   "fields": {
-      "id": "1B",
-      "order": 1.7
   },
   "model": "core.question"
 },{
   "fields": {
-      "id": "2C",
-      "order": 2.5
   },
   "model": "core.question"
 }]

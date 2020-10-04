@@ -1,0 +1,13 @@
+[
+{
+  "fields": {
+    "id":1
+  },
+  "model": "core.question"
+},{
+  "fields": {
+    "id":1
+  },
+  "model": "core.yesnoquestion"
+}
+]

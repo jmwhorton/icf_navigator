@@ -20,7 +20,7 @@ Feature: Form
     Then Should see "A"
       And Should see "B"
 
-  Scenario: Users can answer questions for a form
+  Scenario: Users can see questions for a form
     Given A configured app
       And An authenticated user
     When Creates form "A"
