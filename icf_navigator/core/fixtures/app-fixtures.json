@@ -1,0 +1,52 @@
+[
+  {
+    "model": "core.consentform",
+    "pk": 1,
+    "fields": {
+      "study_name": "Form 1"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 1,
+    "fields": {}
+  },
+  {
+    "model": "core.question",
+    "pk": 2,
+    "fields": {}
+  },
+  {
+    "model": "core.question",
+    "pk": 3,
+    "fields": {}
+  },
+  {
+    "model": "core.yesnoquestion",
+    "pk": 3,
+    "fields": {}
+  },
+  {
+    "model": "core.freetextquestion",
+    "pk": 2,
+    "fields": {}
+  },
+  {
+    "model": "core.multiselectquestion",
+    "pk": 1,
+    "fields": {
+      "options": [
+        "Apple",
+        "Orange",
+        "Banana"
+      ]
+    }
+  },
+  {
+    "model": "users.aduser",
+    "pk": 1,
+    "fields": {
+      "email": "jrutecht@uams.edu"
+    }
+  }
+]

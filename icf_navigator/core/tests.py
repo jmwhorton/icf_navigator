@@ -1,8 +1,6 @@
 from django.test import TestCase
 from core import views, models
 from django.contrib.auth import get_user_model
-from django.urls import reverse
-from django import forms
 
 class LoginTestCase(TestCase):
     @classmethod
@@ -46,57 +44,3 @@ class HomeTestCase(TestCase):
         models.ConsentForm.objects.create(study_name='B')
         self.assertContains(self.client.get('/'), 'A')
         self.assertContains(self.client.get('/'), 'B')
-
-
-class ConsentFormTestCase(TestCase):
-    def setUp(self):
-        User = get_user_model()
-        user = User.objects.create_user('testuser@uams.edu', 'testuser')
-
-    def test_requires_login(self):
-        response = self.client.post('/form/new', {'name': 'A'})
-        self.assertEqual(response.status_code, 302)
-
-    def test_requires_post(self):
-        self.client.login(username='testuser@uams.edu', password="testuser")
-        response = self.client.get('/form/new')
-        self.assertEqual(response.status_code, 405)
-
-    def test_creates_model(self):
-        count = models.ConsentForm.objects.count()
-        self.client.login(username='testuser@uams.edu', password="testuser")
-        self.client.post('/form/new', {'study_name': 'A'})
-        self.assertEqual(count + 1, models.ConsentForm.objects.count())
-        self.assertEqual('A', models.ConsentForm.objects.last().study_name)
-
-    def test_redirect_on_create(self):
-        self.client.login(username='testuser@uams.edu', password="testuser")
-        response = self.client.post('/form/new', {'study_name': 'A'})
-        cf = models.ConsentForm.objects.last()
-        self.assertRedirects(response, reverse('form', args=(cf.pk,)))
-
-    def test_correct_template(self):
-        cf = models.ConsentForm.objects.create(study_name="test_study")
-        response = self.client.get(reverse('form', args=(cf.pk,)))
-        self.assertTemplateUsed(response, 'core/form.html')
-
-class QuestionTestCase(TestCase):
-    def test_questions_minimum_spec(self):
-        self.assertTrue(models.Question.objects.create())
-
-    def test_questions_return_their_form(self):
-        q = models.Question.objects.create()
-        self.assertIsInstance(q.form(), forms.Form)
-
-    def test_store_json_in_msq(self):
-        a = [1, 2, 3]
-        msq = models.MultiSelectQuestion()
-        msq.options = a
-        msq.save()
-        m2 = models.MultiSelectQuestion.objects.first()
-        self.assertEqual(a, m2.options)
-
-    def test_msq_form(self):
-        a = [1, 2, 3]
-        msq = models.MultiSelectQuestion.objects.create(options=a)
-        self.assertGreater(len(msq.form().fields['options'].choices), 0)

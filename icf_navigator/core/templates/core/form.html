@@ -2,7 +2,6 @@
 
 {% for question in questions %}
 <form>
-  <span>{{question.pk}}</span>
-  huh
+  {{question.form.as_p}}
 </form>
 {% endfor %}

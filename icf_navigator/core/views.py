@@ -36,3 +36,19 @@ def new_form(request):
             return HttpResponse("bad form", status=500)
     else:
         return HttpResponse("require POST", status=405)
+
+@login_required
+def question_main(request, form_id, question_id):
+    if request.method == 'POST':
+        question = models.Question.objects.get(pk=question_id)
+        cf = models.ConsentForm.objects.get(pk=form_id)
+        form = question.form(request.POST)
+        if form.is_valid():
+            models.Response.objects.create(form=cf,
+                                           user=request.user,
+                                           question=question,
+                                           data=form.cleaned_data)
+            return HttpResponse("ok", status=200)
+        else:
+            return HttpResponse("bad form", status=500)
+    return HttpResponse("require POST", status=405)

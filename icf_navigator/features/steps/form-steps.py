@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 import core.models
 from behave_django.decorators import fixtures
 
-@fixtures('question-fixtures.json', 'form-fixtures.json')
+@fixtures('app-fixtures.json')
 @given(u'A configured app')
 def load_fixtures(context):
     pass
@@ -11,8 +11,8 @@ def load_fixtures(context):
 @fixtures('user-fixture.json')
 @given(u'An authenticated user')
 def skip_login(context):
-    testuser = get_user_model().objects.get(email='testuser@uams.edu')
-    context.test.client.force_login(testuser)
+    context.user = get_user_model().objects.get(email='testuser@uams.edu')
+    context.test.client.force_login(context.user)
 
 @when(u'Vists the homepage')
 def visit_homepage(context):
