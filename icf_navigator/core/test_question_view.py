@@ -27,3 +27,12 @@ class QuestionViewTests(TestCase):
     def test_requires_login(self):
         resp = self.client.post(self.url, {})
         self.assertNotEqual(resp.status_code, 200)
+
+    def test_msq(self):
+        self.client.force_login(self.user)
+        options = ['Apple', 'Orange', 'Banana']
+        question = models.MultiSelectQuestion.objects.create(options=options)
+        url = '/form/{}/question/{}'.format(self.form.pk, question.pk)
+        self.client.post(url, {'options': [0]})
+        resp = models.Response.objects.last()
+        self.assertIn('0', resp.data['options'])
