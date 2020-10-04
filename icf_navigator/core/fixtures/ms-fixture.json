@@ -1,0 +1,14 @@
+[
+{
+  "fields": {
+    "id":1
+  },
+  "model": "core.question"
+},{
+  "fields": {
+    "id":1,
+    "options":"[1,2,3]"
+  },
+  "model": "core.multiselectquestion"
+}
+]

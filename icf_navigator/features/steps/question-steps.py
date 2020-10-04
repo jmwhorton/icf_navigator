@@ -14,6 +14,16 @@ def step_impl(context):
 def step_impl(context):
     pass
 
+@fixtures('ft-fixture.json')
+@given(u'A free text question')
+def step_impl(context):
+    pass
+
+@fixtures('ms-fixture.json')
+@given(u'A multiselect question')
+def step_impl(context):
+    pass
+
 @when(u'The first question is selected')
 def step_impl(context):
     context.question = core.models.Question.objects.first()
@@ -32,3 +42,15 @@ def step_impl(context):
     form = context.question.form()
     context.test.assertIn("<input", form.__html__())
     context.test.assertIn("radio", form.__html__())
+
+@then(u'The form should have a text field')
+def step_impl(context):
+    form = context.question.form()
+    context.test.assertIn("textarea", form.__html__())
+
+
+@then(u'The form should have multiple checkboxes')
+def step_impl(context):
+    form = context.question.form()
+    count_inputs = form.__html__().count('input')
+    context.test.assertGreater(count_inputs, 1)
