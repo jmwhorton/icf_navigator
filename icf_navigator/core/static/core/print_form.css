@@ -1,10 +1,10 @@
 @media screen {
 
-  .print_background {
+  #print_background {
     background-color: rgba(237, 237, 240, 1);
   }
 
-  .wrapper {
+  #wrapper {
     display: grid;
     grid-template-columns:
       1fr
@@ -12,7 +12,7 @@
       1fr;
   }
 
-  .wrapper > * {
+  #wrapper > * {
     grid-column: 2;
   }
 
@@ -22,7 +22,7 @@
     position: relative;
     overflow: visible;
     background-clip: content-box;
-    border-image: url(/static/core/shadow.png) 9 9 repeat;
+    border-image: url('/static/core/shadow.png') 9 9 repeat;
     background-color: rgba(255, 255, 255, 1);
   }
 }
@@ -31,6 +31,11 @@
   .content {
     width: 100%;
   }
+}
+
+
+body {
+  margin: 0px;
 }
 
 .section {

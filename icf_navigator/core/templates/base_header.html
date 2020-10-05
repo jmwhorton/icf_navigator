@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Informed Consent Navigator{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <script src="{% static 'core/js_forms.js' %}" ></script>
+</head>
+
+<body>
+    <div id="header">
+      <a href="/">
+        <img id="header-image" src="{% static 'core/UAMS_logo_white.png' %}">
+      </a>
+      <h1>Informed Consent Navigator</h1>
+    </div>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

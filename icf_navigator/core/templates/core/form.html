@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "base_header.html" %}
 {% block title %}{{consent_form.study_name}}{% endblock %}
 {% block content %}
 <div style="display:flex">
@@ -22,7 +22,7 @@
     {% endfor %}
   </div>
   <div>
-    {% include "core/print_form.html" %}
+    {% include "core/form_content.html" %}
   </div>
 </div>
 {% endblock %}

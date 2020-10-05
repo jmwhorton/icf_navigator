@@ -1,0 +1,23 @@
+body {
+  margin: 0px;
+}
+
+#header {
+  background-image: url('/static/header-background.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-position: bottom;
+  height: 15ch;
+  color: white;
+  display: flex;
+}
+
+#header-image{
+  padding:15px;
+  height:50px;
+}
+
+#content {
+  margin: 5px;
+}
