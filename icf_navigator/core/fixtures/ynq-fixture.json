@@ -1,7 +1,9 @@
 [
 {
   "fields": {
-    "id":1
+    "id": 1,
+    "order": 1.124,
+    "text": "This is a yesno question"
   },
   "model": "core.question"
 },{

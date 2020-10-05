@@ -39,22 +39,19 @@ def step_impl(context, option):
 
 @then(u'"{option}" should be selected')
 def step_impl(context, option):
-    resp = core.models.Response.objects.get(user=context.user,
-                                form=context.form,
+    resp = core.models.Response.objects.get(form=context.form,
                                 question=context.question)
     index = context.question.options.index(option)
     context.test.assertIn(str(index), resp.data['options'])
 
 @then(u'The answer should be stored')
 def step_impl(context):
-    resp = core.models.Response.objects.get(user=context.user,
-                                form=context.form,
-                                question=context.question)
+    resp = core.models.Response.objects.get(form=context.form,
+                                            question=context.question)
     context.test.assertTrue(resp.data['yes'])
 
 @then(u'"{text}" should be stored')
 def step_impl(context, text):
-    resp = core.models.Response.objects.get(user=context.user,
-                                form=context.form,
-                                question=context.question)
+    resp = core.models.Response.objects.get(form=context.form,
+                                            question=context.question)
     context.test.assertEquals(resp.data['text'], text)

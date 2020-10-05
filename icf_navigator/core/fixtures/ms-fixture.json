@@ -1,7 +1,9 @@
 [
 {
   "fields": {
-    "id":1
+    "id":1,
+    "text": "This is a multiselect question",
+    "order": 1.536
   },
   "model": "core.question"
 },{

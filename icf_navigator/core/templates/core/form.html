@@ -1,7 +1,11 @@
 <h1>{{consent_form.study_name}}</h1>
 
 {% for question in questions %}
-<form>
+<form action="question/{{question.pk}}" method="post">
+  {% csrf_token %}
+  <b>{{question.order}}</b>
+  {{question.text}}
   {{question.form.as_p}}
+  <input type="submit" name="save" value="Save">
 </form>
 {% endfor %}

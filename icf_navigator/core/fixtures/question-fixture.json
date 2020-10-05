@@ -1,5 +1,7 @@
 [{
   "fields": {
+    "text": "A very basic question",
+    "order": 1.2
   },
   "model": "core.question"
 }]

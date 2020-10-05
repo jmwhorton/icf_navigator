@@ -19,6 +19,12 @@ class NewConsentForm(forms.Form):
 def form_main(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     questions = models.Question.objects.all()
+    for question in questions:
+        try:
+            r = models.Response.objects.get(form=cf, question=question)
+            question.form = question.form(r.data)
+        except:
+            question.form = question.form()
     return render(request,
                   'core/form.html',
                   {'consent_form': cf,
@@ -44,10 +50,10 @@ def question_main(request, form_id, question_id):
         cf = models.ConsentForm.objects.get(pk=form_id)
         form = question.form(request.POST)
         if form.is_valid():
-            models.Response.objects.create(form=cf,
-                                           user=request.user,
-                                           question=question,
-                                           data=form.cleaned_data)
+            r, created = models.Response.objects.get_or_create(form=cf,
+                                                      question=question)
+            r.data = form.cleaned_data
+            r.save()
             return HttpResponse("ok", status=200)
         else:
             return HttpResponse("bad form", status=500)

@@ -8,7 +8,7 @@ class QuestionViewTests(TestCase):
         User = get_user_model()
         self.user = User.objects.create_user('testuser@uams.edu', 'testuser')
         self.form = models.ConsentForm.objects.create()
-        self.ynquestion = models.YesNoQuestion.objects.create()
+        self.ynquestion = models.YesNoQuestion.objects.create(text='test',order=25.35)
         self.url = '/form/{}/question/{}'.format(self.form.pk, self.ynquestion.pk)
 
     def test_generates_response(self):
@@ -19,7 +19,6 @@ class QuestionViewTests(TestCase):
         post_count = models.Response.objects.count()
         self.assertGreater(post_count, pre_count)
         resp = models.Response.objects.last()
-        self.assertEqual(self.user, resp.user)
         self.assertEqual(self.form, resp.form)
         self.assertEqual(self.ynquestion, resp.question)
         self.assertTrue(resp.data['yes'])
@@ -31,7 +30,7 @@ class QuestionViewTests(TestCase):
     def test_msq(self):
         self.client.force_login(self.user)
         options = ['Apple', 'Orange', 'Banana']
-        question = models.MultiSelectQuestion.objects.create(options=options)
+        question = models.MultiSelectQuestion.objects.create(text="test", order=25.5266, options=options)
         url = '/form/{}/question/{}'.format(self.form.pk, question.pk)
         self.client.post(url, {'options': [0]})
         resp = models.Response.objects.last()

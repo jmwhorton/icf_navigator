@@ -9,17 +9,26 @@
   {
     "model": "core.question",
     "pk": 1,
-    "fields": {}
+    "fields": {
+      "text": "The first",
+      "order": 1.0
+    }
   },
   {
     "model": "core.question",
     "pk": 2,
-    "fields": {}
+    "fields": {
+      "text": "The second",
+      "order": 2.0
+    }
   },
   {
     "model": "core.question",
     "pk": 3,
-    "fields": {}
+    "fields": {
+      "text": "The third",
+      "order": 3.0
+    }
   },
   {
     "model": "core.yesnoquestion",
