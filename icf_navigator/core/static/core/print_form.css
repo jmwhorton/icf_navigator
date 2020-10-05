@@ -1,6 +1,43 @@
+@media screen {
+
+  .print_background {
+    background-color: rgba(237, 237, 240, 1);
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns:
+      1fr
+      min(90ch, 100%)
+      1fr;
+  }
+
+  .wrapper > * {
+    grid-column: 2;
+  }
+
+  .content {
+    border: 9px solid transparent;
+    margin: 1px auto -8px auto;
+    position: relative;
+    overflow: visible;
+    background-clip: content-box;
+    border-image: url(/static/core/shadow.png) 9 9 repeat;
+    background-color: rgba(255, 255, 255, 1);
+  }
+}
+
+@media print {
+  .content {
+    width: 100%;
+  }
+}
+
 .section {
   display: flex;
   justify-content: space-between;
+  padding: 3ch;
+  background-color: white;
 }
 
 .gray {
@@ -14,6 +51,11 @@
 .red_borders {
   border-top: 1px #D40000 solid;
   border-bottom: 1px #D40000 solid;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .logo {
