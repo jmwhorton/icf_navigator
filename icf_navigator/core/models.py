@@ -15,6 +15,8 @@ class ConsentForm(models.Model):
             except Response.DoesNotExist:
                 pass
         return dict
+    def __str__(self):
+        return self.study_name[:20]
 
 class Question(models.Model):
     text = models.TextField(blank=True)
@@ -63,6 +65,8 @@ class Question(models.Model):
             pass
         print("Couldn't find a subtype, probably an error.")
         return data
+    def __str__(self):
+        return self.label
 
 class Response(models.Model):
     form = models.ForeignKey(ConsentForm, on_delete=models.CASCADE)
@@ -70,6 +74,8 @@ class Response(models.Model):
     data = models.JSONField(blank=True, null=True)
     class Meta:
         unique_together = [['form', 'question']]
+    def __str__(self):
+        return "{}[{}]".format(self.form, self.question)
 
 
 class YesNoForm(forms.Form):

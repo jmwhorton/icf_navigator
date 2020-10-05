@@ -1,0 +1,35 @@
+.section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gray {
+  background-color: #EAEAEA;
+}
+
+.red_top_border {
+  border-top: 1px #D40000 solid;
+}
+
+.red_borders {
+  border-top: 1px #D40000 solid;
+  border-bottom: 1px #D40000 solid;
+}
+
+.logo {
+  background-color: #D40000;
+  text-align: left;
+  color: white;
+  padding: 50px;
+}
+
+.logo_image {
+  width: 150px;
+}
+
+.title {
+  background-color: #737373;
+  text-align: center;
+  color: white;
+  padding: 50px;
+}

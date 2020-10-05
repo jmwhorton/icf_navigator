@@ -1,3 +1,5 @@
+{% extends "base_generic.html" %}
+{% block content %}
 {% if user.is_authenticated %}
 {{user.email}}
 <h4>Create a new form</h4>
@@ -12,3 +14,4 @@
 {% for cf in consent_forms %}
 <a href="{% url 'form' cf.pk %}">{{cf.study_name}}</a>
 {% endfor %}
+{% endblock %}

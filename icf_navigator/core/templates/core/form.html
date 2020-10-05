@@ -1,6 +1,10 @@
+{% extends "base_generic.html" %}
+{% block title %}{{consent_form.study_name}}{% endblock %}
+{% block content %}
 <div style="display:flex">
   <div>
     <h1>{{consent_form.study_name}}</h1>
+    <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
 
     {% for question in questions %}
     <form action="question/{{question.pk}}" method="post">
@@ -18,18 +22,7 @@
     {% endfor %}
   </div>
   <div>
-    <h1>{{consent_form.print_dictionary.study_title}}</h1>
-    <h3>Risks of Joining</h3>
-    <ul>
-      {% for risk in consent_form.print_dictionary.joining_risks %}
-      <li>{{risk}}</li>
-      {% endfor %}
-    </ul>
-    <h3>Aspects of Study</h3>
-    <ul>
-      {% for aspect in consent_form.print_dictionary.research_features %}
-      <li>{{aspect}}</li>
-      {% endfor %}
-    </ul>
+    {% include "core/print_form.html" %}
   </div>
 </div>
+{% endblock %}

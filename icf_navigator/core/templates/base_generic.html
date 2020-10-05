@@ -1,0 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Informed Consent Navigator{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+</head>
+
+<body>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

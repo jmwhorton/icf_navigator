@@ -28,7 +28,14 @@ def form_main(request, form_id):
     return render(request,
                   'core/form.html',
                   {'consent_form': cf,
+                   'pd': cf.print_dictionary,
                    'questions': questions})
+
+def form_print(request, form_id):
+    pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary
+    return render(request,
+                  'core/print_form.html',
+                  {'pd': pd})
 
 @login_required
 def new_form(request):
