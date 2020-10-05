@@ -30,7 +30,10 @@ class QuestionViewTests(TestCase):
     def test_msq(self):
         self.client.force_login(self.user)
         options = ['Apple', 'Orange', 'Banana']
-        question = models.MultiSelectQuestion.objects.create(text="test", order=25.5266, options=options)
+        question = models.MultiSelectQuestion.objects.create(text="test",
+                                                             order=25.5266,
+                                                             label="msq5",
+                                                             options=options)
         url = '/form/{}/question/{}'.format(self.form.pk, question.pk)
         self.client.post(url, {'options': [0]})
         resp = models.Response.objects.last()

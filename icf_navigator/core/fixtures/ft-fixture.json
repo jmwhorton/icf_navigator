@@ -3,7 +3,8 @@
   "fields": {
     "id":1,
     "text": "This is a free text question",
-    "order": 2.386
+    "order": 2.386,
+    "label": "ft1"
   },
   "model": "core.question"
 },{

@@ -3,7 +3,8 @@
   "fields": {
     "id":1,
     "text": "This is a multiselect question",
-    "order": 1.536
+    "order": 1.536,
+    "label": "msq1"
   },
   "model": "core.question"
 },{

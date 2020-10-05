@@ -6,8 +6,9 @@ class ConsentForm(models.Model):
     study_name = models.CharField(max_length=500)
 
 class Question(models.Model):
-    text = models.TextField()
+    text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
+    label = models.CharField(max_length=50, unique=True)
 
     def __eq__(self, other):
         return self.pk == other.pk

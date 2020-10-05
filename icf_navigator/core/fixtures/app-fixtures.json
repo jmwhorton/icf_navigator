@@ -11,7 +11,8 @@
     "pk": 1,
     "fields": {
       "text": "The first",
-      "order": 1.0
+      "order": 1.0,
+      "label": "tf1"
     }
   },
   {
@@ -19,7 +20,8 @@
     "pk": 2,
     "fields": {
       "text": "The second",
-      "order": 2.0
+      "order": 2.0,
+      "label": "tf2"
     }
   },
   {
@@ -27,7 +29,8 @@
     "pk": 3,
     "fields": {
       "text": "The third",
-      "order": 3.0
+      "order": 3.0,
+      "label": "label3"
     }
   },
   {
