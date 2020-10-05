@@ -61,10 +61,11 @@ class Response(models.Model):
 
 
 class YesNoForm(forms.Form):
-    yes = forms.BooleanField(label='',
+    yes = forms.TypedChoiceField(label='',
                              required=True,
-                             widget=forms.RadioSelect(choices=[(True, 'Yes'),
-                                                               (False, 'No')]))
+                             coerce=lambda x: x == 'True',
+                             choices=[(True, 'Yes'),(False, 'No')],
+                             widget=forms.RadioSelect)
 
 class YesNoQuestion(Question):
     def form(self, *args, **kwargs):

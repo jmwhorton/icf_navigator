@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
 {{user.email}}
 <h4>Create a new form</h4>
-<form class="" action="/form/new" method="post">
+<form action="/form/new" method="post">
   {% csrf_token %}
   <input type="text" name="study_name" value="">
   <input type="submit" name="save" value="Save">

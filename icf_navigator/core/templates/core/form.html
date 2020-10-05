@@ -7,7 +7,7 @@
     <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
 
     {% for question in questions %}
-    <form action="question/{{question.pk}}" method="post">
+    <form  class="question" action="question/{{question.pk}}" method="post">
       {% csrf_token %}
       <b>{{question.order}}</b>
       {{question.text}}
