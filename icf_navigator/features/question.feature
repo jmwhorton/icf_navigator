@@ -7,11 +7,6 @@ Feature: Question
     Given A configured app
     Then The form should have multiple questions
 
-  Scenario: A question knows how to render itself
-    Given A question with form
-    When The first question is selected
-    Then The question should have a form
-
   Scenario: A yes or no question
     Given A yesno question
     When The first question is selected

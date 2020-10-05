@@ -7,9 +7,15 @@ class QuestionTestCase(TestCase):
     def test_questions_minimum_spec(self):
         self.assertTrue(models.Question.objects.create(text='test',order=1.2))
 
-    def test_questions_return_their_form(self):
+    def test_base_question_forms_excepts(self):
         q = models.Question.objects.create(text='test', order=1.3)
-        self.assertIsInstance(q.form(), forms.Form)
+        with self.assertRaises(models.NoQuestionSubtypeException):
+            q.form()
+
+    def test_base_question_dict_excepts(self):
+        q = models.Question.objects.create(text='test', order=1.3)
+        with self.assertRaises(models.NoQuestionSubtypeException):
+            q.for_dict({})
 
     def test_store_json_in_msq(self):
         a = [1, 2, 3]

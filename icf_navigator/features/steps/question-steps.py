@@ -4,11 +4,6 @@ import core.models
 from behave_django.decorators import fixtures
 from django import forms
 
-@fixtures('question-fixture.json')
-@given(u'A question with form')
-def step_impl(context):
-    pass
-
 @fixtures('ynq-fixture.json')
 @given(u'A yesno question')
 def step_impl(context):

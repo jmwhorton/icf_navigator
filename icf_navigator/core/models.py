@@ -18,6 +18,9 @@ class ConsentForm(models.Model):
     def __str__(self):
         return self.study_name[:20]
 
+class NoQuestionSubtypeException(Exception):
+    pass
+
 class Question(models.Model):
     text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
@@ -26,45 +29,24 @@ class Question(models.Model):
     def __eq__(self, other):
         return self.pk == other.pk
 
+    @property
+    def my_type(self):
+        if hasattr(self, 'yesnoquestion'):
+            return self.yesnoquestion
+        if hasattr(self, 'freetextquestion'):
+            return self.freetextquestion
+        if hasattr(self, 'multiselectquestion'):
+            return self.multiselectquestion
+        if hasattr(self, 'textlistquestion'):
+            return self.textlistquestion
+        raise NoQuestionSubtypeException("Had no subclass")
+
     def form(self, *args, **kwargs):
-        try:
-            return self.yesnoquestion.form(*args, **kwargs)
-        except:
-            pass
-        try:
-            return self.freetextquestion.form(*args, **kwargs)
-        except:
-            pass
-        try:
-            return self.multiselectquestion.form(*args, **kwargs)
-        except:
-            pass
-        try:
-            return self.textlistquestion.form(*args, **kwargs)
-        except:
-            pass
-        print("Couldn't find a form, probably an error.")
-        return forms.Form(*args, **kwargs)
+        return self.my_type.form(*args, **kwargs)
 
     def for_dict(self, data):
-        try:
-            return self.yesnoquestion.for_dict(data)
-        except:
-            pass
-        try:
-            return self.freetextquestion.for_dict(data)
-        except:
-            pass
-        try:
-            return self.multiselectquestion.for_dict(data)
-        except:
-            pass
-        try:
-            return self.textlistquestion.for_dict(data)
-        except:
-            pass
-        print("Couldn't find a subtype, probably an error.")
-        return data
+        return self.my_type.for_dict(data)
+
     def __str__(self):
         return self.label
 
