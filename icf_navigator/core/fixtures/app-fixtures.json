@@ -3,34 +3,72 @@
     "model": "core.consentform",
     "pk": 1,
     "fields": {
-      "study_name": "Form 1"
+      "study_name": "Test1"
     }
   },
   {
     "model": "core.question",
     "pk": 1,
     "fields": {
-      "text": "The first",
-      "order": 1.0,
-      "label": "tf1"
+      "text": "What is the full title of your study?",
+      "order": 1,
+      "label": "study_title"
     }
   },
   {
     "model": "core.question",
     "pk": 2,
     "fields": {
-      "text": "The second",
-      "order": 2.0,
-      "label": "tf2"
+      "text": "What are the risks of joining this study?",
+      "order": 5,
+      "label": "joining_risks"
     }
   },
   {
     "model": "core.question",
     "pk": 3,
     "fields": {
-      "text": "The third",
-      "order": 3.0,
-      "label": "label3"
+      "text": "Will the participant’s regular medical treatments change by joining this study?",
+      "order": 2,
+      "label": "treatment_change"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 4,
+    "fields": {
+      "text": "Does your research involve any of the following: (Click all that apply. This will help us decide what requirements to include in the consent form)",
+      "order": 3,
+      "label": "research_features"
+    }
+  },
+  {
+    "model": "core.response",
+    "pk": 1,
+    "fields": {
+      "form": 1,
+      "question": 1,
+      "data": {"text": "An example study."}
+    }
+  },
+  {
+    "model": "core.response",
+    "pk": 2,
+    "fields": {
+      "form": 1,
+      "question": 4,
+      "data": {
+        "options": ["0","2","3"]
+      }
+    }
+  },
+  {
+    "model": "core.response",
+    "pk": 3,
+    "fields": {
+      "form": 1,
+      "question": 2,
+      "data": {"text_0": "Risk 1","text_1": "Risk 2","text_2": "Risk 3"}
     }
   },
   {
@@ -40,18 +78,22 @@
   },
   {
     "model": "core.freetextquestion",
-    "pk": 2,
+    "pk": 1,
     "fields": {}
   },
   {
     "model": "core.multiselectquestion",
-    "pk": 1,
+    "pk": 4,
     "fields": {
-      "options": [
-        "Apple",
-        "Orange",
-        "Banana"
-      ]
+      "options": ["Cancer research","Children","Non-English speaking participants","Genetics","Biospecimens","Drug efficacy or other biologics","Social or behavioral research"]
+    }
+  },
+  {
+    "model": "core.textlistquestion",
+    "pk": 2,
+    "fields": {
+      "minimum_required": 3,
+      "allow_more": false
     }
   },
   {

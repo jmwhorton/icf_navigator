@@ -18,7 +18,7 @@ class NewConsentForm(forms.Form):
 
 def form_main(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
-    questions = models.Question.objects.all()
+    questions = models.Question.objects.all().order_by('order')
     for question in questions:
         try:
             r = models.Response.objects.get(form=cf, question=question)

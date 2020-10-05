@@ -25,5 +25,5 @@ Feature: Response
       And An authenticated user
       And On a multiselect question
       And The first form
-    When User selects "Apple"
-    Then "Apple" should be selected
+    When User selects "Children"
+    Then "Children" should be selected
