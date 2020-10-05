@@ -29,3 +29,11 @@ class QuestionTestCase(TestCase):
         a = [1, 2, 3]
         msq = models.MultiSelectQuestion.objects.create(text='test',order=1.5, options=a)
         self.assertGreater(len(msq.form().fields['options'].choices), 0)
+
+    def test_question_has_qtype(self):
+        q = models.Question.objects.create(text='test', order=1.5)
+        self.assertEqual(q.qtype, 'question')
+
+    def test_yesnoqquestion_has_qtype(self):
+        q = models.YesNoQuestion.objects.create(text='test', order=1.5)
+        self.assertEqual(q.qtype, 'yesnoquestion')

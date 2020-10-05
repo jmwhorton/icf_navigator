@@ -12,7 +12,8 @@
     "fields": {
       "text": "What is the full title of your study?",
       "order": 1,
-      "label": "study_title"
+      "label": "study_title",
+      "qtype": "freetextquestion"
     }
   },
   {
@@ -21,7 +22,8 @@
     "fields": {
       "text": "What are the risks of joining this study?",
       "order": 5,
-      "label": "joining_risks"
+      "label": "joining_risks",
+      "qtype": "textlistquestion"
     }
   },
   {
@@ -30,7 +32,8 @@
     "fields": {
       "text": "Will the participant’s regular medical treatments change by joining this study?",
       "order": 2,
-      "label": "treatment_change"
+      "label": "treatment_change",
+      "qtype": "yesnoquestion"
     }
   },
   {
@@ -39,7 +42,8 @@
     "fields": {
       "text": "Does your research involve any of the following: (Click all that apply. This will help us decide what requirements to include in the consent form)",
       "order": 3,
-      "label": "research_features"
+      "label": "research_features",
+      "qtype": "multiselectquestion"
     }
   },
   {

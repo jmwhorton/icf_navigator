@@ -25,21 +25,21 @@ class Question(models.Model):
     text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
     label = models.CharField(max_length=50, unique=True)
+    qtype = models.CharField(max_length=50, default='question')
+
+    def save(self, *args, **kwargs):
+        self.qtype = type(self).__name__.lower()
+        super().save(*args, **kwargs)
 
     def __eq__(self, other):
         return self.pk == other.pk
 
     @property
     def my_type(self):
-        if hasattr(self, 'yesnoquestion'):
-            return self.yesnoquestion
-        if hasattr(self, 'freetextquestion'):
-            return self.freetextquestion
-        if hasattr(self, 'multiselectquestion'):
-            return self.multiselectquestion
-        if hasattr(self, 'textlistquestion'):
-            return self.textlistquestion
-        raise NoQuestionSubtypeException("Had no subclass")
+        try:
+            return getattr(self, self.qtype)
+        except:
+            raise NoQuestionSubtypeException("Had no subclass")
 
     def form(self, *args, **kwargs):
         return self.my_type.form(*args, **kwargs)
