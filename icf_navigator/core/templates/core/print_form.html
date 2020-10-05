@@ -4,14 +4,14 @@
 <div class="section">
   <div class="logo">
     <img class="logo_image" src="{% static 'core/UAMS_logo_white.png' %}">
-    <h4>[Name of PI]</h4>
-    <h4>[Study Location]</h4>
+    <h4>{{pd.primary_contact.title}} {{pd.primary_contact.name}}</h4>
+    <h4>{{pd.primary_contact.address}}</h4>
   </div>
   <div class="title">
     <h1>{{pd.study_title}}</h1>
     <h3>[Other IRB required info]</h3>
 
-    <h4><b>Have Questions?</b> Contact [Insert name & contact info]</h4>
+    <h4><b>Have Questions?</b> Contact {{pd.primary_contact.title}} {{pd.primary_contact.name}} {{pd.primary_contact.phone_number}} {{pd.primary_contact.email}}</h4>
   </div>
 </div>
 <div class="section">
@@ -28,9 +28,9 @@
   <div>
     <h4>How much time will this take me?</h4>
     <ul>
-      <li><b>Number of vists:</b>[answer]</li>
-      <li><b>Length of each visit:</b>[answer]</li>
-      <li><b>Prep time for each visit:</b>[answer]</li>
+      <li><b>Number of vists:</b> {{pd.visits_required}}</li>
+      <li><b>Length of each visit:</b> {{pd.visit_length}}</li>
+      <li><b>Prep time for each visit:</b> {{pd.prep_time}}</li>
     </ul>
   </div>
 </div>

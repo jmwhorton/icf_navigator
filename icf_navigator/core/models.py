@@ -120,3 +120,25 @@ class TextListQuestion(Question):
         for key in data.keys():
             ret.append(data[key])
         return ret
+
+class ContactForm(forms.Form):
+    title = forms.CharField()
+    name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    phone_number = forms.CharField()
+    address = forms.CharField(widget=forms.Textarea)
+
+class ContactQuestion(Question):
+    def form(self, *args, **kwargs):
+        return ContactForm(*args, **kwargs)
+    def for_dict(self, data):
+        return data
+
+class IntegerForm(forms.Form):
+    number = forms.IntegerField(required=True)
+
+class IntegerQuestion(Question):
+    def form(self, *args, **kwargs):
+        return IntegerForm(*args, **kwargs)
+    def for_dict(self, data):
+        return data['number']
