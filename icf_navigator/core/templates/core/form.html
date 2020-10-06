@@ -1,25 +1,45 @@
 {% extends "base_header.html" %}
+{% load static %}
 {% block title %}{{consent_form.study_name}}{% endblock %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/questions.css' %}">
+<script src="{% static 'core/js_forms.js' %}" ></script>
+{% endblock %}
 {% block content %}
-<div style="display:flex">
+<div id="questionnaire_container">
   <div>
     <h1>{{consent_form.study_name}}</h1>
     <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
 
+    <div id="question_container">
     {% for question in questions %}
-    <form  class="question" action="question/{{question.pk}}" method="post">
-      {% csrf_token %}
-      <b>{{question.order}}</b>
-      {{question.text}}
-      {% if user.is_staff %}
-      <br/>
-      {{question.label}}
-      <br/>
-      {% endif %}
-      {{question.form.as_p}}
-      <input type="submit" name="save" value="Save">
-    </form>
-    {% endfor %}
+      <form action="question/{{question.pk}}" method="post">
+        {% csrf_token %}
+        <b>{{question.order}}</b>
+        <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
+        <div class="question_field_group">
+          {% for field in question.form %}
+          {% if field.errors %}
+          <div class="question_error">
+            <span>{{field.errors}}</span>
+          </div>
+          {% endif %}
+          <div class="question_field_row">
+            {% if field.label %}
+            <div class="question_label">
+              {{ field.label_tag }}
+            </div>
+            {% endif %}
+            <div class="question_input">
+              {{ field }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <input type="submit" name="save" value="Save">
+      </form>
+      {% endfor %}
+    </div>
   </div>
   <div>
     {% include "core/form_content.html" %}

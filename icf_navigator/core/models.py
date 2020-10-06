@@ -136,7 +136,7 @@ class ContactQuestion(Question):
         return data
 
 class IntegerForm(forms.Form):
-    number = forms.IntegerField(required=True)
+    number = forms.IntegerField(label="", required=True)
 
 class IntegerQuestion(Question):
     def form(self, *args, **kwargs):
