@@ -26,7 +26,7 @@ window.addEventListener("load", function(){
     XHR.send(FORM_DATA);
   }
 
-  for(let form of document.getElementsByClassName("question")){
+  for(let form of document.getElementsByClassName("question_form")){
     form.addEventListener("submit", function(event){
       event.preventDefault();
       sendData(form);
