@@ -130,6 +130,6 @@ STATIC_URL = '/static/'
 
 # Testing Defines
 
-TEST_RUNNER="green.djangorunner.DjangoRunner"
+#TEST_RUNNER="green.djangorunner.DjangoRunner"
 
 FIXTURE_DIRS = ('/core/fixtures/',)

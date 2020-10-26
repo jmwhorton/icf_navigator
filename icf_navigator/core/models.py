@@ -31,6 +31,10 @@ class Question(models.Model):
         self.qtype = type(self).__name__.lower()
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        print(self)
+        super().delete(*args, **kwargs)
+
     def __eq__(self, other):
         return self.pk == other.pk
 
@@ -70,6 +74,28 @@ class YesNoForm(forms.Form):
 class YesNoQuestion(Question):
     def form(self, *args, **kwargs):
         return YesNoForm(*args, **kwargs)
+    def for_dict(self, data):
+        return data['yes']
+
+class YesNoExplainForm(forms.Form):
+    yes = forms.TypedChoiceField(label='',
+                             required=True,
+                             coerce=lambda x: x == 'True',
+                             choices=[(True, 'Yes'),(False, 'No')],
+                             widget=forms.RadioSelect)
+    explanation = forms.CharField(label='explain', required=False, widget=forms.Textarea)
+
+
+
+class YesNoExplainQuestion(Question):
+    YNB_CHOICES = [
+        ('Y', 'Yes'),
+        ('N', 'No'),
+        ('B', 'Both')
+    ]
+    explain_when = models.CharField(max_length=1, choices=YNB_CHOICES)
+    def form(self, *args, **kwargs):
+        return YesNoExplainForm(*args, **kwargs)
     def for_dict(self, data):
         return data['yes']
 
