@@ -4,18 +4,6 @@ from django.contrib.auth import get_user_model
 from django import forms
 
 class QuestionTestCase(TestCase):
-    def test_questions_minimum_spec(self):
-        self.assertTrue(models.Question.objects.create(text='test',order=1.2))
-
-    def test_base_question_forms_excepts(self):
-        q = models.Question.objects.create(text='test', order=1.3)
-        with self.assertRaises(models.NoQuestionSubtypeException):
-            q.form()
-
-    def test_base_question_dict_excepts(self):
-        q = models.Question.objects.create(text='test', order=1.3)
-        with self.assertRaises(models.NoQuestionSubtypeException):
-            q.for_dict({})
 
     def test_store_json_in_msq(self):
         a = [1, 2, 3]
@@ -30,10 +18,14 @@ class QuestionTestCase(TestCase):
         msq = models.MultiSelectQuestion.objects.create(text='test',order=1.5, options=a)
         self.assertGreater(len(msq.form().fields['options'].choices), 0)
 
-    def test_question_has_qtype(self):
-        q = models.Question.objects.create(text='test', order=1.5)
-        self.assertEqual(q.qtype, 'question')
-
-    def test_yesnoqquestion_has_qtype(self):
+    def test_yesnoqquestion_has_type(self):
         q = models.YesNoQuestion.objects.create(text='test', order=1.5)
-        self.assertEqual(q.qtype, 'yesnoquestion')
+        self.assertEqual(q.type, 'core.yesnoquestion')
+
+    def test_can_delete_question(self):
+        q = models.YesNoQuestion.objects.create(text='test', order=1.5)
+        self.assertEqual(models.Question.objects.count(), 1)
+        self.assertEqual(models.YesNoQuestion.objects.count(), 1)
+        q.delete()
+        self.assertEqual(models.Question.objects.count(), 0)
+        self.assertEqual(models.YesNoQuestion.objects.count(), 0)

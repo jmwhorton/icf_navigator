@@ -5,13 +5,8 @@
     "text": "This is a free text question",
     "order": 2.386,
     "label": "ft1",
-    "qtype": "freetextquestion"
+    "type": "core.freetextquestion"
   },
   "model": "core.question"
-},{
-  "fields": {
-    "id":1
-  },
-  "model": "core.freetextquestion"
 }
 ]

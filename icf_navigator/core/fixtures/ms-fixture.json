@@ -5,14 +5,8 @@
     "text": "This is a multiselect question",
     "order": 1.536,
     "label": "msq1",
-    "qtype": "multiselectquestion"
-  },
-  "model": "core.question"
-},{
-  "fields": {
-    "id":1,
+    "type": "core.multiselectquestion",
     "options":"[1,2,3]"
   },
-  "model": "core.multiselectquestion"
-}
-]
+  "model": "core.question"
+}]

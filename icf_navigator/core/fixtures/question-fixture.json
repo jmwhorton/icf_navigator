@@ -3,7 +3,7 @@
     "text": "A very basic question",
     "order": 1.2,
     "label": "neveruse",
-    "qtype": "question"
+    "type": "core.yesnoquestion"
   },
   "model": "core.question"
 }]

@@ -5,13 +5,7 @@
     "order": 1.124,
     "text": "This is a yesno question",
     "label": "yn1",
-    "qtype": "yesnoquestion"
+    "type": "core.yesnoquestion"
   },
   "model": "core.question"
-},{
-  "fields": {
-    "id":1
-  },
-  "model": "core.yesnoquestion"
-}
-]
+}]

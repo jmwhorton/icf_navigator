@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 from users.models import ADUser
+from typedmodels.models import TypedModel
 
 class ConsentForm(models.Model):
     study_name = models.CharField(max_length=500)
@@ -21,35 +22,10 @@ class ConsentForm(models.Model):
 class NoQuestionSubtypeException(Exception):
     pass
 
-class Question(models.Model):
+class Question(TypedModel):
     text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
     label = models.CharField(max_length=50, unique=True)
-    qtype = models.CharField(max_length=50, default='question')
-
-    def save(self, *args, **kwargs):
-        self.qtype = type(self).__name__.lower()
-        super().save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        print(self)
-        super().delete(*args, **kwargs)
-
-    def __eq__(self, other):
-        return self.pk == other.pk
-
-    @property
-    def my_type(self):
-        try:
-            return getattr(self, self.qtype)
-        except:
-            raise NoQuestionSubtypeException("Had no subclass")
-
-    def form(self, *args, **kwargs):
-        return self.my_type.form(*args, **kwargs)
-
-    def for_dict(self, data):
-        return self.my_type.for_dict(data)
 
     def __str__(self):
         return self.label
@@ -75,6 +51,7 @@ class YesNoQuestion(Question):
     def form(self, *args, **kwargs):
         return YesNoForm(*args, **kwargs)
     def for_dict(self, data):
+        print(data)
         return data['yes']
 
 class YesNoExplainForm(forms.Form):
@@ -93,7 +70,7 @@ class YesNoExplainQuestion(Question):
         ('N', 'No'),
         ('B', 'Both')
     ]
-    explain_when = models.CharField(max_length=1, choices=YNB_CHOICES)
+    explain_when = models.CharField(null=True, max_length=1, choices=YNB_CHOICES)
     def form(self, *args, **kwargs):
         return YesNoExplainForm(*args, **kwargs)
     def for_dict(self, data):
@@ -116,7 +93,7 @@ class MultiSelectForm(forms.Form):
         self.fields['options'].choices = c
 
 class MultiSelectQuestion(Question):
-    options = models.JSONField()
+    options = models.JSONField(null=True)
     def form(self, *args, **kwargs):
         return MultiSelectForm(self.options, *args, **kwargs)
 
@@ -136,7 +113,7 @@ class TextListingForm(forms.Form):
             self.fields['text_{}'.format(i)] = f
 
 class TextListQuestion(Question):
-    minimum_required = models.IntegerField()
+    minimum_required = models.IntegerField(null=True)
     allow_more = models.BooleanField(default=False)
 
     def form(self, *args, **kwargs):

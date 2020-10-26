@@ -5,6 +5,7 @@ behave-django==1.4.0
 colorama==0.4.3
 coverage==5.3
 Django==3.1.2
+django-typed-models==0.10.0
 green==3.2.3
 lxml==4.5.2
 parse==1.16.0

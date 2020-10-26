@@ -10,10 +10,10 @@
     "model": "core.question",
     "pk": 1,
     "fields": {
+      "type": "core.freetextquestion",
       "text": "What is the full title of your study?",
       "order": 1,
-      "label": "study_title",
-      "qtype": "freetextquestion"
+      "label": "study_title"
     }
   },
   {
@@ -23,7 +23,9 @@
       "text": "What are the risks of joining this study?",
       "order": 5,
       "label": "joining_risks",
-      "qtype": "textlistquestion"
+      "type": "core.textlistquestion",
+      "minimum_required": 3,
+      "allow_more": false
     }
   },
   {
@@ -33,7 +35,7 @@
       "text": "Will the participant’s regular medical treatments change by joining this study?",
       "order": 2,
       "label": "treatment_change",
-      "qtype": "yesnoquestion"
+      "type": "core.yesnoquestion"
     }
   },
   {
@@ -43,7 +45,8 @@
       "text": "Does your research involve any of the following: (Click all that apply. This will help us decide what requirements to include in the consent form)",
       "order": 3,
       "label": "research_features",
-      "qtype": "multiselectquestion"
+      "type": "core.multiselectquestion",
+      "options": ["Cancer research","Children","Non-English speaking participants","Genetics","Biospecimens","Drug efficacy or other biologics","Social or behavioral research"]
     }
   },
   {
@@ -73,31 +76,6 @@
       "form": 1,
       "question": 2,
       "data": {"text_0": "Risk 1","text_1": "Risk 2","text_2": "Risk 3"}
-    }
-  },
-  {
-    "model": "core.yesnoquestion",
-    "pk": 3,
-    "fields": {}
-  },
-  {
-    "model": "core.freetextquestion",
-    "pk": 1,
-    "fields": {}
-  },
-  {
-    "model": "core.multiselectquestion",
-    "pk": 4,
-    "fields": {
-      "options": ["Cancer research","Children","Non-English speaking participants","Genetics","Biospecimens","Drug efficacy or other biologics","Social or behavioral research"]
-    }
-  },
-  {
-    "model": "core.textlistquestion",
-    "pk": 2,
-    "fields": {
-      "minimum_required": 3,
-      "allow_more": false
     }
   },
   {
