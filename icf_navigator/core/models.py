@@ -74,7 +74,7 @@ class YesNoExplainQuestion(Question):
     def form(self, *args, **kwargs):
         return YesNoExplainForm(*args, **kwargs)
     def for_dict(self, data):
-        return data['yes']
+        return data['explanation']
 
 class FreeTextForm(forms.Form):
     text = forms.CharField(label='', required=True, widget=forms.Textarea)
