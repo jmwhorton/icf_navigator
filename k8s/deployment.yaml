@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: icf-navigator
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: icf-navigator
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: icf-navigator
+spec:
+  selector:
+    matchLabels:
+      app: icf-navigator
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: icf-navigator
+    spec:
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: icf-navigator-sites-enabled-configmap
+        - name: staticfiles
+          emptyDir: {}
+      initContainers:
+        - name: migrate
+          image: jrutecht/icf_navigator:latest
+          command: ["python", "manage.py", "migrate"]
+        - name: collectstatic
+          image: jrutecht/icf_navigator:latest
+          command: ["python", "manage.py", "collectstatic", "--noinput"]
+          volumeMounts:
+            - name: staticfiles
+              mountPath: /var/www/html
+      containers:
+      - name: nginx
+        image: nginx:stable
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            protocol: TCP
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d/
+          - name: staticfiles
+            mountPath: /var/www/html
+      - name: icf-navigator
+        image: jrutecht/icf_navigator:latest
+        ports:
+        - containerPort: 3000
+          protocol: TCP

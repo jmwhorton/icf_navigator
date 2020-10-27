@@ -25,7 +25,7 @@ SECRET_KEY = '^%(#2k$5n08-i2=t8f%w3iy3^)g(=nfjy#%)!!rqx_0q3e#*ym'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['icf-navigator-prism.apps.dbmi.cloud']
 
 
 # Application definition
@@ -43,9 +43,6 @@ INSTALLED_APPS = [
     # my apps
     'core',
     'users',
-
-    # BDD testing
-    'behave_django',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/html/static'
 
 # Testing Defines
 
