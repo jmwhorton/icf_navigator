@@ -44,3 +44,6 @@ class ADUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+class PotentialUser(models.Model):
+    email = models.EmailField(max_length=255, unique=True)

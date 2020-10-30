@@ -3,12 +3,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from core import models
+from users.models import PotentialUser
 from django import forms
 from django.urls import reverse
 
 # Create your views here.
 def home_view(request):
-    consent_forms = models.ConsentForm.objects.all()
+    consent_forms = []
+    if request.user.is_authenticated:
+        consent_forms = models.ConsentForm.objects.filter(authorized_users__email=request.user.email)
     return render(request,
                   'core/home.html',
                   {'consent_forms': consent_forms})
@@ -43,7 +46,11 @@ def new_form(request):
         form = NewConsentForm(request.POST)
         if form.is_valid():
             study_name = form.cleaned_data['study_name']
+            email = request.user.email
+            pu, created = PotentialUser.objects.get_or_create(email=email)
             cf = models.ConsentForm.objects.create(study_name=study_name)
+            cf.authorized_users.add(pu)
+            cf.save()
             return HttpResponseRedirect(reverse('form', args=(cf.pk,)))
         else:
             return HttpResponse("bad form", status=500)

@@ -1,5 +1,6 @@
 from django.test import TestCase
 from core import views, models
+from users.models import PotentialUser
 from django.contrib.auth import get_user_model
 
 class LoginTestCase(TestCase):
@@ -22,25 +23,3 @@ class LoginTestCase(TestCase):
                                      'password': 'testuser',
                                      'next': '/'})
         self.assertRedirects(response, "/")
-
-class HomeTestCase(TestCase):
-    def setUp(self):
-        User = get_user_model()
-        user = User.objects.create_user('testuser@uams.edu', 'testuser')
-
-    def test_home_resolves(self):
-        response = self.client.get("/")
-        self.assertEqual(response.resolver_match.func, views.home_view)
-
-    def test_logged_in_user_sees_form(self):
-        self.client.login(username='testuser@uams.edu', password="testuser")
-        self.assertContains(self.client.get('/'), '<form')
-
-    def test_unlogged_user_does_not_see_form(self):
-        self.assertNotContains(self.client.get('/'), '<form')
-
-    def test_should_list_consent_forms(self):
-        models.ConsentForm.objects.create(study_name='A')
-        models.ConsentForm.objects.create(study_name='B')
-        self.assertContains(self.client.get('/'), 'A')
-        self.assertContains(self.client.get('/'), 'B')

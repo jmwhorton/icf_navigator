@@ -1,7 +1,6 @@
 {% extends "base_header.html" %}
 {% block content %}
 {% if user.is_authenticated %}
-{{user.email}}
 <h4>Create a new form</h4>
 <form action="/form/new" method="post">
   {% csrf_token %}

@@ -1,10 +1,11 @@
 from django.db import models
 from django import forms
-from users.models import ADUser
+from users.models import ADUser, PotentialUser
 from typedmodels.models import TypedModel
 
 class ConsentForm(models.Model):
     study_name = models.CharField(max_length=500)
+    authorized_users = models.ManyToManyField(PotentialUser)
 
     @property
     def print_dictionary(self):

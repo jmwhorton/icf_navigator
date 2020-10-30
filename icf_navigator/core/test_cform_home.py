@@ -2,6 +2,7 @@ from django.test import TestCase
 from core import views, models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from users.models import PotentialUser
 
 class HomeTestCase(TestCase):
     def setUp(self):
@@ -19,9 +20,15 @@ class HomeTestCase(TestCase):
     def test_unlogged_user_does_not_see_form(self):
         self.assertNotContains(self.client.get('/'), '<form')
 
-    def test_should_list_consent_forms(self):
-        models.ConsentForm.objects.create(study_name='A')
-        models.ConsentForm.objects.create(study_name='B')
+    def test_logged_in_user_should_list_consent_forms(self):
+        self.client.login(username='testuser@uams.edu', password="testuser")
+        pu, created = PotentialUser.objects.get_or_create(email='testuser@uams.edu')
+        a = models.ConsentForm.objects.create(study_name='A')
+        a.authorized_users.add(pu)
+        a.save()
+        b = models.ConsentForm.objects.create(study_name='B')
+        b.authorized_users.add(pu)
+        b.save()
         self.assertContains(self.client.get('/'), 'A')
         self.assertContains(self.client.get('/'), 'B')
 
