@@ -24,6 +24,7 @@
     background-clip: content-box;
     border-image: url('/static/core/shadow.png') 9 9 repeat;
     background-color: rgba(255, 255, 255, 1);
+    width: 100%;
   }
 }
 
@@ -79,4 +80,9 @@ body {
   text-align: center;
   color: white;
   padding: 50px;
+  width: 100%;
+}
+
+.text_content {
+  padding: 3em;
 }

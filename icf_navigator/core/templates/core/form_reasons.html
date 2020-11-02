@@ -3,12 +3,15 @@
 <link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
 {% endblock %}
 <div class="content">
-  <h4>What if I say yes but decide later to quit the study?”</h4>
-  <p>{{pd.leave_study_explain}}</p>
-  <h4>Can someone else take me out of the study? Yes, the study team can take you out of the study if:</h4>
-  <ul>
-  {% for reason in pd.involuntarily_removed_reasons %}
-    <li>{{reason}}</li>
-  {% endfor %}
-  </ul>
+  <div class="text_content">
+    <h4>What if I say yes but decide later to quit the study?</h4>
+    <p>{{pd.leave_study_explain}}</p>
+    <h4>Can someone else take me out of the study?</h4>
+    <p>Yes, the study team can take you out of the study if:</p>
+    <ul>
+    {% for reason in pd.involuntarily_removed_reasons %}
+      <li>{{reason}}</li>
+    {% endfor %}
+    </ul>
+  </div>
 </div>
