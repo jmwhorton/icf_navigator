@@ -19,8 +19,11 @@ def home_view(request):
 class NewConsentForm(forms.Form):
     study_name = forms.CharField()
 
+@login_required
 def form_main(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
+    if not cf.authorized_users.filter(email=request.user.email).exists():
+        return redirect('home')
     questions = models.Question.objects.all().order_by('order')
     for question in questions:
         try:

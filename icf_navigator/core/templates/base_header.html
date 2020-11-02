@@ -13,12 +13,13 @@
         <img id="header-image" src="{% static 'core/UAMS_logo_white.png' %}">
       </a>
       <h1>Informed Consent Navigator</h1>
-      <div class="user_box">
+      <div id="user_box">
         {% if user.is_authenticated %}
-          {{ user.email }}
+          <p>{{ user.email }}</p>
           <a href="/accounts/logout">Logout</a>
         {% else %}
           <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'register' %}">Register</a>
         {% endif %}
       </div>
     </div>

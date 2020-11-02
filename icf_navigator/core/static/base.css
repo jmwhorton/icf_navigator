@@ -12,6 +12,7 @@ body {
   height: 15ch;
   color: white;
   display: flex;
+  justify-content: space-between;
 }
 
 #header-image{
@@ -21,4 +22,13 @@ body {
 
 #content {
   margin: 5px;
+}
+
+#id_box {
+  display: flex;
+  flex-direction: column;
+}
+
+.small_form {
+  transform: scale(.7);
 }

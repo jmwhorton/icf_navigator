@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'icf-navigator-prism.apps.dbmi.cloud']
 
+LOGOUT_REDIRECT_URL = 'home'
 
 # Application definition
 

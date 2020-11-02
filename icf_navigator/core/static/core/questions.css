@@ -1,5 +1,6 @@
 #questionnaire_container {
   display: flex;
+  align-items: flex-start;
 }
 
 #question_container {
