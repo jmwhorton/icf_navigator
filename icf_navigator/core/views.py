@@ -61,11 +61,13 @@ class NewConsentForm(forms.Form):
     study_name = forms.CharField()
 
 @login_required
-def form_main(request, form_id):
+def form_main(request, form_id, section_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return redirect('home')
-    questions = models.Question.objects.all().order_by('order')
+    sections = models.Section.objects.all()
+    section = models.Section.objects.get(pk=section_id)
+    questions = section.questions.all()
     for question in questions:
         try:
             r = models.Response.objects.get(form=cf, question=question)
@@ -76,7 +78,20 @@ def form_main(request, form_id):
                   'core/form.html',
                   {'consent_form': cf,
                    'pd': cf.print_dictionary,
+                   'section': section,
+                   'sections': sections,
                    'questions': questions})
+
+@login_required
+def form_sections(request, form_id):
+    cf = models.ConsentForm.objects.get(pk=form_id)
+    if not cf.authorized_users.filter(email=request.user.email).exists():
+        return redirect('home')
+    sections = models.Section.objects.all()
+    return render(request,
+                  'core/form_sections.html',
+                  {'consent_form': cf,
+                   'sections': sections})
 
 def form_print(request, form_id):
     pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary

@@ -1,0 +1,14 @@
+{% extends "base_header.html" %}
+{% block content %}
+
+<h2>{{consent_form.study_name}}</h2>
+<h4>Sections</h4>
+<ul>
+{% for section in sections %}
+  <li>
+    <a href="{% url 'form' form_id=consent_form.pk section_id=section.pk %}">{{section.name}}</a>
+    <span>{{section.current_count}}</span>
+ </li>
+{% endfor %}
+</ul>
+{% endblock %}

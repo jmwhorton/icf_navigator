@@ -11,9 +11,20 @@
     <h1>{{consent_form.study_name}}</h1>
     <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
 
+    <div class="section_list">
+      <h4>Sections</h4>
+      <ul>
+      {% for section in sections %}
+        <li>
+          <a href="{% url 'form' form_id=consent_form.pk section_id=section.pk %}">{{section.name}}</a>
+          <span>{{section.current_count}}</span>
+       </li>
+      {% endfor %}
+      </ul>
+    </div>
     <div id="question_container">
     {% for question in questions %}
-      <form class="question_form" action="question/{{question.pk}}" method="post">
+      <form class="question_form" action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}" method="post">
         {% csrf_token %}
         <b>{{question.order}}</b>
         <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
@@ -41,8 +52,10 @@
       {% endfor %}
     </div>
   </div>
+  {% if section.template != "none" %}
   <div class="small_form">
-    {% include "core/form_content.html" %}
+    {% include section.template %}
   </div>
+  {% endif %}
 </div>
 {% endblock %}

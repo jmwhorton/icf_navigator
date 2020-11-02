@@ -20,8 +20,6 @@ class ConsentForm(models.Model):
     def __str__(self):
         return self.study_name[:20]
 
-class NoQuestionSubtypeException(Exception):
-    pass
 
 class Question(TypedModel):
     text = models.TextField(blank=True)
@@ -31,6 +29,9 @@ class Question(TypedModel):
     def __str__(self):
         return self.label
 
+    class Meta:
+        ordering = ['order']
+
 class Response(models.Model):
     form = models.ForeignKey(ConsentForm, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -39,6 +40,21 @@ class Response(models.Model):
         unique_together = [['form', 'question']]
     def __str__(self):
         return "{}[{}]".format(self.form, self.question)
+
+class Section(models.Model):
+    name = models.TextField()
+    order = models.FloatField(unique=True)
+    questions = models.ManyToManyField(Question, blank=True)
+    template = models.TextField()
+
+    def current_count(self):
+        return "{} / {}".format(self.questions.count(), self.questions.count())
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['order']
 
 
 class YesNoForm(forms.Form):
