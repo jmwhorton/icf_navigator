@@ -30,6 +30,8 @@ urlpatterns = [
     path('accounts/register/', user_views.register, name='register'),
     path('form/new', views.new_form, name='new_form'),
     path('form/<int:form_id>/', views.form_main, name='form'),
+    path('form/<int:form_id>/manage', views.form_manage, name='form_manage'),
+    path('form/<int:form_id>/delete', views.form_manage_delete, name='form_manage_delete'),
     path('form/<int:form_id>/print', views.form_print, name='form_print'),
     path('form/<int:form_id>/question/<int:question_id>', views.question_main, name='question'),
     url(r'^admin/', admin.site.urls),

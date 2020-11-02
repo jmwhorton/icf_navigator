@@ -1,3 +1,5 @@
+{% extends "base_header.html" %}
+{% block content %}
 {% if form.errors %}
 <p>{{ form.errors }}</p>
 {% endif %}
@@ -15,3 +17,4 @@
 </tr>
 </table>
 </form>
+{% endblock %}

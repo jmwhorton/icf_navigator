@@ -1,16 +1,31 @@
 {% extends "base_header.html" %}
 {% block content %}
+
 {% if user.is_authenticated %}
-<h4>Create a new form</h4>
-<form action="/form/new" method="post">
-  {% csrf_token %}
-  <input type="text" name="study_name" value="">
-  <input type="submit" name="save" value="Save">
-</form>
+<div class="flex_container">
+  <div class="left_content">
+    <h4>Your Consent Forms</h4>
+    <ul>
+    {% for cf in consent_forms %}
+      <li>
+        <a href="{% url 'form' cf.pk %}">{{cf.study_name}}</a> <a href="{% url 'form_manage' cf.pk %}">[Manage]</a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+  <div class="right_content">
+    <h4>Create a new form</h4>
+    <form action="/form/new" method="post">
+      {% csrf_token %}
+      <input type="text" name="study_name" value="">
+      <input type="submit" name="save" value="Save">
+    </form>
+  </div>
+</div>
+{% else %}
+<p>Welcome to the informed consent navigator to use this site you will
+  need to log in with your UAMS credentials.</p>
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
 {% endif %}
-
-
-{% for cf in consent_forms %}
-<a href="{% url 'form' cf.pk %}">{{cf.study_name}}</a>
-{% endfor %}
 {% endblock %}

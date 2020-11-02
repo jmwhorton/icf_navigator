@@ -16,6 +16,47 @@ def home_view(request):
                   'core/home.html',
                   {'consent_forms': consent_forms})
 
+class NewEmailForm(forms.Form):
+    email = forms.EmailField()
+
+@login_required
+def form_manage(request, form_id):
+    cf = models.ConsentForm.objects.get(pk=form_id)
+    form = NewEmailForm()
+    if not cf.authorized_users.filter(email=request.user.email).exists():
+        return redirect('home')
+    if request.method == 'POST':
+        form = NewEmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            pu, created = PotentialUser.objects.get_or_create(email=email)
+            if not cf.authorized_users.filter(email=email).exists():
+                cf.authorized_users.add(pu)
+                cf.save()
+                form = NewEmailForm()
+    return render(request,
+                  'core/form_manage.html',
+                  {'cf': cf,
+                   'form': form})
+
+@login_required
+def form_manage_delete(request, form_id):
+    cf = models.ConsentForm.objects.get(pk=form_id)
+    form = NewEmailForm()
+    if not cf.authorized_users.filter(email=request.user.email).exists():
+        return redirect('home')
+    if request.method == 'POST':
+        form = NewEmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            id = PotentialUser.objects.get(email=email)
+            cf.authorized_users.remove(id)
+            return redirect('form_manage', cf.id)
+    return render(request,
+                  'core/form_manage.html',
+                  {'cf': cf,
+                   'form': form})
+
 class NewConsentForm(forms.Form):
     study_name = forms.CharField()
 

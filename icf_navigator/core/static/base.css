@@ -32,3 +32,19 @@ body {
 .small_form {
   transform: scale(.7);
 }
+
+.email_row {
+  display: flex;
+}
+
+.flex_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.left_container {
+}
+
+.right_container {
+}

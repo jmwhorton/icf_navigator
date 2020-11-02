@@ -1,0 +1,29 @@
+{% extends "base_header.html" %}
+{% block content %}
+
+<h2>{{cf.study_name}}</h2>
+<h4>Authorized Users</h4>
+<ul>
+{% for email in cf.authorized_users.all %}
+  <li class="email_row">
+    {% if email.email != user.email %}
+      <form action="delete" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="email" value="{{email.email}}"/>
+        <input type="submit" name="save" value="X"/>
+      </form>
+    {% endif %}
+    <span>{{email.email}}</span>
+ </li>
+{% endfor %}
+</ul>
+{% if form.errors %}
+<p>{{form.errors}}</p>
+{% endif %}
+<h4>Add Additional Authorized Users</h4>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" name="save" value="Add"/>
+</form>
+{% endblock %}
