@@ -1,0 +1,23 @@
+{
+  "name": "icf_navigator",
+  "version": "1.0.0",
+  "description": "Informed Consent Navigator",
+  "main": "index.js",
+  "repository": "https://github.com/utecht/icf_navigator",
+  "author": "Joseph Utecht",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "NODE_ENV=${NODE_ENV:-production} webpack --mode=production",
+    "watch": "webpack --watch"
+  },
+  "dependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "^8.2.2",
+    "stimulus": "^2.0.0",
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
