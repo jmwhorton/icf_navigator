@@ -110,7 +110,7 @@ def new_form(request):
             cf = models.ConsentForm.objects.create(study_name=study_name)
             cf.authorized_users.add(pu)
             cf.save()
-            return HttpResponseRedirect(reverse('form', args=(cf.pk,)))
+            return HttpResponseRedirect(reverse('form_sections', args=(cf.pk,)))
         else:
             return HttpResponse("bad form", status=500)
     else:

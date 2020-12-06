@@ -54,13 +54,28 @@ class ConsentFormTestCase(TestCase):
         self.assertEqual(count + 1, models.ConsentForm.objects.count())
         self.assertEqual('A', models.ConsentForm.objects.last().study_name)
 
+    def test_creates_adds_authorized_user(self):
+        count = models.ConsentForm.objects.count()
+        self.client.login(username='testuser@uams.edu', password="testuser")
+        self.client.post('/form/new', {'study_name': 'A'})
+        cf = models.ConsentForm.objects.first()
+        self.assertTrue(cf.authorized_users.filter(email='testuser@uams.edu').exists())
+
     def test_redirect_on_create(self):
         self.client.login(username='testuser@uams.edu', password="testuser")
         response = self.client.post('/form/new', {'study_name': 'A'})
         cf = models.ConsentForm.objects.last()
-        self.assertRedirects(response, reverse('form', args=(cf.pk,)))
+        self.assertRedirects(response, reverse('form_sections', args=(cf.pk,)))
 
     def test_correct_template(self):
         cf = models.ConsentForm.objects.create(study_name="test_study")
-        response = self.client.get(reverse('form', args=(cf.pk,)))
-        self.assertTemplateUsed(response, 'core/form.html')
+        pu, created = PotentialUser.objects.get_or_create(email='testuser@uams.edu')
+        cf.authorized_users.add(pu)
+        cf.save()
+        response = self.client.get(reverse('form_sections', args=(cf.pk,)))
+        self.assertRedirects(response, reverse('login')
+                                    + '?next='
+                                    + reverse('form_sections', args=(cf.pk,)))
+        self.client.login(username='testuser@uams.edu', password="testuser")
+        response = self.client.get(reverse('form_sections', args=(cf.pk,)))
+        self.assertTemplateUsed(response, 'core/form_sections.html')
