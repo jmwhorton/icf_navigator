@@ -87,6 +87,18 @@ def form_main(request, form_id, section_id):
                    'qgroups': qgroups})
 
 @login_required
+def section_preview(request, form_id, section_id):
+    cf = models.ConsentForm.objects.get(pk=form_id)
+    if not cf.authorized_users.filter(email=request.user.email).exists():
+        return redirect('home')
+    section = models.Section.objects.get(pk=section_id)
+    pd = cf.print_dictionary
+    return render(request,
+                  section.template,
+                  {'pd': pd})
+
+
+@login_required
 def form_sections(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
