@@ -66,8 +66,11 @@ class QGroup(models.Model):
         return self.name
 
     def enabled(self, pd):
-        ret = eval(self.logic, {'pd': pd})
-        return ret
+        try:
+            ret = eval(self.logic, {'pd': pd})
+            return ret
+        except:
+            return False
 
     class Meta:
         ordering = ['order']
