@@ -126,6 +126,7 @@ class MultiSelectForm(forms.Form):
         super().__init__(*args, **kwargs)
         c = zip(range(len(choices)), choices)
         self.fields['options'].choices = c
+        self.empty_permitted = True
 
 class MultiSelectQuestion(Question):
     options = models.JSONField(null=True)
@@ -134,6 +135,8 @@ class MultiSelectQuestion(Question):
 
     def for_dict(self, data):
         ret = []
+        if('options' not in data.keys()):
+            return ret
         for i in data['options']:
             ret.append(self.options[int(i)])
         return ret

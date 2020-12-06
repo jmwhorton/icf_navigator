@@ -1,8 +1,16 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ["qgroup"];
+  static targets = ["qgroup", "navbutton"];
   static values = { index: Number }
+
+  connect() {
+    if(this.qgroupTargets.length <= 1){
+      this.navbuttonTargets.forEach((element) => {
+        element.hidden = true;
+      });
+    }
+  }
 
   next() {
     this.indexValue++;

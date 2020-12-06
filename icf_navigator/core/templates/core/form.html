@@ -24,8 +24,8 @@
 
     <div data-controller="section"
          data-section-index-value="0">
-      <button data-action="section#previous"> ← </button>
-      <button data-action="section#next"> → </button>
+      <button data-section-target="navbutton" data-action="section#previous"> ← </button>
+      <button data-section-target="navbutton" data-action="section#next"> → </button>
 
       {% for qgroup in qgroups %}
       <div class="qgroup_container"
@@ -58,13 +58,17 @@
                   {{ field.label_tag }}
                 </div>
                 {% endif %}
-                <div class="question_input">
+                <div class="question_input" data-action="change->question#dirty input->question#dirty">
                   {{ field }}
                 </div>
               </div>
               {% endfor %}
             </div>
-            <input data-action="question#submit" type="submit" name="save" value="Save">
+            <input data-question-target="save"
+                   data-action="question#submit"
+                   type="submit"
+                   name="save"
+                   value="Save">
           </form>
         {% endfor %}
 
@@ -73,10 +77,10 @@
     {% endfor %}
     </div>
   </div>
-  {% if section.template != "none" %}
   <div id="small_preview" class="small_form">
+  {% if section.template != "none" %}
     {% include section.template %}
-  </div>
   {% endif %}
+  </div>
 </div>
 {% endblock %}

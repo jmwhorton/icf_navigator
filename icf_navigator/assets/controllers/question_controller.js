@@ -1,18 +1,34 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ["form"];
+  static targets = ["form", "save"];
   static values = { url: String }
 
-  sendData(url){
+  connect() {
+    this.saveTarget.disabled = true;
+  }
+
+  dirty() {
+    this.saveTarget.disabled = false;
+  }
+
+  clean() {
+    this.saveTarget.disabled = true;
+  }
+
+  sendData(){
     const XHR = new XMLHttpRequest();
 
     const FORM_DATA = new FormData(this.formTarget);
+
+    const url = this.urlValue;
+    const c = this.saveTarget;
 
     // success
     XHR.addEventListener("load", function(event){
       //alert(event.target.responseText);
       if(event.target.status == 200){
+        c.disabled = true;
         fetch(url)
         .then(response => response.text())
         .then(html => document.getElementById("small_preview").innerHTML = html);
@@ -33,6 +49,6 @@ export default class extends Controller {
 
   submit(event){
     event.preventDefault();
-    this.sendData(this.urlValue);
+    this.sendData();
   }
 }

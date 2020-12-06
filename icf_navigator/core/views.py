@@ -90,8 +90,10 @@ def form_main(request, form_id, section_id):
 def section_preview(request, form_id, section_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
-        return redirect('home')
+        return HttpResponse("")
     section = models.Section.objects.get(pk=section_id)
+    if(section.template == 'none'):
+        return HttpResponse("")
     pd = cf.print_dictionary
     return render(request,
                   section.template,
