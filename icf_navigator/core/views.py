@@ -67,7 +67,9 @@ def form_main(request, form_id, section_id):
         return redirect('home')
     sections = models.Section.objects.all()
     section = models.Section.objects.get(pk=section_id)
-    qgroups = models.QGroup.objects.filter(section=section)
+    pd = cf.print_dictionary
+    qgroups = list(filter(lambda x: x.enabled(pd),
+                         models.QGroup.objects.filter(section=section)))
     for qgroup in qgroups:
         qgroup.qs = qgroup.questions.all()
         for question in qgroup.qs:
@@ -79,7 +81,7 @@ def form_main(request, form_id, section_id):
     return render(request,
                   'core/form.html',
                   {'consent_form': cf,
-                   'pd': cf.print_dictionary,
+                   'pd': pd,
                    'section': section,
                    'sections': sections,
                    'qgroups': qgroups})

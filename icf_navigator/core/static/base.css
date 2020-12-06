@@ -31,6 +31,8 @@ body {
 
 .small_form {
   transform: scale(.7);
+  transform-origin: right top;
+  max-width: 40%;
 }
 
 .email_row {
