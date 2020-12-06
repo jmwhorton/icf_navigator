@@ -67,20 +67,22 @@ def form_main(request, form_id, section_id):
         return redirect('home')
     sections = models.Section.objects.all()
     section = models.Section.objects.get(pk=section_id)
-    questions = section.questions.all()
-    for question in questions:
-        try:
-            r = models.Response.objects.get(form=cf, question=question)
-            question.form = question.form(r.data)
-        except:
-            question.form = question.form()
+    qgroups = models.QGroup.objects.filter(section=section)
+    for qgroup in qgroups:
+        qgroup.qs = qgroup.questions.all()
+        for question in qgroup.qs:
+            try:
+                r = models.Response.objects.get(form=cf, question=question)
+                question.form = question.form(r.data)
+            except:
+                question.form = question.form()
     return render(request,
                   'core/form.html',
                   {'consent_form': cf,
                    'pd': cf.print_dictionary,
                    'section': section,
                    'sections': sections,
-                   'questions': questions})
+                   'qgroups': qgroups})
 
 @login_required
 def form_sections(request, form_id):

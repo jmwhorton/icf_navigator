@@ -22,35 +22,40 @@
       {% endfor %}
       </ul>
     </div>
-    <div id="question_container">
-    {% for question in questions %}
-      <form class="question_form" action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}" method="post">
-        {% csrf_token %}
-        <b>{{question.order}}</b>
-        <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
-        <div class="question_field_group">
-          {% for field in question.form %}
-          {% if field.errors %}
-          <div class="question_error">
-            <span>{{field.errors}}</span>
-          </div>
-          {% endif %}
-          <div class="question_field_row">
-            {% if field.label %}
-            <div class="question_label">
-              {{ field.label_tag }}
+    {% for qgroup in qgroups %}
+    <div class="qgroup_container">
+      <h4>{{ qgroup.name }}</h4>
+      <div id="question_container">
+      {% for question in qgroup.qs %}
+        <form class="question_form" action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}" method="post">
+          {% csrf_token %}
+          <b>{{question.order}}</b>
+          <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
+          <div class="question_field_group">
+            {% for field in question.form %}
+            {% if field.errors %}
+            <div class="question_error">
+              <span>{{field.errors}}</span>
             </div>
             {% endif %}
-            <div class="question_input">
-              {{ field }}
+            <div class="question_field_row">
+              {% if field.label %}
+              <div class="question_label">
+                {{ field.label_tag }}
+              </div>
+              {% endif %}
+              <div class="question_input">
+                {{ field }}
+              </div>
             </div>
+            {% endfor %}
           </div>
-          {% endfor %}
-        </div>
-        <input type="submit" name="save" value="Save">
-      </form>
-      {% endfor %}
+          <input type="submit" name="save" value="Save">
+        </form>
+        {% endfor %}
+      </div>
     </div>
+    {% endfor %}
   </div>
   {% if section.template != "none" %}
   <div class="small_form">

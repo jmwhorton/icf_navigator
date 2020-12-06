@@ -38,6 +38,21 @@ class ConsentFormTestCase(TestCase):
         User = get_user_model()
         user = User.objects.create_user('testuser@uams.edu', 'testuser')
 
+    def test_a_form_has_sections(self):
+        section = models.Section.objects.create(name="A", order=1.0, template="none")
+        self.assertTrue(section)
+
+    def test_a_section_has_groups(self):
+        section = models.Section.objects.create(name="A", order=1.0, template="none")
+        group = models.QGroup.objects.create(name="A", order=1.0, section=section)
+        self.assertEqual(group.section, section)
+
+    def test_a_group_has_questions(self):
+        pass
+
+    def test_a_group_has_logic(self):
+        pass
+
     def test_requires_login(self):
         response = self.client.post('/form/new', {'name': 'A'})
         self.assertEqual(response.status_code, 302)

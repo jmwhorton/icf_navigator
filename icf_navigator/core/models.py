@@ -44,11 +44,10 @@ class Response(models.Model):
 class Section(models.Model):
     name = models.TextField()
     order = models.FloatField(unique=True)
-    questions = models.ManyToManyField(Question, blank=True)
     template = models.TextField()
 
     def current_count(self):
-        return "{} / {}".format(self.questions.count(), self.questions.count())
+        return "{} / {}".format('?', '?')
 
     def __str__(self):
         return self.name
@@ -56,6 +55,22 @@ class Section(models.Model):
     class Meta:
         ordering = ['order']
 
+class QGroup(models.Model):
+    name = models.TextField(blank=True)
+    order = models.FloatField()
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    questions = models.ManyToManyField(Question, blank=True)
+    logic = models.TextField(default='True')
+
+    def __str__(self):
+        return self.name
+
+    def enabled(self, pd):
+        return eval(logic, {'pd': pd})
+
+    class Meta:
+        ordering = ['order']
+        unique_together = ['order', 'section']
 
 class YesNoForm(forms.Form):
     yes = forms.TypedChoiceField(label='',
@@ -68,7 +83,6 @@ class YesNoQuestion(Question):
     def form(self, *args, **kwargs):
         return YesNoForm(*args, **kwargs)
     def for_dict(self, data):
-        print(data)
         return data['yes']
 
 class YesNoExplainForm(forms.Form):
