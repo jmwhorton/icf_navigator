@@ -2,30 +2,37 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<div class="flex_container">
-  <div class="left_content">
-    <h4>Your Consent Forms</h4>
-    <ul>
-    {% for cf in consent_forms %}
-      <li>
-        <a href="{% url 'form_sections' cf.pk %}">{{cf.study_name}}</a> <a href="{% url 'form_manage' cf.pk %}">[Manage]</a>
-      </li>
-    {% endfor %}
-    </ul>
-  </div>
-  <div class="right_content">
-    <h4>Create a new form</h4>
-    <form action="/form/new" method="post">
-      {% csrf_token %}
-      <input type="text" name="study_name" value="">
-      <input type="submit" name="save" value="Save">
-    </form>
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h4>Your Consent Forms</h4>
+      <ul>
+      {% for cf in consent_forms %}
+        <li>
+          <a href="{% url 'form_sections' cf.pk %}">{{cf.study_name}}</a> <a href="{% url 'form_manage' cf.pk %}">[Manage]</a>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+    <div class="col-6">
+      <h4>Create a new form</h4>
+      <form action="/form/new" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="study_name">Name for Project</label>
+          <input class="form-control" type="text" name="study_name" value="" required="">
+        </div>
+        <button class="btn btn-primary" type="submit" name="Start">Start</button>
+      </form>
+    </div>
   </div>
 </div>
 {% else %}
-<p>Welcome to the informed consent navigator to use this site you will
-  need to log in with your UAMS credentials.</p>
-<a href="{% url 'login' %}">Login</a>
-<a href="{% url 'register' %}">Register</a>
+<div class="container">
+  <p>Welcome to the informed consent navigator to use this site you will
+    need to log in with your UAMS credentials.</p>
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'register' %}">Register</a>
+</div>
 {% endif %}
 {% endblock %}

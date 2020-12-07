@@ -28,6 +28,18 @@ module.exports = [
               plugins: ['@babel/plugin-proposal-class-properties']
             }
           }
+        },
+        {
+          test: /\.(scss)$/,
+          use: [{
+            loader: 'style-loader', // inject CSS to page
+          }, {
+            loader: 'css-loader', // translates CSS into CommonJS modules
+          }, {
+            loader: 'postcss-loader', // Run postcss actions
+          }, {
+            loader: 'sass-loader' // compiles Sass to CSS
+          }]
         }
       ]
     }

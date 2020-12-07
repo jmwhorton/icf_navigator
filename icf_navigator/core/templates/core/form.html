@@ -5,82 +5,83 @@
 <link rel="stylesheet" type="text/css" href="{% static 'core/questions.css' %}">
 {% endblock %}
 {% block content %}
-<div id="questionnaire_container">
-  <div id="left_side_questions">
-    <h1>{{consent_form.study_name}}</h1>
-    <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
+<div class="container-xl">
+  <h1>{{consent_form.study_name}}</h1>
+  <div class="row">
+    <div class="col-md-6 col-lg-5">
+      <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
 
-    <div class="section_list">
-      <h4>Sections</h4>
-      <ul>
-      {% for section in sections %}
-        <li>
-          <a href="{% url 'form' form_id=consent_form.pk section_id=section.pk %}">{{section.name}}</a>
-          <span>{{section.current_count}}</span>
-       </li>
-      {% endfor %}
-      </ul>
-    </div>
+      <div class="section_list">
+        <h4>Sections</h4>
+        <ul>
+        {% for section in sections %}
+          <li>
+            <a href="{% url 'form' form_id=consent_form.pk section_id=section.pk %}">{{section.name}}</a>
+            <span>{{section.current_count}}</span>
+         </li>
+        {% endfor %}
+        </ul>
+      </div>
 
-    <div data-controller="section"
-         data-section-index-value="0">
-      <button data-section-target="navbutton" data-action="section#previous"> ← </button>
-      <button data-section-target="navbutton" data-action="section#next"> → </button>
+      <div data-controller="section"
+           data-section-index-value="0">
+        <button class="btn btn-secondary" data-section-target="navbutton" data-action="section#previous"> ← </button>
+        <button class="btn btn-secondary" data-section-target="navbutton" data-action="section#next"> → </button>
 
-      {% for qgroup in qgroups %}
-      <div class="qgroup_container"
-           data-section-target="qgroup">
+        {% for qgroup in qgroups %}
+        <div class="qgroup_container"
+             data-section-target="qgroup">
 
-        <h4>{{ qgroup.name }}</h4>
-        <div id="question_container">
+          <h4>{{ qgroup.name }}</h4>
+          <div id="question_container">
 
-        {% for question in qgroup.qs %}
-          <form
-            class="question_form"
-            data-controller="question"
-            data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
-            data-question-target="form"
-            action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}"
-            method="post">
-            {% csrf_token %}
-            <b>{{question.order}}</b>
-            <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
-            <div class="question_field_group">
-              {% for field in question.form %}
-              {% if field.errors %}
-              <div class="question_error">
-                <span>{{field.errors}}</span>
-              </div>
-              {% endif %}
-              <div class="question_field_row">
-                {% if field.label %}
-                <div class="question_label">
-                  {{ field.label_tag }}
+          {% for question in qgroup.qs %}
+            <form
+              class="d-flex flex-column"
+              data-controller="question"
+              data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
+              data-question-target="form"
+              action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}"
+              method="post">
+              {% csrf_token %}
+              <b>{{question.order}}</b>
+              <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
+              <div>
+                {% for field in question.form %}
+                {% if field.errors %}
+                <div class="question_error">
+                  <span>{{field.errors}}</span>
                 </div>
                 {% endif %}
-                <div class="question_input" data-action="change->question#dirty input->question#dirty">
-                  {{ field }}
+                <div class="form-group">
+                  {% if field.label %}
+                  {{ field.label_tag }}
+                  {% endif %}
+                  <div data-action="change->question#dirty input->question#dirty"
+                       class="form_fields">
+                    {{ field }}
+                  </div>
                 </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-            </div>
-            <input data-question-target="save"
-                   data-action="question#submit"
-                   type="submit"
-                   name="save"
-                   value="Save">
-          </form>
-        {% endfor %}
+              <button data-question-target="save"
+                     data-action="question#submit"
+                     class="btn btn-primary align-self-end"
+                     type="submit"
+                     name="save">Save</button>
+            </form>
+          {% endfor %}
 
+          </div>
         </div>
+      {% endfor %}
       </div>
-    {% endfor %}
     </div>
-  </div>
-  <div id="small_preview" class="small_form">
-  {% if section.template != "none" %}
-    {% include section.template %}
-  {% endif %}
+    <div class="small_form col-md-6 col-lg-7">
+    {% if section.template != "none" %}
+      {% include section.template %}
+    {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}

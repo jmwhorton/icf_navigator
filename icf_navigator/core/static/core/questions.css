@@ -13,64 +13,6 @@
   max-width: 40%;
 }
 
-.question_field_group {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px #EAEAEA solid;
-}
-
-.question_field_row {
-  display: flex;
-  margin-bottom: 1rem;
-}
-
-.question_label {
-  padding-top: calc(.375rem + 1px);
-  padding-bottom: calc(.375rem + 1px);
-  margin-bottom: 0;
-  font-size: 1rem;
-  font-weight: 400;
-  flex: 0 0 16.666667%;
-  max-width: 16.666667%;
-}
-
-.question_input {
-  /*flex: 0 0 83.333333%;
-  max-width: 83.333333%;*/
-  position: relative;
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.question_input input[type="text"],input[type="email"],input[type="number"] {
-  display: block;
-  width: 90%;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-}
-
-.question_input textarea {
-  display: block;
-  width: 90%;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-}
-
-.question_input ul {
+.form_fields ul {
   list-style: none;
-  display: block;
-  width: 90%;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
 }

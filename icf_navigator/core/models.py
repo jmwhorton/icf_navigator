@@ -112,7 +112,7 @@ class YesNoExplainQuestion(Question):
         return data['explanation']
 
 class FreeTextForm(forms.Form):
-    text = forms.CharField(label='', required=True, widget=forms.Textarea)
+    text = forms.CharField(label='', required=True, widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 class FreeTextQuestion(Question):
     def form(self, *args, **kwargs):
@@ -147,7 +147,7 @@ class TextListingForm(forms.Form):
         for i in range(num_required):
             f = forms.CharField(label='',
                                 required=True,
-                                widget=forms.Textarea)
+                                widget=forms.Textarea(attrs={'class': 'form-control'}))
             self.fields['text_{}'.format(i)] = f
 
 class TextListQuestion(Question):
@@ -164,11 +164,11 @@ class TextListQuestion(Question):
         return ret
 
 class ContactForm(forms.Form):
-    title = forms.CharField()
-    name = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
-    phone_number = forms.CharField()
-    address = forms.CharField(widget=forms.Textarea)
+    title = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 class ContactQuestion(Question):
     def form(self, *args, **kwargs):
