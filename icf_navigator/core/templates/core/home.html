@@ -9,7 +9,7 @@
       <ul>
       {% for cf in consent_forms %}
         <li>
-          <a href="{% url 'form_sections' cf.pk %}">{{cf.study_name}}</a> <a href="{% url 'form_manage' cf.pk %}">[Manage]</a>
+          <a href="{% url 'form' form_id=cf.pk section_id=first_section %}">{{cf.study_name}}</a> <a href="{% url 'form_manage' cf.pk %}">[Manage]</a>
         </li>
       {% endfor %}
       </ul>

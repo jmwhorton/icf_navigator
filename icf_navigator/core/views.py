@@ -12,9 +12,11 @@ def home_view(request):
     consent_forms = []
     if request.user.is_authenticated:
         consent_forms = models.ConsentForm.objects.filter(authorized_users__email=request.user.email)
+    first_section = models.Section.objects.first().pk
     return render(request,
                   'core/home.html',
-                  {'consent_forms': consent_forms})
+                  {'consent_forms': consent_forms,
+                   'first_section': first_section})
 
 class NewEmailForm(forms.Form):
     email = forms.EmailField()

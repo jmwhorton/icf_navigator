@@ -1,32 +1,32 @@
 {% extends "base_header.html" %}
 {% load static %}
 {% block title %}{{consent_form.study_name}}{% endblock %}
+{% block header_title %}{{consent_form.study_name}}{% endblock %}
+{% block nav_link %}<a class="nav-link text-light" href="{% url 'form_print' consent_form.pk %}">Print</a>{% endblock %}
 {% block header %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/questions.css' %}">
 {% endblock %}
 {% block content %}
 <div class="container-xl">
-  <h1>{{consent_form.study_name}}</h1>
+
+  <ul class="nav nav-tabs" role="tablist">
+    {% for sec in sections %}
+    <li class="nav-item" aria-selected={% if section.pk == sec.pk %}"true"{% else %}"false"{% endif %}>
+      <a class="nav-link {% if section.pk == sec.pk %}active{% endif %}" href="{% url 'form' form_id=consent_form.pk section_id=sec.pk %}">{{sec.name}}</a>
+     </li>
+    {% endfor %}
+  </ul>
+
   <div class="row">
     <div class="col-md-6 col-lg-5">
-      <a href="{% url 'form_print' consent_form.pk %}">[Print]</a>
 
-      <div class="section_list">
-        <h4>Sections</h4>
-        <ul>
-        {% for section in sections %}
-          <li>
-            <a href="{% url 'form' form_id=consent_form.pk section_id=section.pk %}">{{section.name}}</a>
-            <span>{{section.current_count}}</span>
-         </li>
-        {% endfor %}
-        </ul>
-      </div>
 
       <div data-controller="section"
            data-section-index-value="0">
-        <button class="btn btn-secondary" data-section-target="navbutton" data-action="section#previous"> ← </button>
-        <button class="btn btn-secondary" data-section-target="navbutton" data-action="section#next"> → </button>
+        <div class="d-flex justify-content-between">
+          <button class="btn" data-section-target="navbutton" data-action="section#previous"> ← </button>
+          <button class="btn" data-section-target="navbutton" data-action="section#next"> → </button>
+        </div>
 
         {% for qgroup in qgroups %}
         <div class="qgroup_container"
@@ -44,8 +44,13 @@
               action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}"
               method="post">
               {% csrf_token %}
-              <b>{{question.order}}</b>
-              <p>{{question.text}}{% if user.is_staff %} {{question.label}}{% endif %}</p>
+              {% if user.is_staff %}
+              <div class="text-light">
+                <b>{{question.order}}</b>
+                <span>{{question.label}}</span>
+              </div>
+              {% endif %}
+              <p>{{question.text}}</p>
               <div>
                 {% for field in question.form %}
                 {% if field.errors %}
@@ -75,6 +80,10 @@
           </div>
         </div>
       {% endfor %}
+      <div class="d-flex justify-content-between">
+        <button class="btn" data-section-target="navbutton" data-action="section#previous"> ← </button>
+        <button class="btn" data-section-target="navbutton" data-action="section#next"> → </button>
+      </div>
       </div>
     </div>
     <div id="small_preview" class="small_form col-md-6 col-lg-7">
