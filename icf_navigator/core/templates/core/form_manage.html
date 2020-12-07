@@ -1,29 +1,39 @@
 {% extends "base_header.html" %}
+{% block header_title %}{{cf.study_name}}{% endblock %}
 {% block content %}
-
-<h2>{{cf.study_name}}</h2>
-<h4>Authorized Users</h4>
-<ul>
-{% for email in cf.authorized_users.all %}
-  <li class="email_row">
-    {% if email.email != user.email %}
-      <form action="delete" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="email" value="{{email.email}}"/>
-        <input type="submit" name="save" value="X"/>
-      </form>
+<div class="container">
+  <div class="row">
+    <div class="col">
+    <h4>Authorized Users</h4>
+    <ul>
+    {% for email in cf.authorized_users.all %}
+      <li class="row">
+        {% if email.email != user.email %}
+          <form action="delete" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="email" value="{{email.email}}"/>
+            <button class="badge badge-pill badge-danger" type="submit" name="save">x</button>
+          </form>
+        {% endif %}
+        {{email.email}}
+     </li>
+    {% endfor %}
+    </ul>
+    </div>
+    <div class="col">
+    <h4>Add Additional Authorized Users</h4>
+    {% if form.errors %}
+    <p>{{form.errors}}</p>
     {% endif %}
-    <span>{{email.email}}</span>
- </li>
-{% endfor %}
-</ul>
-{% if form.errors %}
-<p>{{form.errors}}</p>
-{% endif %}
-<h4>Add Additional Authorized Users</h4>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" name="save" value="Add"/>
-</form>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_email">Email</label>
+        <input class="form-control" type="email" name="email" required="" id="id_email">
+      </div>
+      <button class="btn btn-primary" type="submit" name="save">Add</button>
+    </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

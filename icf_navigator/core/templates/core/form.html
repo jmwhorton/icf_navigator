@@ -9,16 +9,17 @@
 {% block content %}
 <div class="container-xl">
 
-  <ul class="nav nav-tabs" role="tablist">
+  <ul class="nav nav-pills nav-fill" role="tablist">
     {% for sec in sections %}
     <li class="nav-item" aria-selected={% if section.pk == sec.pk %}"true"{% else %}"false"{% endif %}>
       <a class="nav-link {% if section.pk == sec.pk %}active{% endif %}" href="{% url 'form' form_id=consent_form.pk section_id=sec.pk %}">{{sec.name}}</a>
      </li>
     {% endfor %}
   </ul>
+  <hr>
 
   <div class="row">
-    <div class="col-md-6 col-lg-5">
+    <div class="col-md-7 col-lg-5">
 
 
       <div data-controller="section"
@@ -86,7 +87,7 @@
       </div>
       </div>
     </div>
-    <div id="small_preview" class="small_form col-md-6 col-lg-7">
+    <div id="small_preview" class="small_form col-md-5 col-lg-7">
     {% if section.template != "none" %}
       {% include section.template %}
     {% endif %}

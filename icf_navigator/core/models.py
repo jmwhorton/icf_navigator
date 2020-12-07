@@ -177,7 +177,7 @@ class ContactQuestion(Question):
         return data
 
 class IntegerForm(forms.Form):
-    number = forms.IntegerField(label="", required=True)
+    number = forms.IntegerField(label="", required=True, widget=forms.NumberInput(attrs={'class': 'form-control'}))
 
 class IntegerQuestion(Question):
     def form(self, *args, **kwargs):

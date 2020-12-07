@@ -29,10 +29,14 @@
 </div>
 {% else %}
 <div class="container">
-  <p>Welcome to the informed consent navigator to use this site you will
-    need to log in with your UAMS credentials.</p>
-  <a href="{% url 'login' %}">Login</a>
-  <a href="{% url 'register' %}">Register</a>
+  <div class="jumbotron text-center">
+    <h1 class="display-4">Informed Consent Navigator</h1>
+    <p class="lead">A guided questionnaire approach for building Informed Consent documents.</p>
+    <hr class="my-4">
+    <p>Please log in with your UAMS credentials.</p>
+    <a class="btn btn-primary btn-lg" href="/accounts/login/">Login</a>
+    <a class="btn btn-secondary btn-lg" href="/accounts/register/">Register</a>
+  </div>
 </div>
 {% endif %}
 {% endblock %}
