@@ -18,6 +18,8 @@ RUN apk update && \
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+COPY prod-requirements.txt .
+RUN pip install -r prod-requirements.txt
 
 RUN pip install gunicorn
 
@@ -30,5 +32,15 @@ RUN yarn build
 RUN rm -rf node_modules
 RUN apk del yarn nodejs
 
+ARG ICF_DJANGO_SECRET_KEY
+ENV ICF_DJANGO_SECRET_KEY=$ICF_DJANGO_SECRET_KEY
+ARG ICF_DATABASE_USER
+ENV ICF_DATABASE_USER=$ICF_DATABASE_USER
+ARG ICF_DATABASE_PASSWORD
+ENV ICF_DATABASE_PASSWORD=$ICF_DATABASE_PASSWORD
+ARG ICF_DATABASE_HOST
+ENV ICF_DATABASE_HOST=$ICF_DATABASE_HOST
+
+ENV DJANGO_SETTINGS_MODULE=icf_navigator.prod_settings
 ENTRYPOINT ["gunicorn"]
 CMD ["icf_navigator.wsgi", "--bind=127.0.0.1:3000", "--workers=2"]

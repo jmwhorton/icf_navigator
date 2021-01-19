@@ -9,11 +9,11 @@ data:
     }
 
     server {
-      listen 80;
+      listen 8080;
       client_max_body_size 4G;
 
       # set the correct host(s) for your site
-      server_name "icf-navigator-prism.apps.dbmi.cloud";
+      server_name "navigator-icf.apps.dbmi.cloud";
 
       access_log /var/log/nginx/access.log combined;
       error_log  /var/log/nginx/error.log warn;

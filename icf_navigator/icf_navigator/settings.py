@@ -25,7 +25,7 @@ SECRET_KEY = '^%(#2k$5n08-i2=t8f%w3iy3^)g(=nfjy#%)!!rqx_0q3e#*ym'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'icf-navigator-prism.apps.dbmi.cloud']
+ALLOWED_HOSTS = ['localhost']
 
 LOGOUT_REDIRECT_URL = 'home'
 

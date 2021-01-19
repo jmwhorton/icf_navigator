@@ -1,28 +1,28 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: icf-navigator
+  name: navigator
 spec:
   ports:
-  - port: 80
+  - port: 8080
   selector:
-    app: icf-navigator
+    app: navigator
   clusterIP: None
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: icf-navigator
+  name: navigator
 spec:
   selector:
     matchLabels:
-      app: icf-navigator
+      app: navigator
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: icf-navigator
+        app: navigator
     spec:
       volumes:
         - name: nginx-conf
@@ -33,27 +33,81 @@ spec:
       initContainers:
         - name: migrate
           image: jrutecht/icf_navigator:latest
+          env:
+          - name: ICF_DATABASE_HOST
+            value: database
+          - name: ICF_DATABASE_USER
+            valueFrom:
+                secretKeyRef:
+                    name: icf-secret
+                    key: postgresql_username
+          - name: ICF_DATABASE_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                    name: icf-secret
+                    key: postgresql_password
+          - name: ICF_DJANGO_SECRET_KEY
+            valueFrom:
+                secretKeyRef:
+                    name: icf-secret
+                    key: django_secret_key
           command: ["python", "manage.py", "migrate"]
         - name: collectstatic
           image: jrutecht/icf_navigator:latest
+          env:
+          - name: ICF_DATABASE_HOST
+            value: database
+          - name: ICF_DATABASE_USER
+            valueFrom:
+                secretKeyRef:
+                    name: icf-secret
+                    key: postgresql_username
+          - name: ICF_DATABASE_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                    name: icf-secret
+                    key: postgresql_password
+          - name: ICF_DJANGO_SECRET_KEY
+            valueFrom:
+                secretKeyRef:
+                    name: icf-secret
+                    key: django_secret_key
           command: ["python", "manage.py", "collectstatic", "--noinput"]
           volumeMounts:
             - name: staticfiles
               mountPath: /var/www/html
       containers:
       - name: nginx
-        image: nginx:stable
+        image: nginxinc/nginx-unprivileged
         imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 80
+          - containerPort: 8080
             protocol: TCP
         volumeMounts:
           - name: nginx-conf
             mountPath: /etc/nginx/conf.d/
           - name: staticfiles
             mountPath: /var/www/html
-      - name: icf-navigator
+      - name: navigator
         image: jrutecht/icf_navigator:latest
+        env:
+        - name: ICF_DATABASE_HOST
+          value: database
+        - name: ICF_DATABASE_USER
+          valueFrom:
+              secretKeyRef:
+                  name: icf-secret
+                  key: postgresql_username
+        - name: ICF_DATABASE_PASSWORD
+          valueFrom:
+              secretKeyRef:
+                  name: icf-secret
+                  key: postgresql_password
+        - name: ICF_DJANGO_SECRET_KEY
+          valueFrom:
+              secretKeyRef:
+                  name: icf-secret
+                  key: django_secret_key
         ports:
         - containerPort: 3000
           protocol: TCP
