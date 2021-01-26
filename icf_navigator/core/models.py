@@ -20,11 +20,19 @@ class ConsentForm(models.Model):
     def __str__(self):
         return self.study_name[:20]
 
+class CannedText(models.Model):
+    label = models.CharField(max_length=50, unique=True)
+    text = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.label
 
 class Question(TypedModel):
     text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
     label = models.CharField(max_length=50, unique=True)
+    canned = models.ForeignKey(CannedText, on_delete=models.CASCADE, blank=True, null=True)
+    canned_logic = models.TextField(blank=True)
 
     def __str__(self):
         return self.label
