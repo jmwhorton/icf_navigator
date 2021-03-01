@@ -29,6 +29,7 @@ class CannedText(models.Model):
 
 class Question(TypedModel):
     text = models.TextField(blank=True)
+    extra_text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
     label = models.CharField(max_length=50, unique=True)
     canned = models.ForeignKey(CannedText, on_delete=models.CASCADE, blank=True, null=True)
