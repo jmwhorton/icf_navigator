@@ -113,7 +113,7 @@ class YesNoExplainQuestion(Question):
         ('N', 'No'),
         ('B', 'Both')
     ]
-    explain_when = models.CharField(null=True, max_length=1, choices=YNB_CHOICES)
+    explain_when = models.CharField(blank=True, null=True, max_length=1, choices=YNB_CHOICES)
     def form(self, *args, **kwargs):
         return YesNoExplainForm(*args, **kwargs)
     def for_dict(self, data):
@@ -137,7 +137,7 @@ class MultiSelectForm(forms.Form):
         self.empty_permitted = True
 
 class MultiSelectQuestion(Question):
-    options = models.JSONField(null=True)
+    options = models.JSONField(null=True, blank=True)
     def form(self, *args, **kwargs):
         return MultiSelectForm(self.options, *args, **kwargs)
 
@@ -159,7 +159,7 @@ class TextListingForm(forms.Form):
             self.fields['text_{}'.format(i)] = f
 
 class TextListQuestion(Question):
-    minimum_required = models.IntegerField(null=True)
+    minimum_required = models.IntegerField(null=True, blank=True)
     allow_more = models.BooleanField(default=False)
 
     def form(self, *args, **kwargs):
@@ -192,3 +192,11 @@ class IntegerQuestion(Question):
         return IntegerForm(*args, **kwargs)
     def for_dict(self, data):
         return data['number']
+
+class CustomQuestion(Question):
+    custom_form = models.CharField(blank=True, null=True, max_length=50)
+
+    def form(self, *args, **kwargs):
+        pass
+    def for_dict(self, data):
+        return data
