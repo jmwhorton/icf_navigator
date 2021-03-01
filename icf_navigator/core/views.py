@@ -151,3 +151,26 @@ def question_main(request, form_id, question_id):
         else:
             return HttpResponse("bad form", status=500)
     return HttpResponse("require POST", status=405)
+
+
+@login_required
+def debug_questions(request):
+    questions = models.Question.objects.all()
+    sections = models.Section.objects.all()
+    qgroups = models.QGroup.objects.all()
+    for qgroup in qgroups:
+        qgroup.qs = qgroup.questions.all()
+    for question in questions:
+        question.warn = False
+        question.in_group = False
+        for qg in qgroups:
+            if question in qg.qs.all():
+                if question.in_group == False:
+                    question.in_group = qg.name
+                else:
+                    question.warn = True
+                    question.in_group = "MULTIPLE GROUPS {} {}".format(question.in_group, qg.name)
+    return render(request, 'core/debug_questions.html',
+                    {'questions': questions,
+                     'sections': sections,
+                     'qgroups': qgroups})

@@ -36,5 +36,8 @@ urlpatterns = [
     path('form/<int:form_id>/delete', views.form_manage_delete, name='form_manage_delete'),
     path('form/<int:form_id>/print', views.form_print, name='form_print'),
     path('form/<int:form_id>/question/<int:question_id>', views.question_main, name='question'),
+
+    path('debug/questions', views.debug_questions, name='debug_questions'),
+
     url(r'^admin/', admin.site.urls),
 ]
