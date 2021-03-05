@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from core import models
@@ -174,3 +174,11 @@ def debug_questions(request):
                     {'questions': questions,
                      'sections': sections,
                      'qgroups': qgroups})
+
+@login_required
+def debug_json(request, form_id):
+    cf = models.ConsentForm.objects.get(pk=form_id)
+    if not cf.authorized_users.filter(email=request.user.email).exists():
+        return redirect('home')
+    pd = cf.print_dictionary
+    return JsonResponse(pd)

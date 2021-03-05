@@ -38,6 +38,7 @@ urlpatterns = [
     path('form/<int:form_id>/question/<int:question_id>', views.question_main, name='question'),
 
     path('debug/questions', views.debug_questions, name='debug_questions'),
+    path('debug/json_dict/<int:form_id>', views.debug_json, name='debug_json'),
 
     url(r'^admin/', admin.site.urls),
 ]
