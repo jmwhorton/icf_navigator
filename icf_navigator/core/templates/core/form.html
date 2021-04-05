@@ -87,13 +87,13 @@
               <div data-action="change->question#dirty input->question#dirty">
                 <textarea name="text" cols="40" rows="10" class="form-control" required="" id="id_text">{{question.edit_text.text}}</textarea>
               </div>
-              {% endif %}
               <button data-question-target="save"
                      data-action="question#submit"
                      class="btn btn-primary align-self-end"
                      type="submit"
                      name="save">Save</button>
             </form>
+            {% endif %}
             {% endfor %}
           </div>
         </div>

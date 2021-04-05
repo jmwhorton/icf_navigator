@@ -94,6 +94,13 @@ def form_main(request, form_id, section_id):
                     response_text.append(models.EditText.objects.get(response=r).text)
                 elif question.type == 'core.freetextquestion':
                     response_text.append(question.for_dict(r.data))
+                elif question.type == 'core.yesnoexplainquestion':
+                    response_text.append(question.for_dict(r.data))
+                elif question.type == 'core.textlistquestion':
+                    text_list = []
+                    for line in question.for_dict(r.data):
+                        text_list.append(line)
+                    response_text.append("\n".join(text_list))
                 else:
                     pass
             except:
@@ -130,6 +137,13 @@ def section_preview(request, form_id, section_id):
                     response_text.append(models.EditText.objects.get(response=r).text)
                 elif question.type == 'core.freetextquestion':
                     response_text.append(question.for_dict(r.data))
+                elif question.type == 'core.yesnoexplainquestion':
+                    response_text.append(question.for_dict(r.data))
+                elif question.type == 'core.textlistquestion':
+                    text_list = []
+                    for line in question.for_dict(r.data):
+                        text_list.append(line)
+                    response_text.append("\n".join(text_list))
                 else:
                     pass
             except:
