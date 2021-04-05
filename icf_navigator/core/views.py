@@ -72,12 +72,30 @@ def form_main(request, form_id, section_id):
     pd = cf.print_dictionary
     qgroups = list(filter(lambda x: x.enabled(pd),
                          models.QGroup.objects.filter(section=section)))
+
+    response_text = []
+
     for qgroup in qgroups:
         qgroup.qs = qgroup.questions.all()
         for question in qgroup.qs:
             try:
                 r = models.Response.objects.get(form=cf, question=question)
                 question.form = question.form(r.data)
+
+                try:
+                    et = models.EditText.objects.get(response=r)
+                    question.edit_text = et
+                except:
+                    question.edit_text = None
+
+                # there is a response do some things
+                # Check if canned text exists, add that
+                if(models.EditText.objects.filter(response=r).exists()):
+                    response_text.append(models.EditText.objects.get(response=r).text)
+                elif question.type == 'core.freetextquestion':
+                    response_text.append(question.for_dict(r.data))
+                else:
+                    pass
             except:
                 question.form = question.form()
     return render(request,
@@ -86,7 +104,8 @@ def form_main(request, form_id, section_id):
                    'pd': pd,
                    'section': section,
                    'sections': sections,
-                   'qgroups': qgroups})
+                   'qgroups': qgroups,
+                   'response_text': response_text})
 
 @login_required
 def section_preview(request, form_id, section_id):
@@ -94,12 +113,33 @@ def section_preview(request, form_id, section_id):
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return HttpResponse("")
     section = models.Section.objects.get(pk=section_id)
+    pd = cf.print_dictionary
+    qgroups = list(filter(lambda x: x.enabled(pd),
+                         models.QGroup.objects.filter(section=section)))
+
+    response_text = []
+
+    for qgroup in qgroups:
+        qgroup.qs = qgroup.questions.all()
+        for question in qgroup.qs:
+            try:
+                r = models.Response.objects.get(form=cf, question=question)
+                # there is a response do some things
+                # Check if canned text exists, add that
+                if(models.EditText.objects.filter(response=r).exists()):
+                    response_text.append(models.EditText.objects.get(response=r).text)
+                elif question.type == 'core.freetextquestion':
+                    response_text.append(question.for_dict(r.data))
+                else:
+                    pass
+            except:
+                question.form = question.form()
     if(section.template == 'none'):
         return HttpResponse("")
-    pd = cf.print_dictionary
     return render(request,
                   section.template,
-                  {'pd': pd})
+                  {'pd': pd,
+                   'response_text': response_text})
 
 
 @login_required
@@ -147,6 +187,26 @@ def question_main(request, form_id, question_id):
                                                       question=question)
             r.data = form.cleaned_data
             r.save()
+            if(question.canned):
+                et, created = models.EditText.objects.get_or_create(response=r)
+                et.text = question.canned.text
+                et.save()
+            return HttpResponse("ok", status=200)
+        else:
+            return HttpResponse("bad form", status=500)
+    return HttpResponse("require POST", status=405)
+
+@login_required
+def edit_text_edit(request, form_id, question_id):
+    if request.method == 'POST':
+        question = models.Question.objects.get(pk=question_id)
+        cf = models.ConsentForm.objects.get(pk=form_id)
+        r = models.Response.objects.get(form=cf, question=question)
+        form = models.EditTextForm(request.POST)
+        if form.is_valid():
+            et = models.EditText.objects.get(response=r)
+            et.text = form.cleaned_data['text']
+            et.save()
             return HttpResponse("ok", status=200)
         else:
             return HttpResponse("bad form", status=500)

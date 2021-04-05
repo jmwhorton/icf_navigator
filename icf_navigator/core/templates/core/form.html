@@ -76,8 +76,25 @@
                      type="submit"
                      name="save">Save</button>
             </form>
-          {% endfor %}
-
+            {% if question.edit_text %}
+            <form method="post"
+                  data-controller="question"
+                  data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
+                  data-question-target="form"
+                  action="{% url 'edit_text' form_id=consent_form.pk question_id=question.pk %}"
+              >
+              {% csrf_token %}
+              <div data-action="change->question#dirty input->question#dirty">
+                <textarea name="text" cols="40" rows="10" class="form-control" required="" id="id_text">{{question.edit_text.text}}</textarea>
+              </div>
+              {% endif %}
+              <button data-question-target="save"
+                     data-action="question#submit"
+                     class="btn btn-primary align-self-end"
+                     type="submit"
+                     name="save">Save</button>
+            </form>
+            {% endfor %}
           </div>
         </div>
       {% endfor %}

@@ -36,6 +36,7 @@ urlpatterns = [
     path('form/<int:form_id>/delete', views.form_manage_delete, name='form_manage_delete'),
     path('form/<int:form_id>/print', views.form_print, name='form_print'),
     path('form/<int:form_id>/question/<int:question_id>', views.question_main, name='question'),
+    path('form/<int:form_id>/edit_text/<int:question_id>', views.edit_text_edit, name='edit_text'),
 
     path('debug/questions', views.debug_questions, name='debug_questions'),
     path('debug/json_dict/<int:form_id>', views.debug_json, name='debug_json'),

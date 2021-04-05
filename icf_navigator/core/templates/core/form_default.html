@@ -1,0 +1,12 @@
+{% load static %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+{% endblock %}
+<div class="content">
+  <div class="text_content">
+    {% for rt in response_text %}
+      <div>{{rt}}</div>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
