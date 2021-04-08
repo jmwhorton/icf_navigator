@@ -110,8 +110,10 @@ class YesNoExplainForm(forms.Form):
                              required=True,
                              coerce=lambda x: x == 'True',
                              choices=[(True, 'Yes'),(False, 'No')],
-                             widget=forms.RadioSelect)
-    explanation = forms.CharField(label='explain', required=False, widget=forms.Textarea)
+                             widget=forms.RadioSelect(attrs={'data-yesno-target': 'yesno',
+                                                             'data-action': 'input->yesno#toggled'}))
+    hidden = {'hidden': None, 'data-yesno-target': 'explain'}
+    explanation = forms.CharField(label='', required=False, widget=forms.Textarea(attrs=hidden))
 
 
 

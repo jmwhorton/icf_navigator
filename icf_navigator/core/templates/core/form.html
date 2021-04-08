@@ -39,7 +39,8 @@
           {% for question in qgroup.qs %}
             <form
               class="d-flex flex-column"
-              data-controller="question"
+              data-controller="question{% if question.type == 'core.yesnoexplainquestion' %} yesno{% endif %}"
+              {% if question.type == 'core.yesnoexplainquestion' %}data-yesno-required-value="{{question.explain_when}}"{% endif %}
               data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
               data-question-target="form"
               action="{% url 'question' form_id=consent_form.pk question_id=question.pk %}"
