@@ -203,9 +203,13 @@ def question_main(request, form_id, question_id):
                                                       question=question)
             r.data = form.cleaned_data
             r.save()
-            if(question.canned):
+            if(question.canned_yes):
                 et, created = models.EditText.objects.get_or_create(response=r)
-                et.text = question.canned.text
+                et.text = question.canned_yes.text
+                et.save()
+            if(question.canned_no):
+                et, created = models.EditText.objects.get_or_create(response=r)
+                et.text = question.canned_no.text
                 et.save()
             return HttpResponse("ok", status=200)
         else:

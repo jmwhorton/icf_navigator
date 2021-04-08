@@ -32,8 +32,8 @@ class Question(TypedModel):
     extra_text = models.TextField(blank=True)
     order = models.FloatField(unique=True)
     label = models.CharField(max_length=50, unique=True)
-    canned = models.ForeignKey(CannedText, on_delete=models.CASCADE, blank=True, null=True)
-    canned_logic = models.TextField(blank=True)
+    canned_yes = models.ForeignKey(CannedText, on_delete=models.CASCADE, blank=True, null=True, related_name="canned_yes")
+    canned_no = models.ForeignKey(CannedText, on_delete=models.CASCADE, blank=True, null=True, related_name="canned_no")
 
     def __str__(self):
         return self.label
@@ -112,7 +112,7 @@ class YesNoExplainForm(forms.Form):
                              choices=[(True, 'Yes'),(False, 'No')],
                              widget=forms.RadioSelect(attrs={'data-yesno-target': 'yesno',
                                                              'data-action': 'input->yesno#toggled'}))
-    hidden = {'hidden': None, 'data-yesno-target': 'explain'}
+    hidden = {'hidden': None, 'data-yesno-target': 'explain', 'placeholder': 'Explain...'}
     explanation = forms.CharField(label='', required=False, widget=forms.Textarea(attrs=hidden))
 
 
