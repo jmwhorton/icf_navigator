@@ -50,9 +50,6 @@ class Response(models.Model):
     def __str__(self):
         return "{}[{}]".format(self.form, self.question)
 
-class EditTextForm(forms.Form):
-    text = forms.CharField(label='', required=True, widget=forms.Textarea(attrs={'class': 'form-control'}))
-
 class EditText(models.Model):
     response = models.ForeignKey(Response, on_delete=models.CASCADE)
     text = models.TextField(blank=True)

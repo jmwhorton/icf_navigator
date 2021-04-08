@@ -99,8 +99,9 @@ def form_main(request, form_id, section_id):
                 elif question.type == 'core.textlistquestion':
                     text_list = []
                     for line in question.for_dict(r.data):
-                        text_list.append(line)
-                    response_text.append("\n".join(text_list))
+                        if(line != ""):
+                            text_list.append(f"<li>{line}</li>")
+                    response_text.append(f"<ul>{' '.join(text_list)}</li>")
                 else:
                     pass
             except:
@@ -142,8 +143,9 @@ def section_preview(request, form_id, section_id):
                 elif question.type == 'core.textlistquestion':
                     text_list = []
                     for line in question.for_dict(r.data):
-                        text_list.append(line)
-                    response_text.append("\n".join(text_list))
+                        if(line != ""):
+                            text_list.append(f"<li>{line}</li>")
+                    response_text.append(f"<ul>{' '.join(text_list)}</li>")
                 else:
                     pass
             except:
@@ -216,14 +218,14 @@ def edit_text_edit(request, form_id, question_id):
         question = models.Question.objects.get(pk=question_id)
         cf = models.ConsentForm.objects.get(pk=form_id)
         r = models.Response.objects.get(form=cf, question=question)
-        form = models.EditTextForm(request.POST)
-        if form.is_valid():
+        if('text' in request.POST):
+            text = request.POST["text"]
             et = models.EditText.objects.get(response=r)
-            et.text = form.cleaned_data['text']
+            et.text = text
             et.save()
             return HttpResponse("ok", status=200)
         else:
-            return HttpResponse("bad form", status=500)
+            return HttpResponse("missing text", status=500)
     return HttpResponse("require POST", status=405)
 
 

@@ -27,3 +27,8 @@ $theme-colors: (
 }
 
 @import "~bootstrap/scss/bootstrap";
+@import "~trix/dist/trix.css";
+
+trix-toolbar .trix-button-group--file-tools {
+  display: none;
+}

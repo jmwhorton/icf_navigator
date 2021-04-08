@@ -5,7 +5,7 @@
 <div class="content">
   <div class="text_content">
     {% for rt in response_text %}
-      <div>{{rt}}</div>
+      <div>{{rt|safe|escape}}</div>
     {% endfor %}
     </ul>
   </div>
