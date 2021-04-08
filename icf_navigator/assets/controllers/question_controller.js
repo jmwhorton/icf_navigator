@@ -51,4 +51,8 @@ export default class extends Controller {
     event.preventDefault();
     this.sendData();
   }
+
+  more(event){
+    console.log("hello");
+  }
 }

@@ -163,10 +163,15 @@ class MultiSelectQuestion(Question):
 class TextListingForm(forms.Form):
     def __init__(self, num_required, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for i in range(num_required):
+        for i in range(9):
+            required = (i < num_required) or i == 0
+            attrs = {'class': 'form-control',
+                     'data-multitext-target': 'text'}
+            if(not required):
+                attrs['hidden'] = None
             f = forms.CharField(label='',
-                                required=True,
-                                widget=forms.Textarea(attrs={'class': 'form-control'}))
+                                required=required,
+                                widget=forms.Textarea(attrs=attrs))
             self.fields['text_{}'.format(i)] = f
 
 class TextListQuestion(Question):

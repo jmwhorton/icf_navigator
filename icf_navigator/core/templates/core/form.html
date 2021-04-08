@@ -53,7 +53,7 @@
               </div>
               {% endif %}
               <p>{{question.text}}</p>
-              <div>
+              <div data-controller="multitext" data-multitext-required-value="{{question.minimum_required}}">
                 {% for field in question.form %}
                 {% if field.errors %}
                 <div class="question_error">
@@ -70,6 +70,13 @@
                   </div>
                 </div>
                 {% endfor %}
+                {% if question.type == "core.textlistquestion" %}
+                <button data-multitext-target="more"
+                       data-action="multitext#more"
+                       class="btn btn-secondary align-self-start"
+                       type="button"
+                       name="more">More</button>
+                {% endif %}
               </div>
               <button data-question-target="save"
                      data-action="question#submit"
