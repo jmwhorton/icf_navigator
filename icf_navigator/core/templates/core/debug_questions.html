@@ -25,7 +25,7 @@
       </ul>
       {% endfor %}
     </div>
-    <div class="col-md-7 col-lg-5">
+    <div class="col-md-9 col-lg-8">
       {% for question in questions %}
         <form
           id="{{question.order}}"
@@ -63,6 +63,14 @@
             {% endfor %}
           </div>
         </form>
+      {% if question.canned_yes %}
+      <p>{{ question.canned_yes }}</p>
+      <p>{{ question.canned_yes.text }}</p>
+      {% endif %}
+      {% if question.canned_no %}
+      <p>{{ question.canned_no }}</p>
+      <p>{{ question.canned_no.text }}</p>
+      {% endif %}
       {% endfor %}
       </div>
     </div>

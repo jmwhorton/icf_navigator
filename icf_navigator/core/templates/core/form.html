@@ -56,20 +56,23 @@
               <p>{{question.text}}</p>
               <div data-controller="multitext" data-multitext-required-value="{{question.minimum_required}}">
                 {% for field in question.form %}
-                {% if field.errors %}
-                <div class="question_error">
-                  <span>{{field.errors}}</span>
-                </div>
-                {% endif %}
-                <div class="form-group">
-                  {% if field.label %}
-                  {{ field.label_tag }}
-                  {% endif %}
-                  <div data-action="change->question#dirty input->question#dirty"
-                       class="form_fields">
-                    {{ field }}
+                  {% if field.errors %}
+                  <div class="question_error">
+                    <span>{{field.errors}}</span>
                   </div>
-                </div>
+                  {% endif %}
+                  <div class="form-group">
+                    {% if field.label %}
+                    {{ field.label_tag }}
+                    {% endif %}
+                    <div data-action="change->question#dirty input->question#dirty"
+                         class="form_fields">
+                      {% if field.help_text %}
+                      <span data-yesno-target="explain">{{ field.help_text }}</span>
+                      {% endif %}
+                      {{ field }}
+                    </div>
+                  </div>
                 {% endfor %}
                 {% if question.type == "core.textlistquestion" %}
                 <button data-multitext-target="more"

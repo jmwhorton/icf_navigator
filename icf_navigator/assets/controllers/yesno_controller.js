@@ -21,12 +21,16 @@ export default class extends Controller {
     this.yesnoTargets.forEach((element) => {
       if(element.checked) current = element.value
     });
-    this.explainTarget.hidden = yesnoTotruefalse(this.requiredValue, current);
+    this.explainTargets.forEach((element) => {
+      element.hidden = yesnoTotruefalse(this.requiredValue, current);
+    });
   }
 
 
   toggled(event){
-    this.explainTarget.hidden = yesnoTotruefalse(this.requiredValue, event.target.value);
+    this.explainTargets.forEach((element) => {
+      element.hidden = yesnoTotruefalse(this.requiredValue, event.target.value);
+    });
   }
 
 }

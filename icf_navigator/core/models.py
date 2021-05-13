@@ -113,7 +113,10 @@ class YesNoExplainForm(forms.Form):
                              widget=forms.RadioSelect(attrs={'data-yesno-target': 'yesno',
                                                              'data-action': 'input->yesno#toggled'}))
     hidden = {'hidden': None, 'data-yesno-target': 'explain', 'placeholder': 'Explain...'}
-    explanation = forms.CharField(label='', required=False, widget=forms.Textarea(attrs=hidden))
+    explanation = forms.CharField(label='', required=False, widget=forms.Textarea(attrs=hidden), help_text='Please Explain')
+    def __init__(self, help_text, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['explanation'].help_text = help_text
 
 
 
@@ -125,7 +128,7 @@ class YesNoExplainQuestion(Question):
     ]
     explain_when = models.CharField(blank=True, null=True, max_length=1, choices=YNB_CHOICES)
     def form(self, *args, **kwargs):
-        return YesNoExplainForm(*args, **kwargs)
+        return YesNoExplainForm(self.extra_text, *args, **kwargs)
     def for_dict(self, data):
         return data['explanation']
 
