@@ -69,6 +69,17 @@ def form_main(request, form_id, section_id):
         return redirect('home')
     sections = models.Section.objects.all()
     section = models.Section.objects.get(pk=section_id)
+    next_section = None
+    is_next = False
+    for sec in sections:
+        if is_next:
+            next_section = sec.pk
+            break
+        if sec.pk == section.pk:
+            is_next = True
+    if next_section is None:
+        next_section = sections.first().pk
+
     pd = cf.print_dictionary
     qgroups = list(filter(lambda x: x.enabled(pd),
                          models.QGroup.objects.filter(section=section)))
@@ -112,6 +123,7 @@ def form_main(request, form_id, section_id):
                    'pd': pd,
                    'section': section,
                    'sections': sections,
+                   'next_section': next_section,
                    'qgroups': qgroups,
                    'response_text': response_text})
 

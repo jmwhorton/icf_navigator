@@ -26,7 +26,13 @@
            data-section-index-value="0">
         <div class="d-flex justify-content-between">
           <button class="btn" data-section-target="navbutton" data-action="section#previous"> ← </button>
+          <div data-section-target="progress" hidden>
+            <span data-section-target="currentCount">?</span>
+            <span>/</span>
+            <span data-section-target="totalCount">?</span>
+          </div>
           <button class="btn" data-section-target="navbutton" data-action="section#next"> → </button>
+          <a data-section-target="next" href="{% url 'form' form_id=consent_form.pk section_id=next_section %}" hidden></a>
         </div>
 
         {% for qgroup in qgroups %}
