@@ -173,7 +173,7 @@ class TextListingForm(forms.Form):
                 attrs['hidden'] = None
             f = forms.CharField(label='',
                                 required=required,
-                                widget=forms.Textarea(attrs=attrs))
+                                widget=forms.TextInput(attrs=attrs))
             self.fields['text_{}'.format(i)] = f
 
 class TextListQuestion(Question):
