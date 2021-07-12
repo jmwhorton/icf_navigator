@@ -15,6 +15,7 @@
       {% for qgroup in qgroups %}
         {% ifequal qgroup.section section %}
         <li>{{qgroup.name}}</li>
+        <small>{{qgroup.logic}}</small>
           <ul>
           {% for q in qgroup.qs %}
             <li><a href="#{{q.order}}">{{q}}</a></li>
