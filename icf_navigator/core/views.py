@@ -182,10 +182,47 @@ def form_sections(request, form_id):
                    'sections': sections})
 
 def form_print(request, form_id):
+    cf = models.ConsentForm.objects.get(pk=form_id)
     pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary
+    qgroups = list(filter(lambda x: x.enabled(pd),
+                         models.QGroup.objects.all()))
+
+    response_text = []
+
+    for qgroup in qgroups:
+        qgroup.qs = qgroup.questions.all()
+        for question in qgroup.qs:
+            try:
+                r = models.Response.objects.get(form=cf, question=question)
+                question.form = question.form(r.data)
+
+                try:
+                    et = models.EditText.objects.get(response=r)
+                    question.edit_text = et
+                except:
+                    question.edit_text = None
+
+                # there is a response do some things
+                # Check if canned text exists, add that
+                if(models.EditText.objects.filter(response=r).exists()):
+                    response_text.append(models.EditText.objects.get(response=r).text)
+                elif question.type == 'core.freetextquestion':
+                    response_text.append(question.for_dict(r.data))
+                elif question.type == 'core.yesnoexplainquestion':
+                    response_text.append(question.for_dict(r.data))
+                elif question.type == 'core.textlistquestion':
+                    text_list = []
+                    for line in question.for_dict(r.data):
+                        if(line != ""):
+                            text_list.append(f"<li>{line}</li>")
+                    response_text.append(f"<ul>{' '.join(text_list)}</li>")
+                else:
+                    pass
+            except:
+                question.form = question.form()
     return render(request,
                   'core/print_form.html',
-                  {'pd': pd})
+                  {'pd': pd, 'response_text': response_text})
 
 @login_required
 def new_form(request):
