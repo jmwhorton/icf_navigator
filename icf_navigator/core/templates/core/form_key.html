@@ -1,0 +1,76 @@
+{% load static %}
+{% load icf_extras %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+{% endblock %}
+<div class="content">
+  <div class="light-gray header-box">
+    <h2>Research Study Participant Consent Form</h2>
+    <p>Study Title: {{pd.study_title}}</p>
+    <p>Study Leader: {{pd.primary_contact.name}}, {{pd.primary_contact.title}}</p>
+    <p>Study Sponsor: [sponsor]</p>
+    <p>Other Study Support From: [other study sponsor]</p>
+  </div>
+
+  <div class="body">
+    <p>We are asking if you want to join a research study at {{pd.institution_conduting_question|first}}. This form will give you details to help you decide if you want to join. If you have questions about this form or the study, contact:</p>
+    <p>{{pd.primary_contact.title}} {{pd.primary_contact.name}}
+    <br/>Phone: {{pd.primary_contact.phone_number|phone}}
+    <br/>E-mail: {{pd.primary_contact.email}}</p>
+
+    <h2 class="section-header">Key Information</h2>
+
+    <p>This section gives you brief information about the study. Later in this form, we will give you more details to help you decide if you want to join. We will explain more about the risks and benefits of being in this study. And, we will give you more details about what to expect if you join.</p>
+
+    <h3>What we hope to learn in the study</h3>
+    <div class="icon-section">
+      <img class="icon" src="{% static 'core/book_magnify.png' %}">
+      <ul>
+        <li>{{pd.simple_study_explanation_question}}</li>
+        <li>{{pd.relevancy_of_research_question}}</li>
+      </ul>
+    </div>
+
+    <h3>What we will ask you to do if you join the study</h3>
+    <p>If you join, you will be in the study for about {{pd.length_of_study}}. You will be asked to do the study activities below. You can learn more about each of these later in this form.</p>
+    <div class="icon-section">
+      <img class="icon" src="{% static 'core/checklist.png' %}">
+      <ul>
+        {% for activity in pd.Research_activity_options %}
+        <li>{{activity}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h3>Some reasons you may want to join the study</h3>
+    <div class="icon-section">
+      <img class="icon" src="{% static 'core/checkmark.png' %}">
+      <ul>
+        {% for reason in pd.Reasons_to_join_question %}
+        {% if reason %}
+        <li>{{reason}}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h3>Some reasons you may decide <span class="underline">not</span> to join the study</h3>
+    <div class="icon-section">
+      <img class="icon" src="{% static 'core/warning.png' %}">
+      <ul>
+        <li>You may not wish to spend the time it would take to take part. </li>
+        {% for reason in pd.reason_NOT_to_join_question %}
+        {% if reason %}
+        <li>{{reason}}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h3>What to do now</h3>
+    <ul>
+      <li>If you do <span class="underline">not</span> want to join the study, tell the study staff. Remember, it is okay to say no. You can still get your medical care from UAMS if you are not in the study. </li>
+      <li>If you <span class="underline">want to learn more</span> about the study, read the rest of this form. Ask study staff for more information.</li>
+    </ul>
+  </div>
+</div>

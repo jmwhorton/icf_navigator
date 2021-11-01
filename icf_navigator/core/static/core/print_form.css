@@ -86,3 +86,46 @@ body {
 .text_content {
   padding: 3em;
 }
+
+.light-gray {
+  background-color: #F2F2F2;
+}
+
+.header-box {
+  border: 1px black solid;
+  text-align: center;
+  width: 99%;
+  margin: .45%;
+}
+
+.header-box h2 {
+  margin: 0px;
+  padding: 0px;
+}
+
+.header-box p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.section-header {
+  text-align: center;
+}
+
+.body {
+  margin: 1em;
+}
+
+.icon-section {
+  display: flex;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  margin: 1em;
+}
+
+.underline {
+  text-decoration: underline;
+}
