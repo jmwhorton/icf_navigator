@@ -81,6 +81,7 @@ def form_main(request, form_id, section_id):
         next_section = sections.first().pk
 
     pd = cf.print_dictionary
+    et = cf.edit_text
     qgroups = list(filter(lambda x: x.enabled(pd),
                          models.QGroup.objects.filter(section=section)))
 
@@ -94,8 +95,8 @@ def form_main(request, form_id, section_id):
                 question.form = question.form(r.data)
 
                 try:
-                    et = models.EditText.objects.get(response=r)
-                    question.edit_text = et
+                    single_et = models.EditText.objects.get(response=r)
+                    question.edit_text = single_et
                 except:
                     question.edit_text = None
 
@@ -125,7 +126,7 @@ def form_main(request, form_id, section_id):
                    'sections': sections,
                    'next_section': next_section,
                    'qgroups': qgroups,
-                   'response_text': response_text})
+                   'et': et})
 
 @login_required
 def section_preview(request, form_id, section_id):
@@ -134,40 +135,13 @@ def section_preview(request, form_id, section_id):
         return HttpResponse("")
     section = models.Section.objects.get(pk=section_id)
     pd = cf.print_dictionary
-    qgroups = list(filter(lambda x: x.enabled(pd),
-                         models.QGroup.objects.filter(section=section)))
-
-    response_text = []
-
-    for qgroup in qgroups:
-        qgroup.qs = qgroup.questions.all()
-        for question in qgroup.qs:
-            try:
-                r = models.Response.objects.get(form=cf, question=question)
-                # there is a response do some things
-                # Check if canned text exists, add that
-                if(models.EditText.objects.filter(response=r).exists()):
-                    response_text.append(models.EditText.objects.get(response=r).text)
-                elif question.type == 'core.freetextquestion':
-                    response_text.append(question.for_dict(r.data))
-                elif question.type == 'core.yesnoexplainquestion':
-                    response_text.append(question.for_dict(r.data))
-                elif question.type == 'core.textlistquestion':
-                    text_list = []
-                    for line in question.for_dict(r.data):
-                        if(line != ""):
-                            text_list.append(f"<li>{line}</li>")
-                    response_text.append(f"<ul>{' '.join(text_list)}</li>")
-                else:
-                    pass
-            except:
-                question.form = question.form()
+    et = cf.edit_text
     if(section.template == 'none'):
         return HttpResponse("")
     return render(request,
                   section.template,
                   {'pd': pd,
-                   'response_text': response_text})
+                   'et': et})
 
 
 @login_required
@@ -184,45 +158,10 @@ def form_sections(request, form_id):
 def form_print(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary
-    qgroups = list(filter(lambda x: x.enabled(pd),
-                         models.QGroup.objects.all()))
-
-    response_text = []
-
-    for qgroup in qgroups:
-        qgroup.qs = qgroup.questions.all()
-        for question in qgroup.qs:
-            try:
-                r = models.Response.objects.get(form=cf, question=question)
-                question.form = question.form(r.data)
-
-                try:
-                    et = models.EditText.objects.get(response=r)
-                    question.edit_text = et
-                except:
-                    question.edit_text = None
-
-                # there is a response do some things
-                # Check if canned text exists, add that
-                if(models.EditText.objects.filter(response=r).exists()):
-                    response_text.append(models.EditText.objects.get(response=r).text)
-                elif question.type == 'core.freetextquestion':
-                    response_text.append(question.for_dict(r.data))
-                elif question.type == 'core.yesnoexplainquestion':
-                    response_text.append(question.for_dict(r.data))
-                elif question.type == 'core.textlistquestion':
-                    text_list = []
-                    for line in question.for_dict(r.data):
-                        if(line != ""):
-                            text_list.append(f"<li>{line}</li>")
-                    response_text.append(f"<ul>{' '.join(text_list)}</li>")
-                else:
-                    pass
-            except:
-                question.form = question.form()
+    et = cf.edit_text
     return render(request,
                   'core/print_form.html',
-                  {'pd': pd, 'response_text': response_text})
+                  {'pd': pd, 'et': et})
 
 @login_required
 def new_form(request):

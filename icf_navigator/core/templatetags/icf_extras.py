@@ -1,5 +1,6 @@
 from django import template
 from django.template.defaultfilters import stringfilter
+from django.utils.html import format_html
 
 register = template.Library()
 
@@ -12,3 +13,9 @@ def phone(value):
         rest = value[6:]
         return "({}) {}-{}".format(area, pre, rest)
     return value
+
+@register.simple_tag()
+def list_value(value, pd):
+    if value in pd:
+        return format_html('<li>{}</li>', pd[value])
+    return ''

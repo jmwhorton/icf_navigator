@@ -17,8 +17,25 @@ class ConsentForm(models.Model):
             except Response.DoesNotExist:
                 pass
         return dict
+
+    @property
+    def edit_text(self):
+        dict = {}
+        for question in Question.objects.all():
+            try:
+                response = Response.objects.get(form=self, question=question)
+                editted_text = EditText.objects.get(response=response)
+                dict[question.label] = editted_text.text
+            except Response.DoesNotExist:
+                pass
+            except EditText.DoesNotExist:
+                pass
+        return dict
+
     def __str__(self):
         return self.study_name[:20]
+
+
 
 class CannedText(models.Model):
     label = models.CharField(max_length=50, unique=True)
@@ -130,7 +147,10 @@ class YesNoExplainQuestion(Question):
     def form(self, *args, **kwargs):
         return YesNoExplainForm(self.extra_text, *args, **kwargs)
     def for_dict(self, data):
-        return data['explanation']
+        print(self.explain_when)
+        if self.explain_when == 'B' or (self.explain_when == 'Y' and data['yes']) or (self.explain_when =='N' and data['yes'] == False):
+            return data['explanation']
+        return data['yes']
 
 class FreeTextForm(forms.Form):
     text = forms.CharField(label='', required=True, widget=forms.Textarea(attrs={'class': 'form-control'}))
