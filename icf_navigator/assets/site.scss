@@ -1,6 +1,7 @@
-$theme-colors: (
-  "uamsred": #8C1E15
-);
+
+.uamsred {
+  background-color: #8C1E15;
+}
 
 .navbar {
   margin-bottom: 1em;
@@ -27,7 +28,9 @@ $theme-colors: (
 }
 
 @import "~bootstrap/scss/bootstrap";
+
 @import "~trix/dist/trix.css";
+
 
 trix-toolbar .trix-button-group--file-tools {
   display: none;

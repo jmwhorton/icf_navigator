@@ -12,11 +12,9 @@ def home_view(request):
     consent_forms = []
     if request.user.is_authenticated:
         consent_forms = models.ConsentForm.objects.filter(authorized_users__email=request.user.email)
-    first_section = models.Section.objects.first().pk
     return render(request,
                   'core/home.html',
-                  {'consent_forms': consent_forms,
-                   'first_section': first_section})
+                  {'consent_forms': consent_forms})
 
 class NewEmailForm(forms.Form):
     email = forms.EmailField()
@@ -24,6 +22,7 @@ class NewEmailForm(forms.Form):
 @login_required
 def form_manage(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
+    first_section = models.Section.objects.first().pk
     form = NewEmailForm()
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return redirect('home')
@@ -39,6 +38,7 @@ def form_manage(request, form_id):
     return render(request,
                   'core/form_manage.html',
                   {'cf': cf,
+                   'first_section': first_section,
                    'form': form})
 
 @login_required

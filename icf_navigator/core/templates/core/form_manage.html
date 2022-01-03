@@ -2,6 +2,28 @@
 {% block header_title %}{{cf.study_name}}{% endblock %}
 {% block content %}
 <div class="container">
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
+          <i class="bi fas fa-question-circle fa-2x" style="width:1em;height: 1em"></i>
+        </div>
+        <div>
+          <h2>Answer Questions</h2>
+          <p>Here you will answer questions about your study to help us build the consent form for you.</p>
+          <a href="{% url 'form' form_id=cf.pk section_id=first_section %}">
+            <button type="button" class="btn btn-primary">Continue Form</button>
+          </a>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Questions Remaining</h3>
+    </div>
+    <div class="col">
+      <a class="" href="{% url 'form_print' cf.pk %}"><h3>Print Form</h3></a>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
     <h4>Authorized Users</h4>
