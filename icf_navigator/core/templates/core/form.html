@@ -1,5 +1,6 @@
 {% extends "base_header.html" %}
 {% load static %}
+{% load icf_extras %}
 {% block title %}{{consent_form.study_name}}{% endblock %}
 {% block header_title %}{{consent_form.study_name}}{% endblock %}
 {% block nav_link %}<a class="nav-link text-light" href="{% url 'form_print' consent_form.pk %}">Print</a>{% endblock %}
@@ -11,8 +12,13 @@
 
   <ul class="nav nav-pills nav-fill" role="tablist">
     {% for sec in sections %}
-    <li class="nav-item" aria-selected={% if section.pk == sec.pk %}"true"{% else %}"false"{% endif %}>
-      <a class="nav-link {% if section.pk == sec.pk %}active{% endif %}" href="{% url 'form' form_id=consent_form.pk section_id=sec.pk %}">{{sec.name}} - {{sec.answer_count}}/{{sec.question_count}}</a>
+    {% percent sec.answer_count sec.question_count as percent_complete %}
+    <li class="nav-item nav-link" aria-selected={% if section.pk == sec.pk %}"true"{% else %}"false"{% endif %}>
+      <a class="nav-link {% if section.pk == sec.pk %}active{% endif %}" href="{% url 'form' form_id=consent_form.pk section_id=sec.pk %}">{{sec.name}}</a>
+      <div class="progress position-relative mt-1" style="height: 15px">
+        <div class="progress-bar {% if percent_complete == 100 %}bg-success{%endif%}" role="progressbar" style="width: {{percent_complete}}%"></div>
+        <small class="justify-content-center d-flex position-absolute w-100 text-dark">{{sec.answer_count}}/{{sec.question_count}}</small>
+      </div>
      </li>
     {% endfor %}
   </ul>
