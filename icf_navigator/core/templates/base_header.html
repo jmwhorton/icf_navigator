@@ -18,6 +18,9 @@
         <div class="nav">
           {% if user.is_authenticated %}
             {% block nav_link %}{% endblock %}
+            {% if user.is_superuser %}
+            <a class="nav-link text-light" href="/admin">Admin</a>
+            {% endif %}
             <a class="nav-link text-light" href="/accounts/logout">Logout</a>
           {% else %}
             <a class="nav-link text-light" href="{% url 'login' %}">Login</a>
