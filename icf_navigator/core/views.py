@@ -68,7 +68,24 @@ def form_main(request, form_id, section_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return redirect('home')
+    pd = cf.print_dictionary
+    et = cf.edit_text
+
     sections = models.Section.objects.all()
+    responses = [x.question for x in models.Response.objects.filter(form=cf)]
+    for section in sections:
+        question_count = 0
+        answer_count = 0
+        qgroups = list(filter(lambda x: x.enabled(pd),
+                             models.QGroup.objects.filter(section=section)))
+        for qg in qgroups:
+            for question in qg.questions.all():
+                question_count += 1
+                if(question in responses):
+                    answer_count += 1
+        section.question_count = question_count
+        section.answer_count = answer_count
+
     section = models.Section.objects.get(pk=section_id)
     next_section = None
     is_next = False
@@ -81,8 +98,6 @@ def form_main(request, form_id, section_id):
     if next_section is None:
         next_section = sections.first().pk
 
-    pd = cf.print_dictionary
-    et = cf.edit_text
     qgroups = list(filter(lambda x: x.enabled(pd),
                          models.QGroup.objects.filter(section=section)))
 

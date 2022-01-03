@@ -91,9 +91,6 @@ class Section(models.Model):
     order = models.FloatField(unique=True)
     template = models.TextField()
 
-    def current_count(self):
-        return "{} / {}".format('?', '?')
-
     def __str__(self):
         return self.name
 
