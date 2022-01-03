@@ -14,7 +14,7 @@
         <a class="navbar-brand d-flex align-items-center" href="/">
           <img height="30" src="{% static 'core/UAMS_logo_white.png' %}">
         </a>
-        <h1 class="navbar-brand">{% block header_title %}Informed Consent Navigator{% endblock %}</h1>
+        <h3 class="navbar-brand text-wrap w-50">{% block header_title %}Informed Consent Navigator{% endblock %}</h3>
         <div class="nav">
           {% if user.is_authenticated %}
             {% block nav_link %}{% endblock %}
