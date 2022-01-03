@@ -12,6 +12,7 @@ def home_view(request):
     consent_forms = []
     if request.user.is_authenticated:
         consent_forms = models.ConsentForm.objects.filter(authorized_users__email=request.user.email)
+        consent_forms = sorted(consent_forms, key=lambda m: m.last_modified, reverse=True)
     return render(request,
                   'core/home.html',
                   {'consent_forms': consent_forms})
