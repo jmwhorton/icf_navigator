@@ -2,7 +2,7 @@
 {% block header_title %}{{cf.study_name}}{% endblock %}
 {% block content %}
 <div class="container">
-  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
     <div class="col d-flex align-items-start">
         <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
           <i class="bi fas fa-question-circle fa-2x" style="width:1em;height: 1em"></i>
@@ -11,38 +11,41 @@
           <h2>Answer Questions</h2>
           <p>Here you will answer questions about your study to help us build the consent form for you.</p>
           <a href="{% url 'form' form_id=cf.pk section_id=first_section %}">
-            <button type="button" class="btn btn-primary">Continue Form</button>
+            <button type="button" class="btn btn-primary">Continue Survey</button>
           </a>
         </div>
       </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <h3>Questions Remaining</h3>
+    <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
+          <i class="bi fas fa-print fa-2x" style="width:1em;height: 1em"></i>
+        </div>
+        <div>
+          <h2>PDF Form</h2>
+          <p>View the application output in your browser. From here you can save the document as a PDF or print.</p>
+          <a href="{% url 'form_print' cf.pk %}">
+            <button type="button" class="btn btn-primary">View Form</button>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="col">
-      <a class="" href="{% url 'form_print' cf.pk %}"><h3>Print Form</h3></a>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
+  <div class="row w-50">
     <h4>Authorized Users</h4>
-    <ul>
+    <div class="list-group">
     {% for email in cf.authorized_users.all %}
-      <li class="row">
+      <div class="list-group-item d-flex justify-content-between align-items-start">
+        <span>{{email.email}}</span>
         {% if email.email != user.email %}
-          <form action="delete" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="email" value="{{email.email}}"/>
-            <button class="badge badge-pill badge-danger" type="submit" name="save">x</button>
-          </form>
+        <form action="delete" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="email" value="{{email.email}}"/>
+          <button class="badge rounded-pill bg-danger" type="submit" name="save"><i class="fas fa-user-slash"></i></button>
+        </form>
         {% endif %}
-        {{email.email}}
-     </li>
+       </div>
     {% endfor %}
-    </ul>
     </div>
-    <div class="col">
+  </div>
+  <div class="row mt-4">
     <h4>Add Additional Authorized Users</h4>
     {% if form.errors %}
     <p>{{form.errors}}</p>
@@ -51,9 +54,15 @@
       {% csrf_token %}
       <div class="form-group">
         <label for="id_email">Email</label>
-        <input class="form-control" type="email" name="email" required="" id="id_email">
+        <div class="row row-cols-lg-auto">
+          <div class="col-12">
+            <input class="form-control" type="email" name="email" required="" id="id_email">
+          </div>
+          <div class="col-12">
+            <button class="btn btn-success" type="submit" name="save"><i class="fas fa-user-plus"></i></button>
+          </div>
+        </div>
       </div>
-      <button class="btn btn-primary" type="submit" name="save">Add</button>
     </form>
     </div>
   </div>

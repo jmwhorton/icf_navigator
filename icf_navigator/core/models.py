@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from users.models import ADUser, PotentialUser
 from typedmodels.models import TypedModel
+import datetime
 
 class ConsentForm(models.Model):
     study_name = models.CharField(max_length=500)
@@ -31,6 +32,15 @@ class ConsentForm(models.Model):
             except EditText.DoesNotExist:
                 pass
         return dict
+
+    @property
+    def last_modified(self):
+        return Response.objects.filter(form=self.pk).latest().last_change
+
+    @property
+    def response_count(self):
+        return Response.objects.filter(form=self.pk).count()
+    
 
     def __str__(self):
         return self.study_name[:20]
@@ -62,8 +72,10 @@ class Response(models.Model):
     form = models.ForeignKey(ConsentForm, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     data = models.JSONField(blank=True, null=True)
+    last_change = models.DateTimeField(auto_now=True)
     class Meta:
         unique_together = [['form', 'question']]
+        get_latest_by = 'last_change'
     def __str__(self):
         return "{}[{}]".format(self.form, self.question)
 
