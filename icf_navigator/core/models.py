@@ -157,7 +157,6 @@ class YesNoExplainQuestion(Question):
     def form(self, *args, **kwargs):
         return YesNoExplainForm(self.extra_text, *args, **kwargs)
     def for_dict(self, data):
-        print(self.explain_when)
         if self.explain_when == 'B' or (self.explain_when == 'Y' and data['yes']) or (self.explain_when =='N' and data['yes'] == False):
             return data['explanation']
         return data['yes']

@@ -4,10 +4,10 @@ behave==1.2.6
 behave-django==1.4.0
 colorama==0.4.3
 coverage==5.3
-Django==3.1.2
+Django==3.1.14
 django-typed-models==0.10.0
 green==3.2.3
-lxml==4.5.2
+lxml==4.6.5
 parse==1.16.0
 parse-type==0.5.2
 pytz==2020.1
@@ -16,4 +16,4 @@ six==1.15.0
 soupsieve==2.0.1
 sqlparse==0.3.1
 Unidecode==1.1.1
-urllib3==1.25.10
+urllib3==1.26.5
