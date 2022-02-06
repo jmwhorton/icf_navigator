@@ -73,6 +73,7 @@ class Response(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     data = models.JSONField(blank=True, null=True)
     last_change = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(ADUser, on_delete=models.CASCADE)
     class Meta:
         unique_together = [['form', 'question']]
         get_latest_by = 'last_change'

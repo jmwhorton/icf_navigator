@@ -24,6 +24,7 @@ class NewEmailForm(forms.Form):
 def form_manage(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     first_section = models.Section.objects.first().pk
+    recent = models.Response.objects.filter(form=form_id)[:10]
     form = NewEmailForm()
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return redirect('home')
@@ -40,12 +41,14 @@ def form_manage(request, form_id):
                   'core/form_manage.html',
                   {'cf': cf,
                    'first_section': first_section,
-                   'form': form})
+                   'form': form,
+                   'recent': recent})
 
 @login_required
 def form_manage_delete(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     form = NewEmailForm()
+    recent = models.Response.objects.filter(form=form_id)[:10]
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return redirect('home')
     if request.method == 'POST':
@@ -58,7 +61,8 @@ def form_manage_delete(request, form_id):
     return render(request,
                   'core/form_manage.html',
                   {'cf': cf,
-                   'form': form})
+                   'form': form,
+                   'recent': recent})
 
 class NewConsentForm(forms.Form):
     study_name = forms.CharField()
@@ -204,7 +208,8 @@ def question_main(request, form_id, question_id):
         form = question.form(request.POST)
         if form.is_valid():
             r, created = models.Response.objects.get_or_create(form=cf,
-                                                      question=question)
+                                                      question=question,
+                                                      user=request.user)
             r.data = form.cleaned_data
             r.save()
             if(question.canned_yes):

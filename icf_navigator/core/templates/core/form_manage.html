@@ -29,42 +29,55 @@
         </div>
       </div>
     </div>
-  <div class="row w-50">
-    <h4>Authorized Users</h4>
-    <div class="list-group">
-    {% for email in cf.authorized_users.all %}
-      <div class="list-group-item d-flex justify-content-between align-items-start">
-        <span>{{email.email}}</span>
-        {% if email.email != user.email %}
-        <form action="delete" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="email" value="{{email.email}}"/>
-          <button class="badge rounded-pill bg-danger" type="submit" name="save"><i class="fas fa-user-slash"></i></button>
-        </form>
-        {% endif %}
-       </div>
-    {% endfor %}
-    </div>
-  </div>
-  <div class="row mt-4">
-    <h4>Add Additional Authorized Users</h4>
-    {% if form.errors %}
-    <p>{{form.errors}}</p>
-    {% endif %}
-    <form method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="id_email">Email</label>
-        <div class="row row-cols-lg-auto">
-          <div class="col-12">
-            <input class="form-control" type="email" name="email" required="" id="id_email">
-          </div>
-          <div class="col-12">
-            <button class="btn btn-success" type="submit" name="save"><i class="fas fa-user-plus"></i></button>
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+    <div class="col">
+      <h4>Authorized Users</h4>
+      <div class="list-group">
+      {% for email in cf.authorized_users.all %}
+        <div class="list-group-item d-flex justify-content-between align-items-start">
+          <span>{{email.email}}</span>
+          {% if email.email != user.email %}
+          <form action="delete" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="email" value="{{email.email}}"/>
+            <button class="badge rounded-pill bg-danger" type="submit" name="save"><i class="fas fa-user-slash"></i></button>
+          </form>
+          {% endif %}
+         </div>
+      {% endfor %}
+      </div>
+      <h4 class="mt-4">Add Additional Authorized Users</h4>
+      {% if form.errors %}
+      <p>{{form.errors}}</p>
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_email">Email</label>
+          <div class="row row-cols-lg-auto">
+            <div class="col-12">
+              <input class="form-control" type="email" name="email" required="" id="id_email">
+            </div>
+            <div class="col-12">
+              <button class="btn btn-success" type="submit" name="save"><i class="fas fa-user-plus"></i></button>
+            </div>
           </div>
         </div>
+      </form>
+    </div>
+    <div class="col">
+      <h4>Recent Changes</h4>
+      <div class="list-group">
+      {% for change in recent %}
+        <div class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">{{change.question}}</div>
+            {{change.user.email}}
+          </div>
+          <small class="text-muted">{{change.last_change|timesince}}</small>
+         </div>
+      {% endfor %}
       </div>
-    </form>
     </div>
   </div>
 </div>
