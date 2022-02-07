@@ -1,0 +1,102 @@
+{% load static %}
+{% load icf_extras %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+{% endblock %}
+<div class="content">
+
+  <div class="body">
+
+    <h2 class="underline">Genetic information collected in the study</h2>
+    <p>We will use your samples for genetic testing. This testing will look at the genes that may be responsible for (explain in clear, understandable terms).</p>
+
+    {% explain_text "whole_genome_sequencing" pd et %}
+
+    <h3>Where will you keep my information and samples?</h3>
+    <ul>
+      {% in_list "Biospecimen Collection" "research_features" pd as biospecimen %}
+      <li>Once we give your information{% if biospecimen %} and study samples{% endif %} a code, we will keep the key to this code in a locked file.</li>
+      <li>Only these people and groups will be able to link it to you:</li>
+      <ul class="checkmark-list">{% list_values "access_to_identifiable_info" pd %}</ul>
+      <li>We <icf-todo>[will also / will not]</icf-todo> put information about you from the study in your medical record.</li>
+      <li><icf-todo>We will put a copy of this form in your medical record.</icf-todo></li>
+    </ul>
+
+    <h3>Who will see my information</h3>
+    <ul>
+      <li>We will protect your information as described in this form</li>
+      {% is_true "anonymized_info question" pd as phi_collected %}
+      {% in_list "Genetics" "research_features" pd as genetics %}
+      {% with coded=True %}
+      {% if phi_collected %}
+      <li>The local study team will know your name and have access to your information.</li>
+      <li>We will do our best to make sure no one else knows that you are part of the study or can match the information to you.</li>
+      <li>We [will/ will not] take your name off information and study samples that we collect from you during the study. We will give your information and study samples a code, so that no one can identify you</li>
+      {% endif %}
+      {% if genetics %}
+      <li>All of your genetic test results will be labeled with (indicate if they will have direct identifiers, a code, or be anonymized).</li>
+      {% endif %}
+      {% if coded or phi_collected == False %}
+      <li>We also want you to know that even though we will (choose one: “give your test results a code”/”remove anything that can identify you”), those results are unique to you. As technology changes, it may become possible for people to identify you from these results.</li>
+      {% endif %}
+      {% explain_text_li "aggregate data provided to sponsor" pd et %}
+      {% if coded %}
+      <li>But the sponsor will only see a code number instead of your name. </li>
+      {% else %}
+      <li>This will include your name and other information that can identify you</li>
+      {% endif %}
+      {% if coded and phi_collected %}
+      <li>When we share the results of this study in reports, medical journals, or presentations, we will not include your name.</li>
+      {% endif %}
+      {% if phi_collected %}
+      <li>It [may still / will not] be possible for someone to identify you from the information you provide during this study</li>
+      {% endif %}
+      <li>There are people who make sure the study is run the right way. These people may see information that identifies you. They are</li>
+      <ul class="checkmark-list">
+        <li><icf-todo>[Name of study sponsor or funding source]</icf-todo></li>
+        {% list_values "access_to_identifiable_info" pd %}
+      </ul>
+      {% list_value "AR-Reportable_Disease_question" pd %}
+      <li>State law requires that we tell the authorities if we learn about possible abuse or that you might hurt yourself or someone else.</li>
+      {% endwith %}
+    </ul>
+
+    <h3>Are there extra privacy risks because of the genetic testing?</h3>
+    <p>{% explain_text "genetic_results_provided" pd et %}</p>
+
+    {% is_true "genetic_results_provided" pd as provided %}
+    {% if provided %}
+    <p>Yes. Genetic testing may have special privacy risks. The main risks for this study include:</p>
+    <ul>
+      {% explain_text_li "genetic_results_provided" pd et %}
+      {% if provided %}
+      <li>Others may find out about your genetic test results and cause you to worry that your results will make it harder for you to get insurance or find a job.</li>
+      {% endif %}
+      {% explain_text_li "genetic_data_centralized_databases" pd et %}
+    </ul>
+    {% else %}
+    <p>Yes. Genetic testing may have special privacy risks.</p>
+    {% endif %}
+
+    <h3>How long will you keep my information?</h3>
+    {{ pd.Length_Keeping_Personal_Info }}
+    {{ pd.Length_Keeping_Samples_biospecimens }}
+
+    <h3><icf-todo>If I stop being in the study, what will you do with my information and samples that you collected while I was in the study?</icf-todo></h3>
+
+    <li>We (will/will not) be able to take your information and samples out of the study after it has started.</li>
+    <li>If you wish to have your information and samples taken out of the study, call [2.0 = PI name] at [2.0 = PI phone number]</li>
+
+    <h3>Will my information or samples from the study be used for anything else, including future research?</h3>
+    <p>No. Your information and samples will be used only for this study. It will not be used for future research, either with or without identifiers.</p>
+
+    <p>Yes. If you agree below, we will use your [16.4, describe planned future use].</p>
+    <p>You must agree to this future use of your information and samples to be in this study.</p>
+    <ul>
+      <li>Explain the types of future research anticipated, where/how the information will be stored, steps to minimize risks to confidentiality, and a reminder of how subjects may request to withdraw use of their information. </li>
+      <li>Indicate whether the information/biospecimens will include identifiers during either storage or future use. If you say the info/samples will be anonymized, add language clarifying they cannot be removed after the identifiers are removed.</li>
+      <li>If information/biospecimens may be shared outside of the current study team, then include this statement,  Your information and samples may be shared with other researchers, who are not part of this study. [Indicate whether they may be from outside the institution. If others may use the info for future research, include something like, e.g. “Those researchers will not seek your consent at that time.”]   </li>
+      <li>We may use your samples for future genetic studies that may include whole genome sequencing. </li>
+    </ul>
+  </div>
+</div>

@@ -34,11 +34,7 @@
     <h3>How will study staff decide if I qualify to be in this study?</h3>
     <p>To decide if you are eligible to join the study, we will:</p>
     <ul>
-      {% for eligiblity in pd.determining_eligiblity %}
-      {% if eligiblity %}
-      <li>{{eligiblity}}</li>
-      {% endif %}
-      {% endfor %}
+      {% list_values "determining_eligiblity" pd %}
     </ul>
 
     <h3>What will happen if I qualify to be part of the research study?</h3>
@@ -69,9 +65,7 @@
     {% elif pd.optional_parts_of_protocol_explain_question %}
     <p>You have a choice to participate in some parts of this study. You can choose whether or not to:</p>
     <ul>
-      {% for option in pd.optional_parts_of_protocol_explain_question %}
-      <li>{{option}}</li>
-      {% endfor %}
+      {% list_values "optional_parts_of_protocol_explain_question" pd %}
     </ul>
     {% else %}
     <p>No</p>

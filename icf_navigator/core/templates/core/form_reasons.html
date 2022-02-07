@@ -1,4 +1,5 @@
 {% load static %}
+{% load icf_extras %}
 {% block header %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
 {% endblock %}
@@ -9,9 +10,7 @@
     <h4>Can someone else take me out of the study?</h4>
     <p>Yes, the study team can take you out of the study if:</p>
     <ul>
-    {% for reason in pd.involuntarily_removed_reasons %}
-      <li>{{reason}}</li>
-    {% endfor %}
+    {% list_values "involuntarily_removed_reasons" pd %}
     </ul>
   </div>
 </div>

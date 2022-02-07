@@ -1,0 +1,11 @@
+.checkmark-list {
+  list-style-type:"\2713";
+}
+
+.circle-list {
+  list-style-type: circle;
+}
+
+icf-todo {
+  color: red;
+}

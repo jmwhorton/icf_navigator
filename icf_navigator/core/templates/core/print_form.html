@@ -1,10 +1,22 @@
 {% extends "base_generic.html" %}
+{% load icf_extras %}
 {% block content %}
 <div id="print_background">
   <div id="wrapper">
+    {% in_list "Biospecimen Collection" "research_features" pd as biospecimen %}
+    {% in_list "Genetics" "research_features" pd as genetics %}
     {% include "core/form_key.html" %}
     {% include "core/form_about.html" %}
     {% include "core/form_risks.html" %}
+    {% include "core/form_benefits.html" %}
+    {% include "core/form_confidentiality.html" %}
+    {% if biospecimen %}
+    {% include "core/form_biospecimens.html" %}
+    {% endif %}
+    {% if genetics %}
+    {% include "core/form_genetics.html" %}
+    {% endif %}
+    {% include "core/form_other.html" %}
   </div>
 </div>
 {% endblock %}

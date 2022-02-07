@@ -1,0 +1,36 @@
+{% load static %}
+{% load icf_extras %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+{% endblock %}
+<div class="content">
+
+  <div class="body">
+
+    <h2 class="underline">About the results from the study</h2>
+
+    <h3>Will you tell me the results of the study?</h3>
+    <p>We will not send you the overall results of the study or your own results.</p>
+    <p>Once the study is done, we will send you:</p>
+    <ul>
+    <li>A summary of all the results from the entire study</li>
+    <li>Your individual results</li>
+    </ul>
+    <p>We will not send you:</p>
+    <ul>
+    <li>A summary of all the results from the entire study</li>
+    <li>Your individual results</li>
+    </ul>
+
+    <h3>Will you tell me anything you learn that may affect my health?</h3>
+
+    <p>Since this study is for research purposes only, we will not tell you if we learn anything that might impact your health.
+    </p>
+    <p><icf-todo>[Explanation to 15.3, what details will be shared and how]</icf-todo></p>
+
+    <p>After we tell you the genetic results, you may be upset by learning this information about you or your family. For example, this can happen if you learn about a genetic disorder that you did not know about yet. If you are concerned about the results, share your concerns about the results with your regular doctor.</p>
+
+    <h3>Will you share study results with the public?</h3>
+    <p>We may share overall results in papers or public talks. These will not include your personal results or any details that would identify you.</p>
+  </div>
+</div>

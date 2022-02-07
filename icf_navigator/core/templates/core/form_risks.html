@@ -12,9 +12,7 @@
     <h3>What are the risks of being in this study?</h3>
     {% if pd.minimal_risk_question %}
     <ul>
-    {% for risk in pd.Risks_full_explanation %}
-      <li>{{risk}}</li>
-    {% endfor %}
+    {% list_values "Risks_full_explanation" pd %}
     {% list_value "unknown_unforeseeable_risks" pd %}
     </ul>
     {% else %}
@@ -24,9 +22,7 @@
     {% if pd.other_discomforts_inconveniences %}
     <p>The study might affect you in these ways:</p>
     <ul>
-    {% for effect in pd.discomforts_inconveniences_explanation_list %}
-      <li>effect</li>
-    {% endfor %}
+    {% list_values "discomforts_inconveniences_explanation_list" pd %}
     </ul>
     {% endif %}
 
@@ -37,29 +33,20 @@
       <p>You will need to pay for:</p>
       <span>TODO: add new question for listing things you will need to pay for.</span>
       <p>{{et.how_to_get_reimbursed}}</p>
-      {% if pd.routine_medical_costs_participant_responsible == True %}
-        <p>{{et.routine_medical_costs_participant_responsible}}</p>
-        {% else %}
-        <p>{{ pd.routine_medical_costs_participant_responsible }}</p>
-      {% endif %}
-      {% else %}
+      {% explain_text "routine_medical_costs_participant_responsible" pd et %}
       <p>{{et.costs_to_be_in_study}}</p>
     {% endif %}
     
     {% if pd.minimal_risk_question == True %}
     <h3>What if I get sick or hurt while I am in this study?</h3>
     <p>If you get hurt or sick when you are here for the study, we will help you get the care you need. This may include first aid, emergency care, and any follow-up care you need.</p>
-    {% if pd.costs_covered_if_complications == True %}
-      {{et.costs_covered_if_complications}}
-    {% else %}
-      {{pd.costs_covered_if_complications}}
-    {% endif %}
+    {% explain_text "costs_covered_if_complications" pd et %}
     <p>If you get hurt or sick when you are <span class="underline">not</span> here and, and you think it is because of the study, you should:</p>
-    <ul style='list-style-type:"\2713"'>
+    <ul class="checkmark-list">
       <li>Call your doctor (if it is an emergency, call 911).</li>
       <li>Call [24/7 team name] at [24/7 team number].</li>
       <li>Give your doctor or Emergency Room staff:</li>
-        <ul style='list-style-type:circle'>
+        <ul class="circle-list">
           <li>The name of this study ({{pd.study_title}})</li>
           <li>The name of the head researcher for this study ({{pd.primary_contact.name}})</li>
           <li>A copy of this form if you have it</li>

@@ -26,8 +26,8 @@
     <div class="icon-section">
       <img class="icon" src="{% static 'core/book_magnify.png' %}">
       <ul>
-        <li>{{pd.simple_study_explanation_question}}</li>
-        <li>{{pd.relevancy_of_research_question}}</li>
+        {% list_value "simple_study_explanation_question" pd %}
+        {% list_value "relevancy_of_research_question" pd %}
       </ul>
     </div>
 
@@ -36,9 +36,7 @@
     <div class="icon-section">
       <img class="icon" src="{% static 'core/checklist.png' %}">
       <ul>
-        {% for activity in pd.Research_activity_options %}
-        <li>{{activity}}</li>
-        {% endfor %}
+        {% list_values "Research_activity_options" pd %}
       </ul>
     </div>
 
@@ -46,11 +44,7 @@
     <div class="icon-section">
       <img class="icon" src="{% static 'core/checkmark.png' %}">
       <ul>
-        {% for reason in pd.Reasons_to_join_question %}
-        {% if reason %}
-        <li>{{reason}}</li>
-        {% endif %}
-        {% endfor %}
+        {% list_values "Reasons_to_join_question" pd %}
       </ul>
     </div>
 
@@ -59,11 +53,7 @@
       <img class="icon" src="{% static 'core/warning.png' %}">
       <ul>
         <li>You may not wish to spend the time it would take to take part. </li>
-        {% for reason in pd.reason_NOT_to_join_question %}
-        {% if reason %}
-        <li>{{reason}}</li>
-        {% endif %}
-        {% endfor %}
+        {% list_values "reason_NOT_to_join_question" pd %}
       </ul>
     </div>
 

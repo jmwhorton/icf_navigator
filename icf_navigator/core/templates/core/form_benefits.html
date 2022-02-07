@@ -1,0 +1,29 @@
+{% load static %}
+{% load icf_extras %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/print_form.css' %}">
+{% endblock %}
+<div class="content">
+
+  <div class="body">
+
+    <h2 class="underline">Benefits of being in the study</h2>
+
+    <h3>Will being in this study help me in any way?</h3>
+    {% if pd.direct_benefit_from_study %}
+    <p>Being in the study may or may not help you.</p>
+    {% else %}
+    <p>We do not think that being in this study will help you. But it may help others in the future. What we learn may help in the following ways:</p>
+    {% endif %}
+    <ul>
+    {% list_values "benefits_to_others_explain" pd %}
+    </ul>
+
+    <h3>Will I be paid for being in the study?</h3>
+    {% if pd.paid_for_being_in_study %}
+      {{ pd.paid_for_being_in_study }}
+    {% else %}
+      <p>No. You will not be paid for being in this study.</p>
+    {% endif %}
+  </div>
+</div>
