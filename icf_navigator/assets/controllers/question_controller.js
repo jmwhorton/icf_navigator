@@ -2,13 +2,18 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
   static targets = ["form", "save"];
-  static values = { url: String }
+  static values = { url: String, id: String }
 
   connect() {
     this.saveTarget.disabled = true;
   }
 
   dirty() {
+    this.saveTarget.disabled = false;
+    document.getElementById(`${this.idValue}_trix_wrapper`).style.display = 'none';
+  }
+
+  trixDirty(){
     this.saveTarget.disabled = false;
   }
 
@@ -23,12 +28,12 @@ export default class extends Controller {
 
     const url = this.urlValue;
     const c = this.saveTarget;
+    const id = this.idValue;
 
     // success
     XHR.addEventListener("load", function(event){
-      //alert(event.target.responseText);
       if(event.target.status == 200){
-        c.disabled = true;
+        document.getElementById(`question_wrapper_${id}`).innerHTML = event.target.responseText;
         fetch(url)
         .then(response => response.text())
         .then(html => document.getElementById("small_preview").innerHTML = html);

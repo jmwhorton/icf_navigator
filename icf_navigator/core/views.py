@@ -6,6 +6,7 @@ from core import models
 from users.models import PotentialUser
 from django import forms
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 # Create your views here.
 def home_view(request):
@@ -194,17 +195,18 @@ def new_form(request):
             cf = models.ConsentForm.objects.create(study_name=study_name)
             cf.authorized_users.add(pu)
             cf.save()
-            return HttpResponseRedirect(reverse('form_sections', args=(cf.pk,)))
+            return HttpResponseRedirect(reverse('form_manage', args=(cf.pk,)))
         else:
             return HttpResponse("bad form", status=500)
     else:
         return HttpResponse("require POST", status=405)
 
 @login_required
-def question_main(request, form_id, question_id):
+def question_main(request, form_id, question_id, section_id):
     if request.method == 'POST':
         question = models.Question.objects.get(pk=question_id)
         cf = models.ConsentForm.objects.get(pk=form_id)
+        section = models.Section.objects.get(pk=section_id)
         form = question.form(request.POST)
         if form.is_valid():
             r, created = models.Response.objects.get_or_create(form=cf,
@@ -212,15 +214,28 @@ def question_main(request, form_id, question_id):
                                                       user=request.user)
             r.data = form.cleaned_data
             r.save()
-            if(question.canned_yes):
+            if(question.canned_yes and r.is_yes):
                 et, created = models.EditText.objects.get_or_create(response=r)
                 et.text = question.canned_yes.text
                 et.save()
-            if(question.canned_no):
+            elif(question.canned_no and r.is_no):
                 et, created = models.EditText.objects.get_or_create(response=r)
                 et.text = question.canned_no.text
                 et.save()
-            return HttpResponse("ok", status=200)
+            else:
+                models.EditText.objects.filter(response=r).delete()
+
+            question.form = question.form(r.data)
+            try:
+                single_et = models.EditText.objects.get(response=r)
+                question.edit_text = single_et
+            except:
+                question.edit_text = None
+            return render(request, 'core/question.html', {
+                    'question': question,
+                    'consent_form': cf,
+                    'section': section
+                })
         else:
             return HttpResponse("bad form", status=500)
     return HttpResponse("require POST", status=405)

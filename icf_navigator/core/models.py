@@ -35,12 +35,15 @@ class ConsentForm(models.Model):
 
     @property
     def last_modified(self):
-        return Response.objects.filter(form=self.pk).latest().last_change
+        responses = Response.objects.filter(form=self.pk)
+        if responses:
+            return responses.latest().last_change
+        else:
+            return datetime.datetime.now()
 
     @property
     def response_count(self):
         return Response.objects.filter(form=self.pk).count()
-    
 
     def __str__(self):
         return self.study_name[:20]
@@ -79,6 +82,14 @@ class Response(models.Model):
         get_latest_by = 'last_change'
     def __str__(self):
         return "{}[{}]".format(self.form, self.question)
+
+    @property
+    def is_yes(self):
+        return self.data.get('yes') == True
+
+    @property
+    def is_no(self):
+        return self.data.get('yes') == False
 
 class EditText(models.Model):
     response = models.ForeignKey(Response, on_delete=models.CASCADE)
@@ -128,11 +139,12 @@ class YesNoForm(forms.Form):
 
 class YesNoQuestion(Question):
     def form(self, *args, **kwargs):
-        return YesNoForm(*args, **kwargs)
+        return YesNoForm(*args, auto_id=False, **kwargs)
     def for_dict(self, data):
         return data['yes']
 
 class YesNoExplainForm(forms.Form):
+    auto_id = False
     yes = forms.TypedChoiceField(label='',
                              required=True,
                              coerce=lambda x: x == 'True',
@@ -155,7 +167,7 @@ class YesNoExplainQuestion(Question):
     ]
     explain_when = models.CharField(blank=True, null=True, max_length=1, choices=YNB_CHOICES)
     def form(self, *args, **kwargs):
-        return YesNoExplainForm(self.extra_text, *args, **kwargs)
+        return YesNoExplainForm(self.extra_text, *args, auto_id=False, **kwargs)
     def for_dict(self, data):
         if self.explain_when == 'B' or (self.explain_when == 'Y' and data['yes']) or (self.explain_when =='N' and data['yes'] == False):
             return data['explanation']

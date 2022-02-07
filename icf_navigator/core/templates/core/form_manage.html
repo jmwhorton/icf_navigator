@@ -64,6 +64,7 @@
           </div>
         </div>
       </form>
+      <p>If you would like to share your form with the developers for the purposes of improving the tool, please add <span style="color: green">share@icf.nav</span> as an authorized user. You can remove this sharing at any time.</p>
     </div>
     <div class="col">
       <h4>Recent Changes</h4>
@@ -80,5 +81,14 @@
       </div>
     </div>
   </div>
+  {% if user.is_superuser %}
+  <div class="row mt-3">
+    <div class="col-6">
+      <ul>
+        <li><a href="/debug/json/{{cf.pk}}">JSON Debug Page</a></li>
+      </ul>
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

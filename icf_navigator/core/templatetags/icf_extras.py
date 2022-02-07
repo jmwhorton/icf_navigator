@@ -35,12 +35,17 @@ def list_values(value, pd):
 def percent(a, b):
     if(a and b):
         return (int(a)/int(b)) * 100
+    if(b == 0):
+        return 100
     else:
         return 0
 
 @register.simple_tag()
 def in_list(value, key, pd):
-    return value in pd[key]
+    if key in pd:
+        return value in pd[key]
+    else:
+        return False
 
 @register.simple_tag()
 def explain_text(value, pd, et):
