@@ -23,6 +23,13 @@ export default class extends Controller {
     newScore = Math.floor((newScore * k) + 0.5 * Math.sign(newScore)) / k;
     if(newScore > 0){
       this.scoreTarget.innerHTML = `Grade: ${score.fleschKincaidGrade} / ${newScore}`;
+      if(newScore < 8) {
+        this.scoreTarget.style.color = 'black';
+      } else if(newScore < 12){
+        this.scoreTarget.style.color = 'gold';
+      } else {
+        this.scoreTarget.style.color = 'red';
+      }
     } else {
       this.scoreTarget.innerHTML = '';
     }
