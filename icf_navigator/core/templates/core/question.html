@@ -23,7 +23,7 @@
         <span class="text-danger">{{field.errors}}</span>
       </div>
       {% endif %}
-      <div class="form-group">
+      <div class="form-group" data-controller="readability">
         {% if field.label %}
         {{ field.label_tag }}
         {% endif %}
@@ -34,6 +34,7 @@
           {% endif %}
           {{ field }}
         </div>
+        <div data-readability-target="score"></div>
       </div>
     {% endfor %}
     {% if question.type == "core.textlistquestion" %}
