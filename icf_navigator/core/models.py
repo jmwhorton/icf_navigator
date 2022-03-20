@@ -3,6 +3,7 @@ from django import forms
 from users.models import ADUser, PotentialUser
 from typedmodels.models import TypedModel
 import datetime
+import pytz
 
 
 class ConsentForm(models.Model):
@@ -40,7 +41,7 @@ class ConsentForm(models.Model):
         if responses:
             return responses.latest().last_change
         else:
-            return datetime.datetime.now()
+            return datetime.datetime.now(pytz.UTC)
 
     @property
     def response_count(self):
