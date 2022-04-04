@@ -4,13 +4,11 @@ IMAGE_NAME=jrutecht/icf_navigator
 
 default: build
 
-build: last_built 
-
-last_built: Dockerfile
+build:
 	docker build . -t ${IMAGE_NAME}:${TAG} -t ${IMAGE_NAME}:latest
 	date > last_built
 
-push: last_built
+push:
 	docker image push ${IMAGE_NAME}:${TAG}
 	docker image push ${IMAGE_NAME}:latest
 

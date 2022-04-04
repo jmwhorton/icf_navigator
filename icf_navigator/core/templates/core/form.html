@@ -68,8 +68,11 @@
     <div id="small_preview" class="small_form col-lg-5">
       <small style="color: red">TODO: click on section of output form to jump to question</small>
     {% if section.template != "none" %}
-      <div id="small_wrapper">
-        {% include section.template %}
+      <div data-controller="readability">
+        <div data-readability-target="score"></div>
+        <div id="small_wrapper" data-readability-target="text">
+          {% include section.template %}
+        </div>
       </div>
     {% endif %}
     </div>

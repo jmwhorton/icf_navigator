@@ -17,8 +17,8 @@ export default class extends Controller {
   }
 
   updateScore(){
-    let score = this.getScores(this.textTarget.value);
-    var newScore = this.grade(this.textTarget.value);
+    let score = this.getScores(this.textTarget.textContent);
+    var newScore = this.grade(this.textTarget.textContent);
     let k = Math.pow(10, 2);
     newScore = Math.floor((newScore * k) + 0.5 * Math.sign(newScore)) / k;
     if(newScore > 0){
