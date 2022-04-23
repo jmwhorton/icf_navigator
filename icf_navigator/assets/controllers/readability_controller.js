@@ -23,8 +23,10 @@ export default class extends Controller {
 
   updateScore(){
     // let score = this.getScores(this.textTarget.textContent);
-    let grade = this.grade(this.textTarget.textContent);
-    var score = this.rate(this.textTarget.textContent);
+    var grade = this.fkGrade(this.textTarget.textContent);
+    var score = this.fkRate(this.textTarget.textContent);
+    let smog = this.smogIndex(this.textTarget.textContent);
+    console.log(smog);
     score = this.round(score);
     grade = this.round(grade);
     if(grade > 0){
@@ -42,7 +44,7 @@ export default class extends Controller {
   }
 
   // Taken from https://github.com/dana-ross/flesch-kincaid
-  syllables(x) {
+  syllableCount(x) {
     /*
      * basic algortithm: each vowel-group indicates a syllable, except for: final
      * (silent) e 'ia' ind two syl @AddSyl and @SubSyl list regexps to massage the
@@ -95,7 +97,7 @@ export default class extends Controller {
 
   words(x) {
     x = x.split('\n').map(t => t.trim()).filter(line => line.length > 0).join(' ');
-    return (x.split(/\s+/) || ['']).length;
+    return (x.split(/\s+/) || ['']);
   };
 
   sentences(x) {
@@ -103,25 +105,73 @@ export default class extends Controller {
     let sentenceRegex = new RegExp('[.?!]\\s[^a-z]', 'g');
     console.log(x);
     console.log(x.split(sentenceRegex));
-    return (x.split(sentenceRegex) || ['']).length;
+    return (x.split(sentenceRegex) || ['']);
+  };
+
+  polySyllableCount(x) {
+    var count = 0;
+    for(let word of this.words(x)){
+      if(this.syllableCount(word) >= 3){
+        count += 1;
+      }
+    }
+    return count;
   };
 
   syllablesPerWord(x) {
-    return this.syllables(x) / this.words(x);
+    return this.syllableCount(x) / this.words(x).length;
   };
 
   wordsPerSentence(x) {
-    return this.words(x) / this.sentences(x);
+    return this.words(x).length / this.sentences(x).length;
   };
 
-  rate(x) {
-    console.log(`Syllables: ${this.syllables(x)}`);
-    console.log(`Words: ${this.words(x)}`);
-    console.log(`Sentences: ${this.sentences(x)}`);
+  letterCount(x) {
+    return this.words(x).replace(/\s+/g, '').length;
+  };
+
+  lettersPerWord(x) {
+    let letterCount = this.letterCount(x);
+    let wordCount = this.words(x).length;
+    if(wordCount > 0){
+      return letterCount / wordCount;
+    } else {
+      return 0;
+    }
+  };
+
+  sentencePerWord(x) {
+    let sentences = this.sentences(x).length;
+    let words = this.words(x).length;
+    if(wordCount > 0){
+      return sentences / words;
+    } else {
+      return 0;
+    }
+  };
+
+  fkRate(x) {
+    console.log(`Syllables: ${this.syllableCount(x)}`);
+    console.log(`Words: ${this.words(x).length}`);
+    console.log(`Sentences: ${this.sentences(x).length}`);
     return 206.835 - 1.015 * this.wordsPerSentence(x) - 84.6 * this.syllablesPerWord(x);
   };
 
-  grade(x) {
+  fkGrade(x) {
     return 0.39 * this.wordsPerSentence(x) + 11.8 * this.syllablesPerWord(x) - 15.59;
+  };
+
+  smogIndex(x) {
+    let sentences = this.sentences(x).length;
+    let pollySyllables = this.polySyllableCount(x);
+    let smog = 1.043 * (Math.pow(pollySyllables * (30 / sentences), 0.5)) + 3.1291;
+    return smog;
+  }:
+
+  clIndex(x) {
+    let lettersPerWord = this.lettersPerWord(x) * 100;
+    let sentencesPerWord = this.sentencesPerWord(x) * 100;
+    let coleman = 0.0588 * lettersPerWord - 0.296 * sentences - 15.8;
+    return coleman;
   };
 }
