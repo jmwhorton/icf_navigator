@@ -166,7 +166,7 @@ export default class extends Controller {
     let pollySyllables = this.polySyllableCount(x);
     let smog = 1.043 * (Math.pow(pollySyllables * (30 / sentences), 0.5)) + 3.1291;
     return smog;
-  }:
+  };
 
   clIndex(x) {
     let lettersPerWord = this.lettersPerWord(x) * 100;

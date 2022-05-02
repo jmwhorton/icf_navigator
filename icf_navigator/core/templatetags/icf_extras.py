@@ -32,6 +32,11 @@ def list_values(value, pd):
     return format_html_join('\n', '<li>{}</li>', values)
 
 @register.simple_tag()
+def list_text(value, pd):
+    if value in pd:
+        return (', '.join(pd[value]))
+
+@register.simple_tag()
 def percent(a, b):
     if(a and b):
         return (int(a)/int(b)) * 100

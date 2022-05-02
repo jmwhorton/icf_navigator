@@ -7,29 +7,25 @@
 
   <div class="body">
 
-    <p><icf-todo>[[Still being implemented]]</icf-todo></p>
     <h2 class="underline">About the results from the study</h2>
 
     <h3>Will you tell me the results of the study?</h3>
-    <p>We will not send you the overall results of the study or your own results.</p>
+    <p>{{et.any_study_results_provided}}</p>
+    {% if pd.any_study_results_provided %}
     <p>Once the study is done, we will send you:</p>
     <ul>
-    <li>A summary of all the results from the entire study</li>
-    <li>Your individual results</li>
+    <li>{{et.Individual_results_provided}}</li>
+    <li>{{et.aggregate_results_provided}}</li>
     </ul>
-    <p>We will not send you:</p>
-    <ul>
-    <li>A summary of all the results from the entire study</li>
-    <li>Your individual results</li>
-    </ul>
+    {% endif %}
 
     <h3>Will you tell me anything you learn that may affect my health?</h3>
+    <p>{{et.Inform_of_health_impact}}</p>
 
-    <p>Since this study is for research purposes only, we will not tell you if we learn anything that might impact your health.
-    </p>
-    <p><icf-todo>[Explanation to 15.3, what details will be shared and how]</icf-todo></p>
-
-    <p>After we tell you the genetic results, you may be upset by learning this information about you or your family. For example, this can happen if you learn about a genetic disorder that you did not know about yet. If you are concerned about the results, share your concerns about the results with your regular doctor.</p>
+    {% in_list "Genetics" "research_features" pd as genetics %}
+    {% if genetics %}
+    {{et.genetic_results_provided}}
+    {% endif %}
 
     <h3>Will you share study results with the public?</h3>
     <p>We may share overall results in papers or public talks. These will not include your personal results or any details that would identify you.</p>
