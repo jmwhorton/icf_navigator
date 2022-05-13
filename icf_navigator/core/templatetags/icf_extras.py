@@ -22,6 +22,12 @@ def list_value(value, pd):
     return ''
 
 @register.simple_tag()
+def text_value(value, pd):
+    if value in pd:
+        return format_html('<p>{}</p>', pd[value])
+    return ''
+
+@register.simple_tag()
 def list_values(value, pd):
     if value not in pd:
         return ''

@@ -20,7 +20,7 @@
     <h3>Who is leadering this study?</h3>
     <p>The main researcher leader the study is:
     <br/>Study Leader: {{pd.primary_contact.name}}, {{pd.primary_contact.title}}
-    <br/>[PI Institution]
+    <!--<br/>[PI Institution]-->
     <br/>Phone: {{pd.primary_contact.phone_number|phone}}
     <br/>E-mail: {{pd.primary_contact.email}}</p>
     <h3>What is this study about?</h3>
@@ -40,7 +40,7 @@
     <h3>What will happen if I qualify to be part of the research study?</h3>
     <p>{{pd.randomization_explanation_question}}</p>
     <p>Depending on which study group you are in, you may complete these activities during the study:
-    <br/If you qualify, you will complete these activities during the study:</p>
+    <br/>If you qualify, you will complete these activities during the study:</p>
     <ul>
       {% for option in pd.Research_activity_options %}
       {% if option == "Answer survey questions" %}
@@ -50,8 +50,8 @@
       </li>
       {% elif option == "Answer questions during interviews with study staff" %}
       <li>Answer questions during interviews with study staff.
-      <br/>[need new nav question re: what interviews will ask about] 
-      <br/>[need new nav question to describe details such as location, frequency, duration]
+      <!--<br/>[need new nav question re: what interviews will ask about] 
+      <br/>[need new nav question to describe details such as location, frequency, duration]-->
       </li>
       {% else %}
       <li>{{option}}</li>

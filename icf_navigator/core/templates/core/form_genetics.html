@@ -53,7 +53,7 @@
       {% endif %}
       <li>There are people who make sure the study is run the right way. These people may see information that identifies you. They are</li>
       <ul class="checkmark-list">
-        <li><icf-todo>[Name of study sponsor or funding source]</icf-todo></li>
+        <!--<li><icf-todo>[Name of study sponsor or funding source]</icf-todo></li>-->
         {% list_values "access_to_identifiable_info" pd %}
       </ul>
       {% list_value "AR-Reportable_Disease_question" pd %}
@@ -82,22 +82,18 @@
     {{ pd.Length_Keeping_Personal_Info }}
     {{ pd.Length_Keeping_Samples_biospecimens }}
 
-    <p><icf-todo>[[Still being implemented]]</icf-todo></p>
-    <h3><icf-todo>If I stop being in the study, what will you do with my information and samples that you collected while I was in the study?</icf-todo></h3>
+    <h3>If I stop being in the study, what will you do with my information and samples that you collected while I was in the study?</h3>
 
     <li>We (will/will not) be able to take your information and samples out of the study after it has started.</li>
-    <li>If you wish to have your information and samples taken out of the study, call [2.0 = PI name] at [2.0 = PI phone number]</li>
+    <li>If you wish to have your information and samples taken out of the study, call {{pd.primary_contact.title}} {{pd.primary_contact.name}} at {{pd.primary_contact.phone_number|phone}}</li>
 
     <h3>Will my information or samples from the study be used for anything else, including future research?</h3>
-    <p>No. Your information and samples will be used only for this study. It will not be used for future research, either with or without identifiers.</p>
-
-    <p>Yes. If you agree below, we will use your [16.4, describe planned future use].</p>
+    {% is_true "use of samples or info for future research" pd as future_research %}
+    {% if future_research %}
     <p>You must agree to this future use of your information and samples to be in this study.</p>
-    <ul>
-      <li>Explain the types of future research anticipated, where/how the information will be stored, steps to minimize risks to confidentiality, and a reminder of how subjects may request to withdraw use of their information. </li>
-      <li>Indicate whether the information/biospecimens will include identifiers during either storage or future use. If you say the info/samples will be anonymized, add language clarifying they cannot be removed after the identifiers are removed.</li>
-      <li>If information/biospecimens may be shared outside of the current study team, then include this statement,  Your information and samples may be shared with other researchers, who are not part of this study. [Indicate whether they may be from outside the institution. If others may use the info for future research, include something like, e.g. “Those researchers will not seek your consent at that time.”]   </li>
-      <li>We may use your samples for future genetic studies that may include whole genome sequencing. </li>
-    </ul>
+    {% explain_text "describe planned future use question" pd et %}
+    {% else %}
+    {% text_value "use of samples or info for future research" pd %}
+    {% endif %}
   </div>
 </div>

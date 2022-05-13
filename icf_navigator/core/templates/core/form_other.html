@@ -35,9 +35,8 @@
     <p>If you are an employee at {% list_text "institution_conduting_question" pd %}, nothing about your employment status will change, no matter what you decide.</p>
 
     <h3>What happens if I say yes and join the study, but change my mind later?</h3>
-    <p>{{et.voluntary_withdrawal}}</p>
     <p>{% explain_text "voluntary_withdrawal" pd et %}</p>
-    <p><icf-todo>Add canned no to voluntary withdrawl question</icf-todo></p>
+    <!--<p><icf-todo>Add canned no to voluntary withdrawl question</icf-todo></p>-->
 
     <h3>Can study staff take me out of the study even if I want to continue?</h3>
     {% is_true "involuntary_withdrawal_YN" pd as study_remove %}
@@ -59,7 +58,7 @@
     <h3>I know that:</h3>
     <ul>
     <li>I can stop being in any and all parts of the study at any time and nothing bad will happen to me. </li>
-    <li>I can still get medical care at [8.2] no matter what I decide.</li>
+    <li>I can still get medical care at {% list_text "institution_conduting_question" pd %} no matter what I decide.</li>
     <li>I can call the office that supervises research if I have any questions about the study or about my rights.
     <br/><span style="margin-left: 4em">UAMS Institutional Review Board: 501-686-5667</span></li>
     <li>I do not give up any of my legal rights by signing this form.</li>
