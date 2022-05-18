@@ -7,8 +7,8 @@
 
   <div class="body">
 
-    <h2 class="underline">Other things you should know about the study</h2>
     {% if pd.additional_things_YN %}
+    <h2 class="underline">Other things you should know about the study</h2>
     <p>{% explain_text "additional_things_YN" pd et %}</p>
     {% endif %}
     <h2 class="underline">Learn more</h2>
@@ -46,7 +46,7 @@
     {% list_values "involuntary_withdrawal_reasons" pd %}
     </ul>
     {% else %}
-    <p>No</p>
+    <p>No. You can not be removed from the study if you want to continue.</p>
     {% endif %}
     <h3>By signing the document, I am saying:</h3>
     <ul class="checkmark-list">
