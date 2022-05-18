@@ -7,54 +7,61 @@
 
   <div class="body">
 
-    <h2 class="underline">Risks of being in the study</h2>
+    <div class="break-section">
+      <h2 class="underline">Risks of being in the study</h2>
 
-    <h3>What are the risks of being in this study?</h3>
-    {% if pd.minimal_risk_question %}
-    <ul>
-    {% list_values "Risks_full_explanation" pd %}
-    {% list_value "unknown_unforeseeable_risks" pd %}
-    </ul>
-    {% else %}
-    <p>The risks for this study are no more than what happens in everyday life.</p>
-    {% endif %}
+      <h3>What are the risks of being in this study?</h3>
+      {% if pd.minimal_risk_question %}
+      <ul>
+      {% list_values "Risks_full_explanation" pd %}
+      {% list_value "unknown_unforeseeable_risks" pd %}
+      </ul>
+      {% else %}
+      <p>The risks for this study are no more than what happens in everyday life.</p>
+      {% endif %}
 
-    {% if pd.other_discomforts_inconveniences %}
-    <p>The study might affect you in these ways:</p>
-    <ul>
-    {% list_values "discomforts_inconveniences_explanation_list" pd %}
-    </ul>
-    {% endif %}
+      {% if pd.other_discomforts_inconveniences %}
+      <p>The study might affect you in these ways:</p>
+      <ul>
+      {% list_values "discomforts_inconveniences_explanation_list" pd %}
+      </ul>
+      {% endif %}
 
-    <p>There is also the risk that someone could find out that you were in the study. If someone does find out, they might learn something about you that you do not want others to know. We will do our best to protect your privacy. How we protect your privacy is explained later in this form.</p>
+      <p>There is also the risk that someone could find out that you were in the study. If someone does find out, they might learn something about you that you do not want others to know. We will do our best to protect your privacy. How we protect your privacy is explained later in this form.</p>
+    </div>
 
-    <h3>Will it cost me anything to be in the study?</h3>
-    {% if pd.costs_to_be_in_study %}
-      <p>You will need to pay for:</p>
-      <span>TODO: add new question for listing things you will need to pay for.</span>
-      <p>{{et.how_to_get_reimbursed}}</p>
-      {% explain_text "routine_medical_costs_participant_responsible" pd et %}
-      <p>{{et.costs_to_be_in_study}}</p>
-    {% else %}
-      <p>No. It will not cost anything to participate in the study.</p>
-    {% endif %}
-    
-    {% if pd.minimal_risk_question == True %}
-    <h3>What if I get sick or hurt while I am in this study?</h3>
-    <p>If you get hurt or sick when you are here for the study, we will help you get the care you need. This may include first aid, emergency care, and any follow-up care you need.</p>
-    {% explain_text "costs_covered_if_complications" pd et %}
-    <p>If you get hurt or sick when you are <span class="underline">not</span> here and, and you think it is because of the study, you should:</p>
-    <ul class="checkmark-list">
-      <li>Call your doctor (if it is an emergency, call 911).</li>
-      <!--<li>Call [24/7 team name] at [24/7 team number].</li>-->
-      <li>Give your doctor or Emergency Room staff:</li>
-        <ul class="circle-list">
-          <li>The name of this study ({{pd.study_title}})</li>
-          <li>The name of the head researcher for this study ({{pd.primary_contact.name}})</li>
-          <li>A copy of this form if you have it</li>
-        </ul>
-    </ul>
-    {% endif %}
-    <p><strong>Reminder:</strong> You do not give up any of your legal rights by agreeing to be in this study or by signing this form.</p>
+    <div class="break-section">
+      <h3>Will it cost me anything to be in the study?</h3>
+      {% if pd.costs_to_be_in_study %}
+        <p>You will need to pay for:</p>
+        <span>TODO: add new question for listing things you will need to pay for.</span>
+        <p>{{et.how_to_get_reimbursed}}</p>
+        {% explain_text "routine_medical_costs_participant_responsible" pd et %}
+        <p>{{et.costs_to_be_in_study}}</p>
+      {% else %}
+        <p>No. It will not cost anything to participate in the study.</p>
+      {% endif %}
+      
+      {% if pd.minimal_risk_question == True %}
+    </div>
+
+    <div class="break-section">
+      <h3>What if I get sick or hurt while I am in this study?</h3>
+      <p>If you get hurt or sick when you are here for the study, we will help you get the care you need. This may include first aid, emergency care, and any follow-up care you need.</p>
+      {% explain_text "costs_covered_if_complications" pd et %}
+      <p>If you get hurt or sick when you are <span class="underline">not</span> here and, and you think it is because of the study, you should:</p>
+      <ul class="checkmark-list">
+        <li>Call your doctor (if it is an emergency, call 911).</li>
+        <!--<li>Call [24/7 team name] at [24/7 team number].</li>-->
+        <li>Give your doctor or Emergency Room staff:</li>
+          <ul class="circle-list">
+            <li>The name of this study ({{pd.study_title}})</li>
+            <li>The name of the head researcher for this study ({{pd.primary_contact.name}})</li>
+            <li>A copy of this form if you have it</li>
+          </ul>
+      </ul>
+      {% endif %}
+      <p><strong>Reminder:</strong> You do not give up any of your legal rights by agreeing to be in this study or by signing this form.</p>
+    </div>
   </div>
 </div>

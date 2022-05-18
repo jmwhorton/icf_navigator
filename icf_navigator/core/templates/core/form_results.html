@@ -7,27 +7,33 @@
 
   <div class="body">
 
-    <h2 class="underline">About the results from the study</h2>
+    <div class="break-section">
+      <h2 class="underline">About the results from the study</h2>
 
-    <h3>Will you tell me the results of the study?</h3>
-    <p>{{et.any_study_results_provided}}</p>
-    {% if pd.any_study_results_provided %}
-    <p>Once the study is done, we will send you:</p>
-    <ul>
-    <li>{{et.Individual_results_provided}}</li>
-    <li>{{et.aggregate_results_provided}}</li>
-    </ul>
-    {% endif %}
+      <h3>Will you tell me the results of the study?</h3>
+      <p>{{et.any_study_results_provided}}</p>
+      {% if pd.any_study_results_provided %}
+      <p>Once the study is done, we will send you:</p>
+      <ul>
+      <li>{{et.Individual_results_provided}}</li>
+      <li>{{et.aggregate_results_provided}}</li>
+      </ul>
+      {% endif %}
+    </div>
 
-    <h3>Will you tell me anything you learn that may affect my health?</h3>
-    <p>{{pd.Inform_of_health_impact}}</p>
+    <div class="break-section">
+      <h3>Will you tell me anything you learn that may affect my health?</h3>
+      <p>{{pd.Inform_of_health_impact}}</p>
 
-    {% in_list "Genetics" "research_features" pd as genetics %}
-    {% if genetics %}
-    {{et.genetic_results_provided}}
-    {% endif %}
+      {% in_list "Genetics" "research_features" pd as genetics %}
+      {% if genetics %}
+      {{et.genetic_results_provided}}
+      {% endif %}
+    </div>
 
-    <h3>Will you share study results with the public?</h3>
-    <p>We may share overall results in papers or public talks. These will not include your personal results or any details that would identify you.</p>
+    <div class="break-section">
+      <h3>Will you share study results with the public?</h3>
+      <p>We may share overall results in papers or public talks. These will not include your personal results or any details that would identify you.</p>
+    </div>
   </div>
 </div>

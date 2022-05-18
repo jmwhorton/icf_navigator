@@ -5,12 +5,14 @@
 {% endblock %}
 <div class="content">
   <div class="text_content">
-    <h4>What if I say yes but decide later to quit the study?</h4>
-    <p>{{pd.leave_study_explain}}</p>
-    <h4>Can someone else take me out of the study?</h4>
-    <p>Yes, the study team can take you out of the study if:</p>
-    <ul>
-    {% list_values "involuntarily_removed_reasons" pd %}
-    </ul>
+    <div class="break-section">
+      <h4>What if I say yes but decide later to quit the study?</h4>
+      <p>{{pd.leave_study_explain}}</p>
+      <h4>Can someone else take me out of the study?</h4>
+      <p>Yes, the study team can take you out of the study if:</p>
+      <ul>
+      {% list_values "involuntarily_removed_reasons" pd %}
+      </ul>
+    </div>
   </div>
 </div>

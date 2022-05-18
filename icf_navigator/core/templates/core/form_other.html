@@ -8,62 +8,97 @@
   <div class="body">
 
     {% if pd.additional_things_YN %}
-    <h2 class="underline">Other things you should know about the study</h2>
-    <p>{% explain_text "additional_things_YN" pd et %}</p>
+    <div class="break-section">
+      <h2 class="underline">Other things you should know about the study</h2>
+      <p>{% explain_text "additional_things_YN" pd et %}</p>
+    </div>
     {% endif %}
-    <h2 class="underline">Learn more</h2>
-    <h3>Where can I find more information about this clinical trial?</h3>
-    <p>A description of this clinical trial will be available on http://www.ClinicalTrials.gov, as required by U.S. law. This website will not include information that can identify you. At most, the website will include a summary of the results. You can search this website any time.</p>
-    <h3>What if I have questions?</h3>
-    Please call the head researcher of the study ({{pd.primary_contact.title}} {{pd.primary_contact.name}}) at {{pd.primary_contact.phone_number|phone}} if you:
-    <ul>
-      <li>Have any questions about this study</li>
-      <li>Have questions about your rights</li>
-      <li>Feel you have been injured in any way by being in this study</li>
-    </ul>
-    <p>You can also call the UAMS Institutional Review Board. This is the office at UAMS that supervises research. You may want to call them if you cannot reach the study team or want to speak to someone not directly involved with this study. To do so, call 501-686-5667 during normal work hours.</p>
-    <h2 class="underline">Your decision about joining the study</h2>
-    <h3>What are the alternatives to being in this study?</h3>
-    <p>Alternatives are other treatments you can get or other ways you can help with the research besides being in this study.</p>
-    <p>{{et.study_alternatives}}</p>
-    <p>{% explain_text "study_alternatives" pd et %}</p>
-    <h3>What if I say no, I do not want to be in this study or do not qualify?</h3>
-    <p>It is okay to say no to joining this study. You will not lose any services, benefits, or rights you would normally have at {% list_text "institution_conduting_question" pd %} if you decide not to join. If you decide to join the study, it should be because you really want to volunteer.</p>
+    <div class="break-section">
+      <h2 class="underline">Learn more</h2>
+      <h3>Where can I find more information about this clinical trial?</h3>
+      <p>A description of this clinical trial will be available on http://www.ClinicalTrials.gov, as required by U.S. law. This website will not include information that can identify you. At most, the website will include a summary of the results. You can search this website any time.</p>
+    </div>
+    <div class="break-section">
+      <h3>What if I have questions?</h3>
+      Please call the head researcher of the study ({{pd.primary_contact.title}} {{pd.primary_contact.name}}) at {{pd.primary_contact.phone_number|phone}} if you:
+      <ul>
+        <li>Have any questions about this study</li>
+        <li>Have questions about your rights</li>
+        <li>Feel you have been injured in any way by being in this study</li>
+      </ul>
+      <p>You can also call the UAMS Institutional Review Board. This is the office at UAMS that supervises research. You may want to call them if you cannot reach the study team or want to speak to someone not directly involved with this study. To do so, call 501-686-5667 during normal work hours.</p>
+    </div>
 
-    <p>If you are a student at {% list_text "institution_conduting_question" pd %}, nothing about your academic status will change, no matter what you decide.</p>
+    <div class="break-section">
+      <h2 class="underline">Your decision about joining the study</h2>
+      <h3>What are the alternatives to being in this study?</h3>
+      <p>Alternatives are other treatments you can get or other ways you can help with the research besides being in this study.</p>
+      <p>{{et.study_alternatives}}</p>
+      <p>{% explain_text "study_alternatives" pd et %}</p>
+    </div>
 
-    <p>If you are an employee at {% list_text "institution_conduting_question" pd %}, nothing about your employment status will change, no matter what you decide.</p>
+    <div class="break-section">
+      <h3>What if I say no, I do not want to be in this study or do not qualify?</h3>
+      <p>It is okay to say no to joining this study. You will not lose any services, benefits, or rights you would normally have at {% list_text "institution_conduting_question" pd %} if you decide not to join. If you decide to join the study, it should be because you really want to volunteer.</p>
 
-    <h3>What happens if I say yes and join the study, but change my mind later?</h3>
-    <p>{% explain_text "voluntary_withdrawal" pd et %}</p>
-    <!--<p><icf-todo>Add canned no to voluntary withdrawl question</icf-todo></p>-->
+      <p>If you are a student at {% list_text "institution_conduting_question" pd %}, nothing about your academic status will change, no matter what you decide.</p>
 
-    <h3>Can study staff take me out of the study even if I want to continue?</h3>
-    {% is_true "involuntary_withdrawal_YN" pd as study_remove %}
-    {% if study_remove %}
-    <p>Yes, the head researcher can take you out of the study if:</p>
-    <ul>
-    {% list_values "involuntary_withdrawal_reasons" pd %}
-    </ul>
-    {% else %}
-    <p>No. You can not be removed from the study if you want to continue.</p>
-    {% endif %}
-    <h3>By signing the document, I am saying:</h3>
-    <ul class="checkmark-list">
-      <li>I agree to be in the study.</li>
-      <li>I know that I do not have to join the study.</li>
-      <li>Someone has talked with me about the information in this form and answered all of my questions. </li>
-      <li>I have been asked if I wish to talk directly to the study leader. </li>
-    </ul>
-    <h3>I know that:</h3>
-    <ul>
-    <li>I can stop being in any and all parts of the study at any time and nothing bad will happen to me. </li>
-    <li>I can still get medical care at {% list_text "institution_conduting_question" pd %} no matter what I decide.</li>
-    <li>I can call the office that supervises research if I have any questions about the study or about my rights.
-    <br/><span style="margin-left: 4em">UAMS Institutional Review Board: 501-686-5667</span></li>
-    <li>I do not give up any of my legal rights by signing this form.</li>
-    </ul>
+      <p>If you are an employee at {% list_text "institution_conduting_question" pd %}, nothing about your employment status will change, no matter what you decide.</p>
+    </div>
 
-    <h3>I agree to be part of this study:</h3>
+    <div class="break-section">
+      <h3>What happens if I say yes and join the study, but change my mind later?</h3>
+      <p>{% explain_text "voluntary_withdrawal" pd et %}</p>
+      <!--<p><icf-todo>Add canned no to voluntary withdrawl question</icf-todo></p>-->
+    </div>
+
+    <div class="break-section">
+      <h3>Can study staff take me out of the study even if I want to continue?</h3>
+      {% is_true "involuntary_withdrawal_YN" pd as study_remove %}
+      {% if study_remove %}
+      <p>Yes, the head researcher can take you out of the study if:</p>
+      <ul>
+      {% list_values "involuntary_withdrawal_reasons" pd %}
+      </ul>
+      {% else %}
+      <p>No. You can not be removed from the study if you want to continue.</p>
+      {% endif %}
+    </div>
+
+    <div class="break-section">
+      <h3>By signing the document, I am saying:</h3>
+      <ul class="checkmark-list">
+        <li>I agree to be in the study.</li>
+        <li>I know that I do not have to join the study.</li>
+        <li>Someone has talked with me about the information in this form and answered all of my questions. </li>
+        <li>I have been asked if I wish to talk directly to the study leader. </li>
+      </ul>
+    </div>
+
+    <div class="break-section">
+      <h3>I know that:</h3>
+      <ul class="checkmark-list">
+        <li>I can stop being in any and all parts of the study at any time and nothing bad will happen to me. </li>
+        <li>I can still get medical care at {% list_text "institution_conduting_question" pd %} no matter what I decide.</li>
+        <li>I can call the office that supervises research if I have any questions about the study or about my rights.
+        <br/><span style="margin-left: 4em">UAMS Institutional Review Board: 501-686-5667</span></li>
+        <li>I do not give up any of my legal rights by signing this form.</li>
+      </ul>
+    </div>
+
+    <div class="break-section">
+      <h3>I agree to be part of this study:</h3>
+      <div class="signature-row">
+        <p class="signature">Your name (please print)</p>
+        <p class="signature">Your signature</p>
+        <p class="signature signature-date">Date</p>
+      </div>
+      <div class="signature-row">
+        <p class="signature">Printed name (staff obtaining consent)</p>
+        <p class="signature">Signature (staff obtaining consent)</p>
+        <p class="signature signature-date">Date</p>
+      </div>
+    </div>
+
   </div>
 </div>

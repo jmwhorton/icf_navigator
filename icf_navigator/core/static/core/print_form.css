@@ -129,3 +129,28 @@ div.body {
 .underline {
   text-decoration: underline;
 }
+
+.signature-row {
+  display: flex;
+  flex-wrap: wrap;
+  break-inside: avoid-page;
+}
+
+.signature {
+  border-top: 1px black solid;
+  width: 300px;
+  margin-top: 50px;
+  margin-right: 30px;
+}
+
+.break-section {
+  break-inside: avoid-page;
+}
+
+li {
+  break-inside: avoid-page;
+}
+
+p {
+  break-inside: avoid-page;
+}

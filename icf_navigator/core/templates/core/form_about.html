@@ -7,68 +7,84 @@
 
   <div class="body">
 
-    <h2 class="underline">About this form</h2>
+    <div class="break-section">
+      <h2 class="underline">About this form</h2>
 
-    <h3>What if I need more details about something in this form?</h3>
-    <ul>
-      <li>This form may have words you do not understand. You can ask research staff to read it with you.</li>
-      <li>Please ask any questions that will help you decide if you want to be in this study. If you decide to take part in the study, it should be because you really want to volunteer.</li>
-      <li>You are free to ask questions at any time. You can ask before, during, or after you are in the study.</li>
-    </ul>
+      <h3>What if I need more details about something in this form?</h3>
+      <ul>
+        <li>This form may have words you do not understand. You can ask research staff to read it with you.</li>
+        <li>Please ask any questions that will help you decide if you want to be in this study. If you decide to take part in the study, it should be because you really want to volunteer.</li>
+        <li>You are free to ask questions at any time. You can ask before, during, or after you are in the study.</li>
+      </ul>
+    </div>
 
-    <h2 class="underline">About the research study</h2>
-    <h3>Who is leading this study?</h3>
-    <p>The main researcher leader the study is:
-    <br/>Study Leader: {{pd.primary_contact.name}}, {{pd.primary_contact.title}}
-    <!--<br/>[PI Institution]-->
-    <br/>Phone: {{pd.primary_contact.phone_number|phone}}
-    <br/>E-mail: {{pd.primary_contact.email}}</p>
-    <h3>What is this study about?</h3>
-    <p>{{pd.simple_study_explanation_question}}</p>
 
-    <h2 class="underline">About the research study</h2>
-    <h3>Why am I being asked to be in this research study?</h3>
-    <p>{{pd.study_why_asking_this_participant}}</p>
-    <p>About {{pd.number_in_study}} people will be part of this study.{% if pd.number_people_UAMS != pd.number_in_study %} Of those, about {{pd.number_people_UAMS}} will be part of the study at UAMS. The rest will take part at other sites.{% endif %}</p>
+    <div class="break-section">
+      <h2 class="underline">About the research study</h2>
+      <h3>Who is leading this study?</h3>
+      <p>The main researcher leader the study is:
+      <br/>Study Leader: {{pd.primary_contact.name}}, {{pd.primary_contact.title}}
+      <!--<br/>[PI Institution]-->
+      <br/>Phone: {{pd.primary_contact.phone_number|phone}}
+      <br/>E-mail: {{pd.primary_contact.email}}</p>
+      <h3>What is this study about?</h3>
+      <p>{{pd.simple_study_explanation_question}}</p>
+    </div>
 
-    <h3>How will study staff decide if I qualify to be in this study?</h3>
-    <p>To decide if you are eligible to join the study, we will:</p>
-    <ul>
-      {% list_values "determining_eligiblity" pd %}
-    </ul>
+    <div class="break-section">
+      <h2 class="underline">About the research study</h2>
+      <h3>Why am I being asked to be in this research study?</h3>
+      <p>{{pd.study_why_asking_this_participant}}</p>
+      <p>About {{pd.number_in_study}} people will be part of this study.{% if pd.number_people_UAMS != pd.number_in_study %} Of those, about {{pd.number_people_UAMS}} will be part of the study at UAMS. The rest will take part at other sites.{% endif %}</p>
+    </div>
 
-    <h3>What will happen if I qualify to be part of the research study?</h3>
-    <p>{{pd.randomization_explanation_question}}</p>
-    <p>Depending on which study group you are in, you may complete these activities during the study:
-    <br/>If you qualify, you will complete these activities during the study:</p>
-    <ul>
-      {% for option in pd.Research_activity_options %}
-      {% if option == "Answer survey questions" %}
-      <li>Answer survey questions.
-      {% if et.answer_every_question %}<br/>{{et.answer_every_question_required|safe}}{% endif %}
-      {% if et.help_with_surveys %}<br/>{{et.help_with_surveys|safe}}{% endif %}
-      </li>
-      {% elif option == "Answer questions during interviews with study staff" %}
-      <li>Answer questions during interviews with study staff.
-      <!--<br/>[need new nav question re: what interviews will ask about] 
-      <br/>[need new nav question to describe details such as location, frequency, duration]-->
-      </li>
+    <div class="break-section">
+      <h3>How will study staff decide if I qualify to be in this study?</h3>
+      <p>To decide if you are eligible to join the study, we will:</p>
+      <ul>
+        {% list_values "determining_eligiblity" pd %}
+      </ul>
+    </div>
+
+    <div class="break-section">
+      <h3>What will happen if I qualify to be part of the research study?</h3>
+      <p>{{pd.randomization_explanation_question}}</p>
+      {% if pd.study_randomization %}
+      <p>Depending on which study group you are in, you may complete these activities during the study:</p>
       {% else %}
-      <li>{{option}}</li>
+      <p>If you qualify, you will complete these activities during the study:</p>
       {% endif %}
-      {% endfor %}
-    </ul>
+      <ul>
+        {% for option in pd.Research_activity_options %}
+        {% if option == "Answer survey questions" %}
+        <li>Answer survey questions.
+        {% if et.answer_every_question %}<br/>{{et.answer_every_question_required|safe}}{% endif %}
+        {% if et.help_with_surveys %}<br/>{{et.help_with_surveys|safe}}{% endif %}
+        </li>
+        {% elif option == "Answer questions during interviews with study staff" %}
+        <li>Answer questions during interviews with study staff.
+        <!--<br/>[need new nav question re: what interviews will ask about] 
+        <br/>[need new nav question to describe details such as location, frequency, duration]-->
+        </li>
+        {% else %}
+        <li>{{option}}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
 
-    <h3>Do I have to complete all parts of the study?</h3>
-    {% if pd.optional_parts_of_protocol %}
-    <p>{{et.optional_parts_of_protocol}}</p>
-    {% elif pd.optional_parts_of_protocol_explain_question %}
-    <p>You have a choice to participate in some parts of this study. You can choose whether or not to:</p>
-    <ul>
-      {% list_values "optional_parts_of_protocol_explain_question" pd %}
-    </ul>
-    {% else %}
-    <p>No. You do not need to complete all parts of the study.</p>
-    {% endif %}
+    <div class="break-section">
+      <h3>Do I have to complete all parts of the study?</h3>
+      {% if pd.optional_parts_of_protocol %}
+      <p>{{et.optional_parts_of_protocol}}</p>
+      {% elif pd.optional_parts_of_protocol_explain_question %}
+      <p>You have a choice to participate in some parts of this study. You can choose whether or not to:</p>
+      <ul>
+        {% list_values "optional_parts_of_protocol_explain_question" pd %}
+      </ul>
+      {% else %}
+      <p>No. You do not need to complete all parts of the study.</p>
+      {% endif %}
+    </div>
   </div>
 </div>
