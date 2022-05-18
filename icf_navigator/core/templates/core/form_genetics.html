@@ -8,7 +8,8 @@
   <div class="body">
 
     <h2 class="underline">Genetic information collected in the study</h2>
-    <p>We will use your samples for genetic testing. This testing will look at the genes that may be responsible for (explain in clear, understandable terms).</p>
+    <p>We will use your samples for genetic testing.</p>
+    <!-- This testing will look at the genes that may be responsible for (explain in clear, understandable terms).</p>-->
 
     {% explain_text "whole_genome_sequencing" pd et %}
 
@@ -31,13 +32,13 @@
       {% if phi_collected %}
       <li>The local study team will know your name and have access to your information.</li>
       <li>We will do our best to make sure no one else knows that you are part of the study or can match the information to you.</li>
-      <li>We [will/ will not] take your name off information and study samples that we collect from you during the study. We will give your information and study samples a code, so that no one can identify you</li>
+      <li>We will take your name off information and study samples that we collect from you during the study. We will give your information and study samples a code, so that no one can identify you</li>
       {% endif %}
       {% if genetics %}
-      <li>All of your genetic test results will be labeled with (indicate if they will have direct identifiers, a code, or be anonymized).</li>
+      <li>All of your genetic test results will be labeled with a code.</li>
       {% endif %}
       {% if coded or phi_collected == False %}
-      <li>We also want you to know that even though we will (choose one: “give your test results a code”/”remove anything that can identify you”), those results are unique to you. As technology changes, it may become possible for people to identify you from these results.</li>
+      <li>We also want you to know that even though we will give your test results a code, those results are unique to you. As technology changes, it may become possible for people to identify you from these results.</li>
       {% endif %}
       {% explain_text_li "aggregate data provided to sponsor" pd et %}
       {% if coded %}
@@ -49,7 +50,7 @@
       <li>When we share the results of this study in reports, medical journals, or presentations, we will not include your name.</li>
       {% endif %}
       {% if phi_collected %}
-      <li>It [may still / will not] be possible for someone to identify you from the information you provide during this study</li>
+      <li>It may still be possible for someone to identify you from the information you provide during this study</li>
       {% endif %}
       <li>There are people who make sure the study is run the right way. These people may see information that identifies you. They are</li>
       <ul class="checkmark-list">
@@ -84,7 +85,7 @@
 
     <h3>If I stop being in the study, what will you do with my information and samples that you collected while I was in the study?</h3>
 
-    <li>We (will/will not) be able to take your information and samples out of the study after it has started.</li>
+    <li>We will be able to take your information and samples out of the study after it has started.</li>
     <li>If you wish to have your information and samples taken out of the study, call {{pd.primary_contact.title}} {{pd.primary_contact.name}} at {{pd.primary_contact.phone_number|phone}}</li>
 
     <h3>Will my information or samples from the study be used for anything else, including future research?</h3>

@@ -221,7 +221,7 @@ class YesNoExplainQuestion(Question):
 class FreeTextForm(forms.Form):
     text = forms.CharField(
         label="",
-        required=True,
+        required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
@@ -279,7 +279,7 @@ class TextListingForm(forms.Form):
             if not required:
                 attrs["hidden"] = None
             f = forms.CharField(
-                label="", required=required, widget=forms.TextInput(attrs=attrs)
+                label="", required=False, widget=forms.TextInput(attrs=attrs)
             )
             self.fields["text_{}".format(i)] = f
 
@@ -304,7 +304,7 @@ class ContactForm(forms.Form):
         required=True, widget=forms.TextInput(attrs={"class": "form-control"})
     )
     email = forms.EmailField(
-        required=True, widget=forms.TextInput(attrs={"class": "form-control"})
+        required=False, widget=forms.TextInput(attrs={"class": "form-control"})
     )
     phone_number = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control"})
@@ -323,7 +323,7 @@ class ContactQuestion(Question):
 class IntegerForm(forms.Form):
     number = forms.IntegerField(
         label="",
-        required=True,
+        required=False,
         widget=forms.NumberInput(attrs={"class": "form-control"}),
     )
 

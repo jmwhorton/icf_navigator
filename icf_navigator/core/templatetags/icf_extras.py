@@ -18,7 +18,7 @@ def phone(value):
 @register.simple_tag()
 def list_value(value, pd):
     if value in pd:
-        if value != False:
+        if pd[value] != False:
             return format_html('<li>{}</li>', pd[value])
     return ''
 
