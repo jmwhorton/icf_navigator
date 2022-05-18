@@ -29,12 +29,14 @@
     <p>There is also the risk that someone could find out that you were in the study. If someone does find out, they might learn something about you that you do not want others to know. We will do our best to protect your privacy. How we protect your privacy is explained later in this form.</p>
 
     <h3>Will it cost me anything to be in the study?</h3>
-    {% if pd.costs_to_be_in_study != False %}
+    {% if pd.costs_to_be_in_study %}
       <p>You will need to pay for:</p>
       <span>TODO: add new question for listing things you will need to pay for.</span>
       <p>{{et.how_to_get_reimbursed}}</p>
       {% explain_text "routine_medical_costs_participant_responsible" pd et %}
       <p>{{et.costs_to_be_in_study}}</p>
+    {% else %}
+      <p>No. It will not cost anything to participate in the study.</p>
     {% endif %}
     
     {% if pd.minimal_risk_question == True %}

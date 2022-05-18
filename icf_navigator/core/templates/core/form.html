@@ -68,6 +68,8 @@
     {% if section.template != "none" %}
       <div data-controller="readability">
         <div data-readability-target="score"></div>
+        <div data-readability-target="sentence"></div>
+        <div data-readability-target="syllables"></div>
         <div id="small_wrapper" data-readability-target="text">
           {% include section.template %}
         </div>

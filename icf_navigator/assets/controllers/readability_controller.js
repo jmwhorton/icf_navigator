@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ["text", "score"];
+  static targets = ["text", "score", "sentence", "syllable"];
   static values = { score: Number }
 
   connect() {
@@ -23,9 +23,10 @@ export default class extends Controller {
 
   updateScore(){
     // let score = this.getScores(this.textTarget.textContent);
-    var grade = this.fkGrade(this.textTarget.textContent);
-    var score = this.fkRate(this.textTarget.textContent);
-    let smog = this.smogIndex(this.textTarget.textContent);
+    let text = this.textTarget.textContent;
+    var grade = this.fkGrade(text);
+    var score = this.fkRate(text);
+    let smog = this.smogIndex(text);
     console.log(smog);
     score = this.round(score);
     grade = this.round(grade);
@@ -41,6 +42,10 @@ export default class extends Controller {
     } else {
       this.scoreTarget.innerHTML = '';
     }
+    let sentenceCount = this.sentences(text).length;
+    this.sentenceTarget.innerHTML = `Sentences: ${sentenceCount}`;
+    let polySyllableCount = this.polySyllableCount(text);
+    this.syllableTarget.innerHTML = `Polysyllables: ${polySyllableCount}`;
   }
 
   // Taken from https://github.com/dana-ross/flesch-kincaid
