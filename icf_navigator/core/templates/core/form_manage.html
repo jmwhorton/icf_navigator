@@ -65,6 +65,15 @@
         </div>
       </form>
       <p>If you would like to share your form with the developers for the purposes of improving the tool, please add <span style="color: green">share@icf.nav</span> as an authorized user. You can remove this sharing at any time.</p>
+      <h4>Duplicate Form</h4>
+      <form action="duplicate" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="study_name">Name for new form</label>
+          <input class="form-control" type="text" name="study_name" value="" required="">
+        </div>
+        <button class="btn btn-primary" type="submit" name="Start">Duplicate</button>
+      </form>
     </div>
     <div class="col">
       <h4>Recent Changes</h4>

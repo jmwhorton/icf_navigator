@@ -202,6 +202,32 @@ def new_form(request):
         return HttpResponse("require POST", status=405)
 
 @login_required
+def form_duplicate(request, form_id):
+    if request.method == 'POST':
+        form = NewConsentForm(request.POST)
+        old_form = models.ConsentForm.objects.get(pk=form_id)
+        if form.is_valid():
+            study_name = form.cleaned_data['study_name']
+            email = request.user.email
+            pu, created = PotentialUser.objects.get_or_create(email=email)
+            cf = models.ConsentForm.objects.create(study_name=study_name)
+            cf.authorized_users.add(pu)
+            cf.save()
+            for response in models.Response.objects.filter(form=old_form):
+                models.Response.objects.create(
+                    form=cf,
+                    question=response.question,
+                    data=response.data,
+                    user=request.user
+                )
+            return HttpResponseRedirect(reverse('form_manage', args=(cf.pk,)))
+        else:
+            return HttpResponse("bad form", status=500)
+    else:
+        return HttpResponse("require POST", status=405)
+
+
+@login_required
 def question_main(request, form_id, question_id, section_id):
     if request.method == 'POST':
         question = models.Question.objects.get(pk=question_id)
