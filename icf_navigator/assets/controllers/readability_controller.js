@@ -24,17 +24,19 @@ export default class extends Controller {
   updateScore(){
     // let score = this.getScores(this.textTarget.textContent);
     let text = this.textTarget.textContent;
-    var grade = this.fkGrade(text);
-    var score = this.fkRate(text);
+    if(text.length == 0){
+      return;
+    }
+    var fkgrade = this.fkGrade(text);
     let smog = this.smogIndex(text);
-    console.log(smog);
-    score = this.round(score);
+    let coleman = this.clIndex(text);
+    var grade = (fkgrade + smog + coleman) / 3;
     grade = this.round(grade);
     if(grade > 0){
-      this.scoreTarget.innerHTML = `Grade: ${grade} / Score: ${score}`;
-      if(score > 70) {
+      this.scoreTarget.innerHTML = `Grade: ${grade}`;
+      if(grade < 8) {
         this.scoreTarget.style.color = 'black';
-      } else if(score > 60){
+      } else if(grade < 10){
         this.scoreTarget.style.color = 'gold';
       } else {
         this.scoreTarget.style.color = 'red';
@@ -42,8 +44,8 @@ export default class extends Controller {
     } else {
       this.scoreTarget.innerHTML = '';
     }
-    let sentenceCount = this.sentences(text).length;
-    this.sentenceTarget.innerHTML = `Sentences: ${sentenceCount}`;
+    let sentenceCount = this.longSentenceCount(text);
+    this.sentenceTarget.innerHTML = `Long Sentences: ${sentenceCount}`;
     let polySyllableCount = this.polySyllableCount(text);
     this.syllableTarget.innerHTML = `Polysyllables: ${polySyllableCount}`;
   }
@@ -108,8 +110,6 @@ export default class extends Controller {
   sentences(x) {
     x = x.split('\n').map(t => t.trim()).filter(line => line.length > 0).join('. ');
     let sentenceRegex = new RegExp('[.?!]\\s[^a-z]', 'g');
-    console.log(x);
-    console.log(x.split(sentenceRegex));
     return (x.split(sentenceRegex) || ['']);
   };
 
@@ -132,7 +132,7 @@ export default class extends Controller {
   };
 
   letterCount(x) {
-    return this.words(x).replace(/\s+/g, '').length;
+    return this.words(x).join('').replace(/\s+/g, '').length;
   };
 
   lettersPerWord(x) {
@@ -145,20 +145,31 @@ export default class extends Controller {
     }
   };
 
-  sentencePerWord(x) {
+  sentencesPerWord(x) {
     let sentences = this.sentences(x).length;
     let words = this.words(x).length;
-    if(wordCount > 0){
+    if(words > 0){
       return sentences / words;
     } else {
       return 0;
     }
   };
 
+  longSentenceCount(x) {
+    var longCount = 0;
+    let sentences = this.sentences(x);
+    for(let sentence of sentences){
+      if(this.words(sentence).length > 15){
+        longCount += 1;
+      }
+    }
+    return longCount;
+  };
+
   fkRate(x) {
-    console.log(`Syllables: ${this.syllableCount(x)}`);
-    console.log(`Words: ${this.words(x).length}`);
-    console.log(`Sentences: ${this.sentences(x).length}`);
+    // console.log(`Syllables: ${this.syllableCount(x)}`);
+    // console.log(`Words: ${this.words(x).length}`);
+    // console.log(`Sentences: ${this.sentences(x).length}`);
     return 206.835 - 1.015 * this.wordsPerSentence(x) - 84.6 * this.syllablesPerWord(x);
   };
 
@@ -176,7 +187,7 @@ export default class extends Controller {
   clIndex(x) {
     let lettersPerWord = this.lettersPerWord(x) * 100;
     let sentencesPerWord = this.sentencesPerWord(x) * 100;
-    let coleman = 0.0588 * lettersPerWord - 0.296 * sentences - 15.8;
+    let coleman = 0.0588 * lettersPerWord - 0.296 * sentencesPerWord - 15.8;
     return coleman;
   };
 }
