@@ -35,12 +35,12 @@
     <div class="break-section">
       <h3>What we will ask you to do if you join the study</h3>
       <p>If you join, you will be in the study for about {{pd.length_of_study}}. You will be asked to do the study activities below. You can learn more about each of these later in this form.</p>
-      <div class="icon-section">
-        <img class="icon" src="{% static 'core/checklist.png' %}">
-        <ul>
-          {% list_values "Research_activity_options" pd %}
-        </ul>
-      </div>
+    </div>
+    <div class="icon-section">
+      <img class="icon" src="{% static 'core/checklist.png' %}">
+      <ul>
+        {% list_values "Research_activity_options" pd %}
+      </ul>
     </div>
 
     <div class="break-section">

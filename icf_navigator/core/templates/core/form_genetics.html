@@ -19,6 +19,9 @@
       <h3>Where will you keep my information and samples?</h3>
       <ul>
         {% in_list "Biospecimen Collection" "research_features" pd as biospecimen %}
+        {% if genetics %}
+        <li>All of your genetic test results will be labeled with a code.</li>
+        {% endif %}
         <li>Once we give your information{% if biospecimen %} and study samples{% endif %} a code, we will keep the key to this code in a locked file.</li>
         <li>Only these people and groups will be able to link it to you:</li>
         <ul class="checkmark-list">{% list_values "access_to_identifiable_info" pd %}</ul>
@@ -28,9 +31,9 @@
     </div>
 
     <div class="break-section">
-      <h3>Who will see my information</h3>
+      <h3>Who will see my information?</h3>
       <ul>
-        <li>We will protect your information as described in this form</li>
+        <li>We will protect your information as described in this form.</li>
         {% is_true "anonymized_info question" pd as phi_collected %}
         {% in_list "Genetics" "research_features" pd as genetics %}
         {% with coded=True %}
@@ -38,9 +41,6 @@
         <li>The local study team will know your name and have access to your information.</li>
         <li>We will do our best to make sure no one else knows that you are part of the study or can match the information to you.</li>
         <li>We will take your name off information and study samples that we collect from you during the study. We will give your information and study samples a code, so that no one can identify you</li>
-        {% endif %}
-        {% if genetics %}
-        <li>All of your genetic test results will be labeled with a code.</li>
         {% endif %}
         {% if coded or phi_collected == False %}
         <li>We also want you to know that even though we will give your test results a code, those results are unique to you. As technology changes, it may become possible for people to identify you from these results.</li>
@@ -98,7 +98,7 @@
 
       <ul>
         <li>We will be able to take your information and samples out of the study after it has started.</li>
-        <li>If you wish to have your information and samples taken out of the study, call {{pd.primary_contact.title}} {{pd.primary_contact.name}} at {{pd.primary_contact.phone_number|phone}}</li>
+        <li>If you wish to have your information and samples taken out of the study, call {{pd.primary_contact.title}} {{pd.primary_contact.name}} at {{pd.primary_contact.phone_number|phone}}.</li>
       </ul>
     </div>
 
