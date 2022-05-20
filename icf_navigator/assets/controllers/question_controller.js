@@ -33,10 +33,13 @@ export default class extends Controller {
     // success
     XHR.addEventListener("load", function(event){
       if(event.target.status == 200){
-        document.getElementById(`question_wrapper_${id}`).innerHTML = event.target.responseText;
+        let el = document.getElementById(`question_wrapper_${id}`);
+        if(el !== null){
+          el.innerHTML = event.target.responseText;
+        }
         fetch(url)
-        .then(response => response.text())
-        .then(html => document.getElementById("small_preview").innerHTML = html);
+          .then(response => response.text())
+          .then(html => document.getElementById("small_preview").innerHTML = html);
       } else {
         alert(event.target.responseText);
       }

@@ -186,6 +186,7 @@ class YesNoExplainForm(forms.Form):
         "placeholder": "Explain...",
         "data-readability-target": "text",
         "data-action": "readability#change",
+        "class": "form-control",
     }
     explanation = forms.CharField(
         label="",

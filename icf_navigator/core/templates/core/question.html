@@ -66,6 +66,7 @@
 <div id="{{question.id}}_trix_wrapper">
 {% if question.edit_text %}
 <form method="post"
+      class="d-flex flex-column"
       data-controller="question"
       data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
       data-question-target="form"
