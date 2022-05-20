@@ -67,9 +67,19 @@
     <div id="small_preview" class="small_form col-lg-5">
     {% if section.template != "none" %}
       <div data-controller="readability">
-        <div data-readability-target="score"></div>
-        <div data-readability-target="sentence"></div>
-        <div data-readability-target="syllable"></div>
+        <div data-readability-target="container">
+          <div class="d-flex align-items-start">
+            <i data-readability-target="icon" class="far fa-2x fa-book-reader me-3 flex-shrink-0"></i>
+            <div>
+              <h5 class="fw-bold mb-0">Section has <span data-readability-target="score"></span></h5>
+              <ul class="list-unstyled">
+                <li class="fw-light" data-readability-target="short"></li>
+                <li class="fw-light" data-readability-target="sentence"></li>
+                <li class="fw-light" data-readability-target="syllable"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <div id="small_wrapper" data-readability-target="text">
           {% include section.template %}
         </div>

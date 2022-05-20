@@ -1,12 +1,14 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ["text", "score", "sentence", "syllable"];
+  static targets = ["text", "score", "sentence", "syllable", "icon", "container", "short"];
   static values = { score: Number }
 
   connect() {
     if(this.hasTextTarget){
       this.updateScore();
+    } else {
+      this.containerTarget.hidden = true;
     }
   }
 
@@ -21,33 +23,71 @@ export default class extends Controller {
     return Math.floor((n * k) + 0.5 * Math.sign(n)) / k;
   }
 
+  ordinalSuffix(n) {
+    let last = Math.floor(n) % 10;
+    let last_two = Math.floor(n) % 100;
+    if(last === 1 && last_two !== 11) {
+      return `${n}st`;
+    }
+    if(last === 2 && last_two !== 12) {
+      return `${n}nd`;
+    }
+    if(last === 3 && last_two !== 13) {
+      return `${n}rd`;
+    }
+    return `${n}th`;
+  }
+
   updateScore(){
     // let score = this.getScores(this.textTarget.textContent);
     let text = this.textTarget.textContent;
     if(text.length == 0){
+      this.containerTarget.hidden = true;
       return;
     }
     var fkgrade = this.fkGrade(text);
     let smog = this.smogIndex(text);
     let coleman = this.clIndex(text);
     var grade = (fkgrade + smog + coleman) / 3;
-    grade = this.round(grade);
+    grade = Math.floor(grade);
     if(grade > 0){
-      this.scoreTarget.innerHTML = `Grade: ${grade}`;
-      if(grade < 8) {
-        this.scoreTarget.style.color = 'black';
-      } else if(grade < 10){
-        this.scoreTarget.style.color = 'gold';
+      this.scoreTarget.innerHTML = `${this.ordinalSuffix(grade)} Grade Reading Level`;
+      if(grade <= 8) {
+        this.iconTarget.style.color = 'black';
+      } else if(grade <= 12){
+        this.iconTarget.style.color = 'gold';
       } else {
-        this.scoreTarget.style.color = 'red';
+        this.iconTarget.style.color = 'red';
       }
     } else {
       this.scoreTarget.innerHTML = '';
     }
-    let sentenceCount = this.longSentenceCount(text);
-    this.sentenceTarget.innerHTML = `Long Sentences: ${sentenceCount}`;
+    let sentenceCount = this.sentences(text).length;
+    if(sentenceCount < 3){
+      this.shortTarget.innerHTML = `Due to the short length of this writing sample the readability grade may not be accurate.`;
+    } else {
+      this.shortTarget.innerHTML = '';
+    }
+    let longSentenceCount = this.longSentenceCount(text);
+    if(longSentenceCount > 0) {
+      if(longSentenceCount === 1){
+        this.sentenceTarget.innerHTML = `There is ${longSentenceCount} long sentence, which contain more than 15 words.`;
+      } else {
+        this.sentenceTarget.innerHTML = `There are ${longSentenceCount} long sentences, which contain more than 15 words.`;
+      }
+    } else {
+      this.sentenceTarget.innerHTML = '';
+    }
     let polySyllableCount = this.polySyllableCount(text);
-    this.syllableTarget.innerHTML = `Polysyllables: ${polySyllableCount}`;
+    if(polySyllableCount > 0){
+      if(polySyllableCount === 1){
+        this.syllableTarget.innerHTML = `There is ${polySyllableCount} complex word with more than 3 syllables.`;
+      } else {
+        this.syllableTarget.innerHTML = `There are ${polySyllableCount} complex words with more than 3 syllables.`;
+      }
+    } else {
+      this.syllableTarget.innerHTML = '';
+    }
   }
 
   // Taken from https://github.com/dana-ross/flesch-kincaid
@@ -164,13 +204,6 @@ export default class extends Controller {
       }
     }
     return longCount;
-  };
-
-  fkRate(x) {
-    // console.log(`Syllables: ${this.syllableCount(x)}`);
-    // console.log(`Words: ${this.words(x).length}`);
-    // console.log(`Sentences: ${this.sentences(x).length}`);
-    return 206.835 - 1.015 * this.wordsPerSentence(x) - 84.6 * this.syllablesPerWord(x);
   };
 
   fkGrade(x) {

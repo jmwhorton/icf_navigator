@@ -8,14 +8,7 @@
   action="{% url 'question' form_id=consent_form.pk question_id=question.pk section_id=section.id %}"
   method="post">
   {% csrf_token %}
-  {% if user.is_staff %}
-  <div class="text-light">
-    <b>{{question.order}}</b>
-    <span>{{question.label}}</span>
-    <a href="/admin/core/question/{{question.id}}/change/">[edit]</a>
-  </div>
-  {% endif %}
-  <p>{{question.text}}</p>
+  <p class="lead">{{question.text}}</p>
   <div data-controller="multitext" data-multitext-required-value="{{question.minimum_required}}">
     {% for field in question.form %}
       {% if field.errors %}
@@ -34,9 +27,19 @@
           {% endif %}
           {{ field }}
         </div>
-        <div data-readability-target="score"></div>
-        <div data-readability-target="sentence"></div>
-        <div data-readability-target="syllable"></div>
+        <div data-readability-target="container">
+          <div class="d-flex align-items-start mt-2">
+            <i data-readability-target="icon" class="fas fa-book-reader me-3 flex-shrink-0 pt-1"></i>
+            <div>
+              <h6 class="fw-bold mb-0" data-readability-target="score"></h6>
+              <ul class="list-unstyled">
+                <li class="fw-light" data-readability-target="short"></li>
+                <li class="fw-light" data-readability-target="sentence"></li>
+                <li class="fw-light" data-readability-target="syllable"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     {% endfor %}
     {% if question.type == "core.textlistquestion" %}
@@ -52,6 +55,13 @@
          class="btn btn-primary align-self-end"
          type="submit"
          name="save">Save</button>
+  {% if user.is_staff %}
+  <div class="text-light">
+    <b>{{question.order}}</b>
+    <span>{{question.label}}</span>
+    <a class="text-light" href="/admin/core/question/{{question.id}}/change/">[edit]</a>
+  </div>
+  {% endif %}
 </form>
 <div id="{{question.id}}_trix_wrapper">
 {% if question.edit_text %}
