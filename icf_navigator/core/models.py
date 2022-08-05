@@ -4,7 +4,13 @@ from users.models import ADUser, PotentialUser
 from typedmodels.models import TypedModel
 import datetime
 import pytz
+from simple_history.models import HistoricalRecords
 
+
+class Template(models.Model):
+    name = models.CharField(max_length=100)
+    content = models.TextField(blank=True)
+    history = HistoricalRecords()
 
 class ConsentForm(models.Model):
     study_name = models.CharField(max_length=500)
