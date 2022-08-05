@@ -1,0 +1,87 @@
+<form
+  class="d-flex flex-column question"
+  data-controller="question{% if question.type == 'core.yesnoexplainquestion' %} yesno{% endif %}"
+  {% if question.type == 'core.yesnoexplainquestion' %}data-yesno-required-value="{{question.explain_when}}"{% endif %}
+  data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
+  data-question-id-value="{{question.pk}}"
+  data-question-target="form"
+  action="{% url 'question' form_id=consent_form.pk question_id=question.pk section_id=section.id %}"
+  method="post">
+  {% csrf_token %}
+  <p class="lead">{{question.text}}</p>
+  <div data-controller="multitext" data-multitext-required-value="{{question.minimum_required}}">
+    {% for field in question.form %}
+      {% if field.errors %}
+      <div class="question_error">
+        <span class="text-danger">{{field.errors}}</span>
+      </div>
+      {% endif %}
+      <div class="form-group" data-controller="readability">
+        {% if field.label %}
+        {{ field.label_tag }}
+        {% endif %}
+        <div data-action="change->question#dirty input->question#dirty"
+             class="form_fields">
+          {% if field.help_text %}
+          <p data-yesno-target="explain">{{ field.help_text }}</p>
+          {% endif %}
+          {{ field }}
+        </div>
+        <div data-readability-target="container">
+          <div class="d-flex align-items-start mt-2">
+            <i data-readability-target="icon" class="fas fa-book-reader me-3 flex-shrink-0 pt-1"></i>
+            <div>
+              <h6 class="fw-bold mb-0" data-readability-target="score"></h6>
+              <ul class="list-unstyled">
+                <li class="fw-light" data-readability-target="short"></li>
+                <li class="fw-light" data-readability-target="sentence"></li>
+                <li class="fw-light" data-readability-target="syllable"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% if question.type == "core.textlistquestion" %}
+    <button data-multitext-target="more"
+           data-action="multitext#more"
+           class="btn btn-secondary align-self-start"
+           type="button"
+           name="more">More</button>
+    {% endif %}
+  </div>
+  <button data-question-target="save"
+         data-action="question#submit"
+         class="btn btn-primary align-self-end"
+         type="submit"
+         name="save">Save</button>
+  {% if user.is_staff %}
+  <div class="text-light">
+    <b>{{question.order}}</b>
+    <span>{{question.label}}</span>
+    <a class="text-light" href="/admin/core/question/{{question.id}}/change/">[edit]</a>
+  </div>
+  {% endif %}
+</form>
+<div id="{{question.id}}_trix_wrapper">
+{% if question.edit_text %}
+<form method="post"
+      class="d-flex flex-column"
+      data-controller="question"
+      data-question-url-value="{% url 'preview' form_id=consent_form.pk section_id=section.pk %}"
+      data-question-target="form"
+      action="{% url 'edit_text' form_id=consent_form.pk question_id=question.pk %}"
+  >
+  {% csrf_token %}
+  <div data-action="trix-change->question#trixDirty input->question#trixDirty">
+    <input name="text" id="{{question.id}}_trix" value="{{question.edit_text.text}}" type="hidden">
+    <trix-editor input="{{question.id}}_trix"></trix-editor>
+  </div>
+  <button data-question-target="save"
+         data-action="question#submit"
+         class="btn btn-primary align-self-end"
+         type="submit"
+         name="save">Save</button>
+</form>
+{% endif %}
+</div>

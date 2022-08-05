@@ -15,10 +15,9 @@ def home_view(request):
     if request.user.is_authenticated:
         consent_forms = models.ConsentForm.objects.filter(authorized_users__email=request.user.email)
         consent_forms = sorted(consent_forms, key=lambda m: m.last_modified, reverse=True)
-    t = template.Template(models.Template.objects.get(name='core/home.html').content)
-    c = template.RequestContext(request, 
+    return render(request, 
+                  'core/home.html',
                   {'consent_forms': consent_forms})
-    return HttpResponse(t.render(c))
 
 
 class NewEmailForm(forms.Form):
@@ -144,8 +143,8 @@ def form_main(request, form_id, section_id):
                     pass
             except:
                 question.form = question.form()
-    t = template.Template(models.Template.objects.get(name='core/form.html').content)
-    c = template.RequestContext(request, 
+    return render(request, 
+                  'core/form.html',
                   {'consent_form': cf,
                    'pd': pd,
                    'section': section,
@@ -153,7 +152,6 @@ def form_main(request, form_id, section_id):
                    'next_section': next_section,
                    'qgroups': qgroups,
                    'et': et})
-    return HttpResponse(t.render(c))
 
 @login_required
 def section_preview(request, form_id, section_id):
@@ -266,12 +264,11 @@ def question_main(request, form_id, question_id, section_id):
                 question.edit_text = single_et
             except:
                 question.edit_text = None
-            t = template.Template(models.Template.objects.get(name='core/question.html').content)
-            c = template.RequestContext(request, 
+            return render(request, 
+                    'core/question.html',
                     {'question': question,
                     'consent_form': cf,
                     'section': section})
-            return HttpResponse(t.render(c))
         else:
             return HttpResponse("bad form", status=500)
     return HttpResponse("require POST", status=405)
@@ -310,12 +307,11 @@ def debug_questions(request):
                 else:
                     question.warn = True
                     question.in_group = "MULTIPLE GROUPS {} {}".format(question.in_group, qg.name)
-    t = template.Template(models.Template.objects.get(name='core/debug_questions.html').content)
-    c = template.RequestContext(request, 
+    return render(request, 
+                    'core/debug_questions.html',
                     {'questions': questions,
                      'sections': sections,
                      'qgroups': qgroups})
-    return HttpResponse(t.render(c))
 
 @login_required
 def debug_json(request, form_id):

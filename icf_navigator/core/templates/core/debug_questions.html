@@ -1,0 +1,79 @@
+{% extends "base_header.html" %}
+{% load static %}
+{% block title %}{{consent_form.study_name}}{% endblock %}
+{% block header_title %}{{consent_form.study_name}}{% endblock %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/questions.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container-xl">
+  <div class="row">
+    <div class="col-md-3 col-lg-4">
+      {% for section in sections %}
+      <h3>{{section}}</h3>
+      <ul>
+      {% for qgroup in qgroups %}
+        {% ifequal qgroup.section section %}
+        <li>{{qgroup.name}}</li>
+        <small>{{qgroup.logic}}</small>
+          <ul>
+          {% for q in qgroup.qs %}
+            <li><a href="#{{q.order}}">{{q}}</a></li>
+          {% endfor %}
+          </ul>
+        {% endifequal %}
+      {% endfor %}
+      </ul>
+      {% endfor %}
+    </div>
+    <div class="col-md-9 col-lg-8">
+      {% for question in questions %}
+        <form
+          id="{{question.order}}"
+          class="d-flex flex-column">
+          {% csrf_token %}
+          {% if user.is_staff %}
+          <div class="">
+            <b>{{question.order}}</b>
+            <span {% if question.warn %}class="text-danger"{% endif %}>{{question.label}}</span>
+            {% if question.in_group %}
+            <span>[{{question.in_group}}]</span>
+            {% else %}
+            <span class='text-warning'>[NO GROUP]</span>
+            {% endif %}
+            <a href="/admin/core/question/{{question.id}}/change/">[edit]</a>
+          </div>
+          {% endif %}
+          <p>{{question.text}}</p>
+          <div>
+            {% for field in question.form %}
+            {% if field.errors %}
+            <div class="question_error">
+              <span>{{field.errors}}</span>
+            </div>
+            {% endif %}
+            <div class="form-group">
+              {% if field.label %}
+              {{ field.label_tag }}
+              {% endif %}
+              <div data-action="change->question#dirty input->question#dirty"
+                   class="form_fields">
+                {{ field }}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </form>
+      {% if question.canned_yes %}
+      <p>{{ question.canned_yes }}</p>
+      <p>{{ question.canned_yes.text }}</p>
+      {% endif %}
+      {% if question.canned_no %}
+      <p>{{ question.canned_no }}</p>
+      <p>{{ question.canned_no.text }}</p>
+      {% endif %}
+      {% endfor %}
+      </div>
+    </div>
+</div>
+{% endblock %}

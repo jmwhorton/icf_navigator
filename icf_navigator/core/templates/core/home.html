@@ -1,0 +1,58 @@
+{% extends "base_header.html" %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h4>Your Projects</h4>
+      <div class="list-group">
+      {% for cf in consent_forms %}
+        <a class="list-group-item list-group-item action d-flex gap-3 py-3" href="{% url 'form_manage' cf.pk %}">
+          <i class="far fa-file-alt fa-2x"></i>
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <div>
+              <h6 class="mb-0">{{cf.study_name}}</h6>
+              <p class="mb-0 opacity-75">{{cf.response_count}} questions answered</p>
+            </div>
+            <small class="opacity-50 text-nowrap">{{cf.last_modified|timesince}} ago</small>
+          </div>
+        </a>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="col-6">
+      <h4>Create a new form</h4>
+      <form action="/form/new" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="study_name">Name for Project</label>
+          <input class="form-control" type="text" name="study_name" value="" required="">
+        </div>
+        <button class="btn btn-primary" type="submit" name="Start">Start</button>
+      </form>
+    </div>
+  </div>
+  {% if user.is_superuser %}
+  <div class="row mt-3">
+    <div class="col-6">
+      <ul>
+        <li><a href="/debug/questions">Question Debug Page</a></li>
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1 class="display-4">Informed Consent Navigator</h1>
+    <p class="lead">A guided questionnaire approach for building Informed Consent documents.</p>
+    <hr class="my-4">
+    <p>This tool is still in active development, please send any feedback or bug reports to <a href="mailto:jrutecht@uams.edu">jrutecht@uams.edu</a>.</p>
+    <a class="btn btn-primary btn-lg" href="/accounts/login/">Login</a>
+    <a class="btn btn-secondary btn-lg" href="/accounts/register/">Register</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base_header.html" %}
+{% load static %}
+{% load icf_extras %}
+{% block title %}{{consent_form.study_name}}{% endblock %}
+{% block header_title %}{{consent_form.study_name}}{% endblock %}
+{% block nav_link %}<a class="nav-link text-light" href="{% url 'form_print' consent_form.pk %}">Print</a>{% endblock %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/questions.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container-xl">
+
+  <ul class="nav nav-pills nav-fill" role="tablist">
+    {% for sec in sections %}
+    {% percent sec.answer_count sec.question_count as percent_complete %}
+    <li class="nav-item nav-link" aria-selected={% if section.pk == sec.pk %}"true"{% else %}"false"{% endif %}>
+      <a class="nav-link {% if section.pk == sec.pk %}active{% endif %}" href="{% url 'form' form_id=consent_form.pk section_id=sec.pk %}">{{sec.name}}</a>
+      <div class="progress position-relative mt-1" style="height: 15px">
+        <div class="progress-bar {% if percent_complete == 100 %}bg-success bg-opacity-75{%endif%}" role="progressbar" style="width: {{percent_complete}}%"></div>
+        <small class="justify-content-center d-flex position-absolute w-100 text-dark">{{sec.answer_count}}/{{sec.question_count}}</small>
+      </div>
+     </li>
+    {% endfor %}
+  </ul>
+  <hr>
+
+  <div class="row">
+    <div class="col-md-12 col-lg-7">
+
+      <div data-controller="section"
+           data-section-index-value="0">
+        <div class="d-flex justify-content-between">
+          <button class="btn" data-section-target="navbutton" data-action="section#previous"><i class="fas fa-arrow-left"></i></button>
+          <div data-section-target="progress" hidden>
+            <span data-section-target="currentCount">?</span>
+            <span>/</span>
+            <span data-section-target="totalCount">?</span>
+          </div>
+          <button class="btn" data-section-target="navbutton" data-action="section#next"><i class="fas fa-arrow-right"></i></button>
+          <a data-section-target="next" href="{% url 'form' form_id=consent_form.pk section_id=next_section %}" hidden></a>
+        </div>
+
+        <hr/>
+        {% for qgroup in qgroups %}
+        <div class="qgroup_container"
+             data-section-target="qgroup">
+
+          <h4>{{ qgroup.name }}</h4>
+          <div id="question_container">
+
+          <hr class="mb-5"/>
+          {% for question in qgroup.qs %}
+            <div id="question_wrapper_{{question.pk}}">
+              {% include 'core/question.html' %}
+            </div>
+            <hr class="mt-5 mb-5"/>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+      <div class="d-flex justify-content-between">
+        <button class="btn" data-section-target="navbutton" data-action="section#previous"> ← </button>
+        <button class="btn" data-section-target="navbutton" data-action="section#next"> → </button>
+      </div>
+      </div>
+    </div>
+    <div id="small_preview" class="small_form col-lg-5">
+    {% if section.template != "none" %}
+      <div data-controller="readability">
+        <div data-readability-target="container">
+          <div class="d-flex align-items-start">
+            <i data-readability-target="icon" class="far fa-2x fa-book-reader me-3 flex-shrink-0"></i>
+            <div>
+              <h5 class="fw-bold mb-0">Section has <span data-readability-target="score"></span></h5>
+              <ul class="list-unstyled">
+                <li class="fw-light" data-readability-target="short"></li>
+                <li class="fw-light" data-readability-target="sentence"></li>
+                <li class="fw-light" data-readability-target="syllable"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="small_wrapper" data-readability-target="text">
+          {% include section.template %}
+        </div>
+      </div>
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
