@@ -341,7 +341,7 @@ class CustomQuestion(Question):
     custom_form = models.CharField(blank=True, null=True, max_length=50)
 
     def form(self, *args, **kwargs):
-        pass
+        return forms.Form(*args, **kwargs)
 
     def for_dict(self, data):
         return data

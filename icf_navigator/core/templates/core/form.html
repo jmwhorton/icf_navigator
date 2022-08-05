@@ -51,7 +51,11 @@
           <hr class="mb-5"/>
           {% for question in qgroup.qs %}
             <div id="question_wrapper_{{question.pk}}">
-              {% include 'core/question.html' %}
+              {% if question.custom_form %}
+                {% include question.custom_form %}
+              {% else %}
+                {% include 'core/question.html' %}
+              {% endif %}
             </div>
             <hr class="mt-5 mb-5"/>
             {% endfor %}

@@ -10,7 +10,10 @@ export default class extends Controller {
 
   dirty() {
     this.saveTarget.disabled = false;
-    document.getElementById(`${this.idValue}_trix_wrapper`).style.display = 'none';
+    // quick fix for custom questions potentially lacking a trix wrapper
+    if(document.getElementById(`${this.idValue}_trix_wrapper`)){
+      document.getElementById(`${this.idValue}_trix_wrapper`).style.display = 'none';
+    }
   }
 
   trixDirty(){

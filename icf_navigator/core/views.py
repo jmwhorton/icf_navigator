@@ -12,14 +12,18 @@ from django.template.loader import render_to_string
 def home_view(request):
     consent_forms = []
     if request.user.is_authenticated:
-        consent_forms = models.ConsentForm.objects.filter(authorized_users__email=request.user.email)
-        consent_forms = sorted(consent_forms, key=lambda m: m.last_modified, reverse=True)
-    return render(request,
-                  'core/home.html',
-                  {'consent_forms': consent_forms})
+        consent_forms = models.ConsentForm.objects.filter(
+            authorized_users__email=request.user.email
+        )
+        consent_forms = sorted(
+            consent_forms, key=lambda m: m.last_modified, reverse=True
+        )
+    return render(request, "core/home.html", {"consent_forms": consent_forms})
+
 
 class NewEmailForm(forms.Form):
     email = forms.EmailField()
+
 
 @login_required
 def form_manage(request, form_id):
@@ -28,22 +32,22 @@ def form_manage(request, form_id):
     recent = models.Response.objects.filter(form=form_id)[:10]
     form = NewEmailForm()
     if not cf.authorized_users.filter(email=request.user.email).exists():
-        return redirect('home')
-    if request.method == 'POST':
+        return redirect("home")
+    if request.method == "POST":
         form = NewEmailForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data["email"]
             pu, created = PotentialUser.objects.get_or_create(email=email)
             if not cf.authorized_users.filter(email=email).exists():
                 cf.authorized_users.add(pu)
                 cf.save()
                 form = NewEmailForm()
-    return render(request,
-                  'core/form_manage.html',
-                  {'cf': cf,
-                   'first_section': first_section,
-                   'form': form,
-                   'recent': recent})
+    return render(
+        request,
+        "core/form_manage.html",
+        {"cf": cf, "first_section": first_section, "form": form, "recent": recent},
+    )
+
 
 @login_required
 def form_manage_delete(request, form_id):
@@ -51,28 +55,28 @@ def form_manage_delete(request, form_id):
     form = NewEmailForm()
     recent = models.Response.objects.filter(form=form_id)[:10]
     if not cf.authorized_users.filter(email=request.user.email).exists():
-        return redirect('home')
-    if request.method == 'POST':
+        return redirect("home")
+    if request.method == "POST":
         form = NewEmailForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data["email"]
             id = PotentialUser.objects.get(email=email)
             cf.authorized_users.remove(id)
-            return redirect('form_manage', cf.id)
-    return render(request,
-                  'core/form_manage.html',
-                  {'cf': cf,
-                   'form': form,
-                   'recent': recent})
+            return redirect("form_manage", cf.id)
+    return render(
+        request, "core/form_manage.html", {"cf": cf, "form": form, "recent": recent}
+    )
+
 
 class NewConsentForm(forms.Form):
     study_name = forms.CharField()
+
 
 @login_required
 def form_main(request, form_id, section_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
-        return redirect('home')
+        return redirect("home")
     pd = cf.print_dictionary
     et = cf.edit_text
 
@@ -81,12 +85,15 @@ def form_main(request, form_id, section_id):
     for section in sections:
         question_count = 0
         answer_count = 0
-        qgroups = list(filter(lambda x: x.enabled(pd),
-                             models.QGroup.objects.filter(section=section)))
+        qgroups = list(
+            filter(
+                lambda x: x.enabled(pd), models.QGroup.objects.filter(section=section)
+            )
+        )
         for qg in qgroups:
             for question in qg.questions.all():
                 question_count += 1
-                if(question in responses):
+                if question in responses:
                     answer_count += 1
         section.question_count = question_count
         section.answer_count = answer_count
@@ -103,8 +110,9 @@ def form_main(request, form_id, section_id):
     if next_section is None:
         next_section = sections.first().pk
 
-    qgroups = list(filter(lambda x: x.enabled(pd),
-                         models.QGroup.objects.filter(section=section)))
+    qgroups = list(
+        filter(lambda x: x.enabled(pd), models.QGroup.objects.filter(section=section))
+    )
 
     response_text = []
 
@@ -123,31 +131,36 @@ def form_main(request, form_id, section_id):
 
                 # there is a response do some things
                 # Check if canned text exists, add that
-                if(models.EditText.objects.filter(response=r).exists()):
+                if models.EditText.objects.filter(response=r).exists():
                     response_text.append(models.EditText.objects.get(response=r).text)
-                elif question.type == 'core.freetextquestion':
+                elif question.type == "core.freetextquestion":
                     response_text.append(question.for_dict(r.data))
-                elif question.type == 'core.yesnoexplainquestion':
+                elif question.type == "core.yesnoexplainquestion":
                     response_text.append(question.for_dict(r.data))
-                elif question.type == 'core.textlistquestion':
+                elif question.type == "core.textlistquestion":
                     text_list = []
                     for line in question.for_dict(r.data):
-                        if(line != ""):
+                        if line != "":
                             text_list.append(f"<li>{line}</li>")
                     response_text.append(f"<ul>{' '.join(text_list)}</li>")
                 else:
                     pass
             except:
                 question.form = question.form()
-    return render(request,
-                  'core/form.html',
-                  {'consent_form': cf,
-                   'pd': pd,
-                   'section': section,
-                   'sections': sections,
-                   'next_section': next_section,
-                   'qgroups': qgroups,
-                   'et': et})
+    return render(
+        request,
+        "core/form.html",
+        {
+            "consent_form": cf,
+            "pd": pd,
+            "section": section,
+            "sections": sections,
+            "next_section": next_section,
+            "qgroups": qgroups,
+            "et": et,
+        },
+    )
+
 
 @login_required
 def section_preview(request, form_id, section_id):
@@ -157,57 +170,54 @@ def section_preview(request, form_id, section_id):
     section = models.Section.objects.get(pk=section_id)
     pd = cf.print_dictionary
     et = cf.edit_text
-    if(section.template == 'none'):
+    if section.template == "none":
         return HttpResponse("")
-    return render(request,
-                  section.template,
-                  {'pd': pd,
-                   'et': et})
+    return render(request, section.template, {"pd": pd, "et": et})
 
 
 @login_required
 def form_sections(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
-        return redirect('home')
+        return redirect("home")
     sections = models.Section.objects.all()
-    return render(request,
-                  'core/form_sections.html',
-                  {'consent_form': cf,
-                   'sections': sections})
+    return render(
+        request, "core/form_sections.html", {"consent_form": cf, "sections": sections}
+    )
+
 
 def form_print(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary
     et = cf.edit_text
-    return render(request,
-                  'core/print_form.html',
-                  {'pd': pd, 'et': et})
+    return render(request, "core/print_form.html", {"pd": pd, "et": et})
+
 
 @login_required
 def new_form(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = NewConsentForm(request.POST)
         if form.is_valid():
-            study_name = form.cleaned_data['study_name']
+            study_name = form.cleaned_data["study_name"]
             email = request.user.email
             pu, created = PotentialUser.objects.get_or_create(email=email)
             cf = models.ConsentForm.objects.create(study_name=study_name)
             cf.authorized_users.add(pu)
             cf.save()
-            return HttpResponseRedirect(reverse('form_manage', args=(cf.pk,)))
+            return HttpResponseRedirect(reverse("form_manage", args=(cf.pk,)))
         else:
             return HttpResponse("bad form", status=500)
     else:
         return HttpResponse("require POST", status=405)
 
+
 @login_required
 def form_duplicate(request, form_id):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = NewConsentForm(request.POST)
         old_form = models.ConsentForm.objects.get(pk=form_id)
         if form.is_valid():
-            study_name = form.cleaned_data['study_name']
+            study_name = form.cleaned_data["study_name"]
             email = request.user.email
             pu, created = PotentialUser.objects.get_or_create(email=email)
             cf = models.ConsentForm.objects.create(study_name=study_name)
@@ -218,9 +228,9 @@ def form_duplicate(request, form_id):
                     form=cf,
                     question=response.question,
                     data=response.data,
-                    user=request.user
+                    user=request.user,
                 )
-            return HttpResponseRedirect(reverse('form_manage', args=(cf.pk,)))
+            return HttpResponseRedirect(reverse("form_manage", args=(cf.pk,)))
         else:
             return HttpResponse("bad form", status=500)
     else:
@@ -229,22 +239,37 @@ def form_duplicate(request, form_id):
 
 @login_required
 def question_main(request, form_id, question_id, section_id):
-    if request.method == 'POST':
+    if request.method == "POST":
         question = models.Question.objects.get(pk=question_id)
         cf = models.ConsentForm.objects.get(pk=form_id)
         section = models.Section.objects.get(pk=section_id)
+        if question.custom_form:
+            r, created = models.Response.objects.get_or_create(
+                form=cf, question=question, user=request.user
+            )
+            response = request.POST.copy()
+            response.pop("csrfmiddlewaretoken")
+            r.data = response
+            r.save()
+            question.form = question.form(r.data)
+
+            return render(
+                request,
+                question.custom_form,
+                {"question": question, "consent_form": cf, "section": section},
+            )
         form = question.form(request.POST)
         if form.is_valid():
-            r, created = models.Response.objects.get_or_create(form=cf,
-                                                      question=question,
-                                                      user=request.user)
+            r, created = models.Response.objects.get_or_create(
+                form=cf, question=question, user=request.user
+            )
             r.data = form.cleaned_data
             r.save()
-            if(question.canned_yes and r.is_yes):
+            if question.canned_yes and r.is_yes:
                 et, created = models.EditText.objects.get_or_create(response=r)
                 et.text = question.canned_yes.text
                 et.save()
-            elif(question.canned_no and r.is_no):
+            elif question.canned_no and r.is_no:
                 et, created = models.EditText.objects.get_or_create(response=r)
                 et.text = question.canned_no.text
                 et.save()
@@ -257,22 +282,23 @@ def question_main(request, form_id, question_id, section_id):
                 question.edit_text = single_et
             except:
                 question.edit_text = None
-            return render(request, 'core/question.html', {
-                    'question': question,
-                    'consent_form': cf,
-                    'section': section
-                })
+            return render(
+                request,
+                "core/question.html",
+                {"question": question, "consent_form": cf, "section": section},
+            )
         else:
             return HttpResponse("bad form", status=500)
     return HttpResponse("require POST", status=405)
 
+
 @login_required
 def edit_text_edit(request, form_id, question_id):
-    if request.method == 'POST':
+    if request.method == "POST":
         question = models.Question.objects.get(pk=question_id)
         cf = models.ConsentForm.objects.get(pk=form_id)
         r = models.Response.objects.get(form=cf, question=question)
-        if('text' in request.POST):
+        if "text" in request.POST:
             text = request.POST["text"]
             et = models.EditText.objects.get(response=r)
             et.text = text
@@ -299,16 +325,20 @@ def debug_questions(request):
                     question.in_group = qg.name
                 else:
                     question.warn = True
-                    question.in_group = "MULTIPLE GROUPS {} {}".format(question.in_group, qg.name)
-    return render(request, 'core/debug_questions.html',
-                    {'questions': questions,
-                     'sections': sections,
-                     'qgroups': qgroups})
+                    question.in_group = "MULTIPLE GROUPS {} {}".format(
+                        question.in_group, qg.name
+                    )
+    return render(
+        request,
+        "core/debug_questions.html",
+        {"questions": questions, "sections": sections, "qgroups": qgroups},
+    )
+
 
 @login_required
 def debug_json(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     if not cf.authorized_users.filter(email=request.user.email).exists():
-        return redirect('home')
+        return redirect("home")
     pd = cf.print_dictionary
     return JsonResponse(pd)
