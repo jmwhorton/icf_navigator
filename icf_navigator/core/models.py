@@ -12,6 +12,9 @@ class Template(models.Model):
     content = models.TextField(blank=True)
     history = HistoricalRecords()
 
+    def __str__(self):
+        return self.name
+
 class ConsentForm(models.Model):
     study_name = models.CharField(max_length=500)
     authorized_users = models.ManyToManyField(PotentialUser)
