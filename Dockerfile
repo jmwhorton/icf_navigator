@@ -9,6 +9,9 @@ EXPOSE 3000
 RUN apk update && \
     apk add --no-cache \
         gcc \
+        libffi-dev \
+        openssl-dev \
+        py-cryptography \
         musl-dev \
         libc-dev \
         linux-headers \
@@ -16,6 +19,7 @@ RUN apk update && \
         nodejs \
         yarn
 
+RUN pip install --upgrade pip
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY prod-requirements.txt .
