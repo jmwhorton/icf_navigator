@@ -7,6 +7,7 @@ from users.models import PotentialUser
 from django import forms
 from django.urls import reverse
 from django.template.loader import render_to_string
+from django import template
 
 # Create your views here.
 def home_view(request):
@@ -42,11 +43,14 @@ def form_manage(request, form_id):
                 cf.authorized_users.add(pu)
                 cf.save()
                 form = NewEmailForm()
-    return render(
+    t = template.Template(
+        models.Template.objects.get(name="core/form_manage.html").content
+    )
+    c = template.RequestContext(
         request,
-        "core/form_manage.html",
         {"cf": cf, "first_section": first_section, "form": form, "recent": recent},
     )
+    return HttpResponse(t.render(c))
 
 
 @login_required
@@ -63,9 +67,11 @@ def form_manage_delete(request, form_id):
             id = PotentialUser.objects.get(email=email)
             cf.authorized_users.remove(id)
             return redirect("form_manage", cf.id)
-    return render(
-        request, "core/form_manage.html", {"cf": cf, "form": form, "recent": recent}
+    t = template.Template(
+        models.Template.objects.get(name="core/form_manage.html").content
     )
+    c = template.RequestContext(request, {"cf": cf, "form": form, "recent": recent})
+    return HttpResponse(t.render(c))
 
 
 class NewConsentForm(forms.Form):
@@ -147,6 +153,15 @@ def form_main(request, form_id, section_id):
                     pass
             except:
                 question.form = question.form()
+
+    if section.template == "none":
+        section.template = "<p>Section template not defined</p>"
+    else:
+        t = template.Template(
+            models.Template.objects.get(name=section.template).content
+        )
+        c = template.RequestContext(request, {"pd": pd, "et": et})
+        section.template = t.render(c)
     return render(
         request,
         "core/form.html",
@@ -172,7 +187,9 @@ def section_preview(request, form_id, section_id):
     et = cf.edit_text
     if section.template == "none":
         return HttpResponse("")
-    return render(request, section.template, {"pd": pd, "et": et})
+    t = template.Template(models.Template.objects.get(name=section.template).content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    return HttpResponse(t.render(c))
 
 
 @login_required
@@ -181,16 +198,22 @@ def form_sections(request, form_id):
     if not cf.authorized_users.filter(email=request.user.email).exists():
         return redirect("home")
     sections = models.Section.objects.all()
-    return render(
-        request, "core/form_sections.html", {"consent_form": cf, "sections": sections}
+    t = template.Template(
+        models.Template.objects.get(name="core/form_sections.html").content
     )
+    c = template.RequestContext(request, {"consent_form": cf, "sections": sections})
+    return HttpResponse(t.render(c))
 
 
 def form_print(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary
     et = cf.edit_text
-    return render(request, "core/print_form.html", {"pd": pd, "et": et})
+    t = template.Template(
+        models.Template.objects.get(name="core/print_form.html").content
+    )
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    return HttpResponse(t.render(c))
 
 
 @login_required
