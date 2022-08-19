@@ -1,2 +1,8 @@
+behave==1.2.6
+behave_django==1.4.0
 Django==3.1.14
-django-typed-models==0.10.0
+django_ace==1.0.12
+django_simple_history==3.1.1
+django_typed_models==0.10.0
+pytz==2022.1
+selenium==4.3.0
