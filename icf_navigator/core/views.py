@@ -209,10 +209,54 @@ def form_print(request, form_id):
     cf = models.ConsentForm.objects.get(pk=form_id)
     pd = models.ConsentForm.objects.get(pk=form_id).print_dictionary
     et = cf.edit_text
+
+    #Get all the required templates
+    t = template.Template(models.Template.objects.get(name='core/form_key.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    keyTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_about.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    aboutTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_risks.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    risksTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_benefits.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    benefitsTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_confidentiality.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    confidentialityTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_biospecimens.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    biospecimensTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_genetics.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    geneticsTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_results.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    resultsTemplate = t.render(c)
+    t = template.Template(models.Template.objects.get(name='core/form_other.html').content)
+    c = template.RequestContext(request, {"pd": pd, "et": et})
+    otherTemplate = t.render(c)
+
+
+
+
     t = template.Template(
         models.Template.objects.get(name="core/print_form.html").content
     )
-    c = template.RequestContext(request, {"pd": pd, "et": et})
+
+    c = template.RequestContext(request, {"pd": pd,
+                                          "et": et,
+                                          "keyTemplate":keyTemplate,
+                                          "aboutTemplate":aboutTemplate,
+                                          "risksTemplate":risksTemplate,
+                                          "benefitsTemplate":benefitsTemplate,
+                                          "confidentialityTemplate":confidentialityTemplate,
+                                          "biospecimensTemplate":biospecimensTemplate,
+                                          "geneticsTemplate":geneticsTemplate,
+                                          "resultsTemplate":resultsTemplate,
+                                          "otherTemplate":otherTemplate})
     return HttpResponse(t.render(c))
 
 
