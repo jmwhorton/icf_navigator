@@ -268,11 +268,12 @@ def question_main(request, form_id, question_id, section_id):
         section = models.Section.objects.get(pk=section_id)
         if question.custom_form:
             r, created = models.Response.objects.get_or_create(
-                form=cf, question=question, user=request.user
+                form=cf, question=question
             )
             response = request.POST.copy()
             response.pop("csrfmiddlewaretoken")
             r.data = response
+            r.user = request.user
             r.save()
             question.form = question.form(r.data)
 
@@ -284,9 +285,10 @@ def question_main(request, form_id, question_id, section_id):
         form = question.form(request.POST)
         if form.is_valid():
             r, created = models.Response.objects.get_or_create(
-                form=cf, question=question, user=request.user
+                form=cf, question=question
             )
             r.data = form.cleaned_data
+            r.user = request.user
             r.save()
             if question.canned_yes and r.is_yes:
                 et, created = models.EditText.objects.get_or_create(response=r)

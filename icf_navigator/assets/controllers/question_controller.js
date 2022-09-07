@@ -42,7 +42,7 @@ export default class extends Controller {
         }
         fetch(url)
           .then(response => response.text())
-          .then(html => document.getElementById("small_preview").innerHTML = html);
+          .then(html => document.getElementById("small_wrapper").innerHTML = html);
       } else {
         alert(event.target.responseText);
       }
